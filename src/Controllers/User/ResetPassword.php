@@ -45,7 +45,7 @@ class ResetPassword extends \BNETDocs\Controllers\Base
 
       if ($event->commit())
       {
-        $embed = Logger::initDiscordEmbed($event, $this->model->active_user->getURI());
+        $embed = Logger::initDiscordEmbed($event, $this->model->active_user ? $this->model->active_user->getURI() : null);
         Logger::logToDiscord($event, $embed);
       }
     }
