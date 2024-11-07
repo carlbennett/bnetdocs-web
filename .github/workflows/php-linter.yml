@@ -1,5 +1,5 @@
 # vim: set colorcolumn=:
-name: bnetdocs-web
+name: php-linter
 
 on: [push, pull_request]
 
