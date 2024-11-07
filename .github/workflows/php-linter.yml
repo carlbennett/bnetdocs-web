@@ -3,6 +3,9 @@ name: php-linter
 
 on: [push, pull_request]
 
+env:
+  PHP_VERSION: '8.1'
+
 permissions:
   contents: read
 
@@ -11,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Update apt cache
         run: sudo apt-get update
 
-      - name: Install php 8.1
-        run: sudo apt-get install php8.1-cli
+      - name: Install php ${{ env.PHP_VERSION }}
+        run: sudo apt-get install php${{ env.PHP_VERSION }}-cli
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
