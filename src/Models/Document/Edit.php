@@ -7,6 +7,7 @@ class Edit extends \BNETDocs\Models\ActiveUser
   public $acl_allowed;
   public $brief;
   public $category;
+  public ?array $comments = null;
   public $content;
   public $document;
   public $document_id;
