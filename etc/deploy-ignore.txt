@@ -27,7 +27,6 @@
 /.travis.yml
 /CONTRIBUTING.md
 /README.md
-/bin/
 /composer.json
 /composer.lock
 /etc/config.redux.json
