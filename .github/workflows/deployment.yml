@@ -61,18 +61,20 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }} # SSH private key stored as a GitHub secret
           SSH_WEB_PATH: ${{ secrets.SSH_WEB_PATH }}
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           # Save the private key for SSH
           mkdir -p ~/.ssh
-          echo "$SSH_KEY" > "~/.ssh/id_$SSH_USER"
-          chmod 600 "~/.ssh/id_$SSH_USER"
+          echo "${SSH_KEY}" > "~/.ssh/id_${SSH_USER}"
+          chmod 600 "~/.ssh/id_${SSH_USER}"
 
-          # Copy the artifact to the VPS
-          scp -i "~/.ssh/id_$SSH_USER" -P "$SSH_PORT" project.zip "$SSH_USER@$SSH_HOST:${SSH_WEB_PATH:.}"
+          # Copy the artifact to the Remote
+          scp -i "~/.ssh/id_${SSH_USER}" -P "${SSH_PORT}" project.zip "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}/${BRANCH_NAME}"
 
-          # Connect to the VPS and unzip the project
-          ssh -i "~/.ssh/id_$SSH_USER" -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" << 'EOF'
-            cd ${SSH_WEB_PATH:.}/
+          # Connect to the Remote and unzip the project
+          ssh -i "~/.ssh/id_${SSH_USER}" -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" << EOF
+            mkdir -p ${SSH_WEB_PATH}/${BRANCH_NAME}
+            cd ${SSH_WEB_PATH}/${BRANCH_NAME}
             unzip ./project.zip
             rm ./project.zip
           EOF
