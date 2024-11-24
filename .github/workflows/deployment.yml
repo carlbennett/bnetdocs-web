@@ -66,9 +66,6 @@ jobs:
           # LICENSE version and ISO8601 timestamp
           echo -n "$(git log -n 1 --pretty='%h %aI' ./LICENSE.txt)" >> ./etc/.rsync-version
 
-      - name: Compress Artifacts
-        run: zip -r ${{ env.CLEAN_BRANCH_NAME }}.zip . -x@etc/deploy-ignore.txt
-
       - name: Deploy to Remote
         env:
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
@@ -89,19 +86,11 @@ jobs:
           chmod -v 400 "${HOME}/.ssh/id_${SSH_USER}"
 
           # Deploy artifact to the remote
-          scp -i "${HOME}/.ssh/id_${SSH_USER}" -P "${SSH_PORT}" "${CLEAN_BRANCH_NAME}.zip" "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}/"
-
-          # SSH to remote and process artifact
-          ssh -i "${HOME}/.ssh/id_${SSH_USER}" -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" << EOF
-            set -ex -o pipefail
-            cd ${SSH_WEB_PATH}/
-            rm -rfv ./${CLEAN_BRANCH_NAME}/
-            mkdir -pv ./${CLEAN_BRANCH_NAME}/
-            mv -v ./${CLEAN_BRANCH_NAME}.zip ./${CLEAN_BRANCH_NAME}/
-            cd ./${CLEAN_BRANCH_NAME}/
-            unzip -o ./${CLEAN_BRANCH_NAME}.zip
-            rm ./${CLEAN_BRANCH_NAME}.zip
-          EOF
+          rsync -avzc --delete --delete-excluded --delete-after --progress \
+            --exclude-from="./etc/deploy-ignore.txt" \
+            --chown=${SSH_USER}:${SSH_USER} \
+            -e "ssh -i ${HOME}/.ssh/id_${SSH_USER} -p ${SSH_PORT}" \
+            "./" "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}"
 
           # Cleanup the secret
           rm -fv "${HOME}/.ssh/id_${SSH_USER}" "${HOME}/.ssh/id_${SSH_USER}.pub"
