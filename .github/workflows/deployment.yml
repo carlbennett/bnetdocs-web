@@ -22,7 +22,7 @@ jobs:
       - name: Update apt cache
         run: sudo apt-get update
 
-      - name: Install php ${{ env.PHP_VERSION }}
+      - name: Install PHP ${{ env.PHP_VERSION }}
         run: sudo apt-get install php${{ env.PHP_VERSION }}-cli
 
       - name: Validate composer.json and composer.lock
@@ -51,36 +51,51 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Sanitize Branch Name
+        id: sanitize
+        run: |
+          CLEAN_BRANCH_NAME="${GITHUB_REF_NAME//\//_}"
+          echo "CLEAN_BRANCH_NAME=${CLEAN_BRANCH_NAME}" >> $GITHUB_ENV
+        outputs:
+          CLEAN_BRANCH_NAME: ${{ steps.sanitize.outputs.CLEAN_BRANCH_NAME }}
+
       - name: Compress Artifacts
-        run: zip -r project.zip .
+        run: zip -r ${{ steps.sanitize.outputs.CLEAN_BRANCH_NAME }}.zip .
 
       - name: Deploy to Remote
         env:
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }} # SSH private key stored as a GitHub secret
           SSH_WEB_PATH: ${{ secrets.SSH_WEB_PATH }}
-          BRANCH_NAME: ${{ github.ref_name }}
+          CLEAN_BRANCH_NAME: ${{ steps.sanitize.outputs.CLEAN_BRANCH_NAME }}
         run: |
           #!/usr/bin/env bash
           set -ex -o pipefail
 
-          # Save the private key for SSH
+          # Setup SSH directory, known hosts, and private key
           mkdir -pv "${HOME}/.ssh"
+          echo "${SSH_KNOWN_HOSTS}" > "${HOME}/.ssh/known_hosts"
+          chmod -v 644 "${HOME}/.ssh/known_hosts"
           echo "${SSH_KEY}" > "${HOME}/.ssh/id_${SSH_USER}"
           chmod -v 400 "${HOME}/.ssh/id_${SSH_USER}"
 
-          # Copy the artifact to the Remote
-          scp -i "${HOME}/.ssh/id_${SSH_USER}" -P "${SSH_PORT}" project.zip "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}/${BRANCH_NAME}"
+          # Deploy artifact to the remote
+          scp -i "${HOME}/.ssh/id_${SSH_USER}" -P "${SSH_PORT}" "${CLEAN_BRANCH_NAME}.zip" "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}/"
 
-          # Connect to the Remote and unzip the project
+          # SSH to remote and process artifact
           ssh -i "${HOME}/.ssh/id_${SSH_USER}" -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" << EOF
-            mkdir -p ${SSH_WEB_PATH}/${BRANCH_NAME}
-            cd ${SSH_WEB_PATH}/${BRANCH_NAME}
-            unzip ./project.zip
-            rm ./project.zip
+            set -ex -o pipefail
+            cd ${SSH_WEB_PATH}/
+            rm -rfv ./${CLEAN_BRANCH_NAME}/
+            mkdir -pv ./${CLEAN_BRANCH_NAME}/
+            mv -v ./${CLEAN_BRANCH_NAME}.zip ./${CLEAN_BRANCH_NAME}/
+            cd ./${CLEAN_BRANCH_NAME}/
+            unzip -o ./${CLEAN_BRANCH_NAME}.zip
+            rm ./${CLEAN_BRANCH_NAME}.zip
           EOF
 
           # Cleanup the secret
-          rm -rfv "${HOME}/.ssh/id_${SSH_USER}" "${HOME}/.ssh/id_${SSH_USER}.pub"
+          rm -fv "${HOME}/.ssh/id_${SSH_USER}" "${HOME}/.ssh/id_${SSH_USER}.pub"
