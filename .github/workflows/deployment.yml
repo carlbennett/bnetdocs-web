@@ -52,15 +52,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sanitize Branch Name
-        id: sanitize
         run: |
           CLEAN_BRANCH_NAME="${GITHUB_REF_NAME//\//_}"
           echo "CLEAN_BRANCH_NAME=${CLEAN_BRANCH_NAME}" >> $GITHUB_ENV
-        outputs:
-          CLEAN_BRANCH_NAME: ${{ steps.sanitize.outputs.CLEAN_BRANCH_NAME }}
 
       - name: Compress Artifacts
-        run: zip -r ${{ steps.sanitize.outputs.CLEAN_BRANCH_NAME }}.zip .
+        run: zip -r ${{ env.CLEAN_BRANCH_NAME }}.zip .
 
       - name: Deploy to Remote
         env:
@@ -70,7 +67,6 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }} # SSH private key stored as a GitHub secret
           SSH_WEB_PATH: ${{ secrets.SSH_WEB_PATH }}
-          CLEAN_BRANCH_NAME: ${{ steps.sanitize.outputs.CLEAN_BRANCH_NAME }}
         run: |
           #!/usr/bin/env bash
           set -ex -o pipefail
