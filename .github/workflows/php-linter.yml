@@ -1,10 +1,18 @@
 # vim: set colorcolumn=:
 name: php-linter
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      php_version:
+        description: "Specify the PHP version to use (e.g., 8.0, 8.1)"
+        required: false
+        default: '8.1'
 
 env:
-  PHP_VERSION: '8.1'
+  PHP_VERSION: ${{ inputs.php_version || '8.1' }}
 
 permissions:
   contents: read
