@@ -59,6 +59,9 @@ jobs:
 
       - name: Create Version file
         run: |
+          #!/usr/bin/env bash
+          set -ex -o pipefail
+
           # Version identifier
           echo "$(git describe --always --tags)" > ./etc/.rsync-version
           # Version hash
