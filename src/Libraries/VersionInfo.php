@@ -40,10 +40,10 @@ class VersionInfo
    * Gets the asset tag string to append to asset URLs.
    * Useful for CDNs to key on when re-deploying cached assets.
    *
-   * @param array $version The bnetdocs version array.
+   * @param array|null $version The bnetdocs version array.
    * @return string The asset tag value.
    */
-  private static function assetVersion(array $version): string
+  private static function assetVersion(?array $version): string
   {
     return (
       !\CarlBennett\MVC\Libraries\Common::$config->bnetdocs->asset_versioning ? '' :
