@@ -76,4 +76,4 @@ jobs:
             cd ${SSH_WEB_PATH:.}/
             unzip ./project.zip
             rm ./project.zip
-EOF
+          EOF
