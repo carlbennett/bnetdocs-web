@@ -55,8 +55,19 @@ jobs:
         run: |
           echo "${WEB_CONFIG_JSON}" > ./etc/config.phoenix.json
 
+      - name: Create Version file
+        run: |
+          # Version identifier
+          echo "$(git describe --always --tags)" > ./etc/.rsync-version
+          # Version hash
+          echo "$(git rev-parse HEAD)" >> ./etc/.rsync-version
+          # Version ISO8601 timestamp
+          echo "$(git log -n 1 --pretty='%aI' HEAD)" >> ./etc/.rsync-version
+          # LICENSE version and ISO8601 timestamp
+          echo -n "$(git log -n 1 --pretty='%h %aI' ./LICENSE.txt)" >> ./etc/.rsync-version
+
       - name: Compress Artifacts
-        run: zip -r ${{ env.CLEAN_BRANCH_NAME }}.zip .
+        run: zip -r ${{ env.CLEAN_BRANCH_NAME }}.zip . -x@etc/deploy-ignore.txt
 
       - name: Deploy to Remote
         env:
