@@ -90,7 +90,7 @@ jobs:
             --exclude-from="./etc/deploy-ignore.txt" \
             --chown=${SSH_USER}:${SSH_USER} \
             -e "ssh -i ${HOME}/.ssh/id_${SSH_USER} -p ${SSH_PORT}" \
-            "./" "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}"
+            "./" "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}/${CLEAN_BRANCH_NAME}"
 
           # Cleanup the secret
           rm -fv "${HOME}/.ssh/id_${SSH_USER}" "${HOME}/.ssh/id_${SSH_USER}.pub"
