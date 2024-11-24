@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+      - phoenix
 
 env:
   PHP_VERSION: '8.1'
