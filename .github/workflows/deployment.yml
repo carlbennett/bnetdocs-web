@@ -49,6 +49,12 @@ jobs:
           CLEAN_BRANCH_NAME="${GITHUB_REF_NAME//\//_}"
           echo "CLEAN_BRANCH_NAME=${CLEAN_BRANCH_NAME}" >> $GITHUB_ENV
 
+      - name: Create Config
+        env:
+          WEB_CONFIG_JSON: ${{ secrets.WEB_CONFIG_JSON }}
+        run: |
+          echo "${WEB_CONFIG_JSON}" > ./etc/config.phoenix.json
+
       - name: Compress Artifacts
         run: zip -r ${{ env.CLEAN_BRANCH_NAME }}.zip .
 
@@ -88,3 +94,7 @@ jobs:
 
           # Cleanup the secret
           rm -fv "${HOME}/.ssh/id_${SSH_USER}" "${HOME}/.ssh/id_${SSH_USER}.pub"
+
+      - name: Cleanup Config
+        run: |
+          rm -fv ./etc/config.phoenix.json
