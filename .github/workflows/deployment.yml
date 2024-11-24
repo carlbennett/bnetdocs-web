@@ -13,10 +13,11 @@ permissions:
   contents: read
 
 jobs:
-  linter:
+  deploy:
     runs-on: ubuntu-latest
+    environment: production
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Update apt cache
@@ -42,14 +43,6 @@ jobs:
 
       - name: Validate PHP syntax
         run: bash -c 'set -e;for file in $(find ./src -type f -regex ".*\.\(php\|phtml\)" -print); do php -e -l -f "$file"; done'
-
-  deploy:
-    needs: linter
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
 
       - name: Sanitize Branch Name
         run: |
