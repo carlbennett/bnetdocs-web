@@ -64,19 +64,18 @@ jobs:
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
           #!/usr/bin/env bash
-
           set -ex -o pipefail
 
           # Save the private key for SSH
-          mkdir -pv ~/.ssh
-          echo "${SSH_KEY}" > "~/.ssh/id_${SSH_USER}"
-          chmod -v 400 "~/.ssh/id_${SSH_USER}"
+          mkdir -pv "${HOME}/.ssh"
+          echo "${SSH_KEY}" > "${HOME}/.ssh/id_${SSH_USER}"
+          chmod -v 400 "${HOME}/.ssh/id_${SSH_USER}"
 
           # Copy the artifact to the Remote
-          scp -i "~/.ssh/id_${SSH_USER}" -P "${SSH_PORT}" project.zip "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}/${BRANCH_NAME}"
+          scp -i "${HOME}/.ssh/id_${SSH_USER}" -P "${SSH_PORT}" project.zip "${SSH_USER}@${SSH_HOST}:${SSH_WEB_PATH}/${BRANCH_NAME}"
 
           # Connect to the Remote and unzip the project
-          ssh -i "~/.ssh/id_${SSH_USER}" -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" << EOF
+          ssh -i "${HOME}/.ssh/id_${SSH_USER}" -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" << EOF
             mkdir -p ${SSH_WEB_PATH}/${BRANCH_NAME}
             cd ${SSH_WEB_PATH}/${BRANCH_NAME}
             unzip ./project.zip
@@ -84,4 +83,4 @@ jobs:
           EOF
 
           # Cleanup the secret
-          rm -rfv "~/.ssh/id_${SSH_USER}" "~/.ssh/id_${SSH_USER}.pub"
+          rm -rfv "${HOME}/.ssh/id_${SSH_USER}" "${HOME}/.ssh/id_${SSH_USER}.pub"
