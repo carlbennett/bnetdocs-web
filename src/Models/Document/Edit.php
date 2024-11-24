@@ -4,15 +4,14 @@ namespace BNETDocs\Models\Document;
 
 class Edit extends \BNETDocs\Models\ActiveUser
 {
-  public $acl_allowed;
-  public $brief;
-  public $category;
+  public bool $acl_allowed = false;
+  public ?string $brief = null;
+  public ?string $category = null;
   public ?array $comments = null;
-  public $content;
-  public $document;
-  public $document_id;
-  public $markdown;
-  public $published;
-  public $title;
-  public $user;
+  public ?string $content = null;
+  public ?\BNETDocs\Libraries\Document $document = null;
+  public ?int $document_id = null;
+  public ?bool $markdown = null;
+  public ?bool $published = null;
+  public ?string $title = null;
 }

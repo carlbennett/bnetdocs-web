@@ -4,7 +4,7 @@ namespace BNETDocs\Models\Document;
 
 class Index extends \BNETDocs\Models\ActiveUser
 {
-  public $documents;
-  public $order;
-  public $sum_documents;
+  public array|false $documents = false;
+  public string $order = '';
+  public int $sum_documents = 0;
 }

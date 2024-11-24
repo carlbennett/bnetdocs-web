@@ -4,6 +4,6 @@ namespace BNETDocs\Models\Server;
 
 class UpdateJob extends \BNETDocs\Models\ActiveUser
 {
-  public $old_status_bitmask;
-  public $server;
+  public int $old_status_bitmask = 0;
+  public ?\BNETDocs\Libraries\Server $server = null;
 }
