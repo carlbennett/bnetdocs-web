@@ -1,0 +1,79 @@
+# vim: set colorcolumn=:
+name: deployment
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  PHP_VERSION: '8.1'
+
+permissions:
+  contents: read
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update apt cache
+        run: sudo apt-get update
+
+      - name: Install php ${{ env.PHP_VERSION }}
+        run: sudo apt-get install php${{ env.PHP_VERSION }}-cli
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v4
+        with:
+          path: lib
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install composer/vendor dependencies
+        run: composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+      - name: Validate PHP syntax
+        run: bash -c 'set -e;for file in $(find ./src -type f -regex ".*\.\(php\|phtml\)" -print); do php -e -l -f "$file"; done'
+
+  deploy:
+    name: Deploy to VPS
+    needs: linter
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Compress Artifacts
+        run: zip -r project.zip .
+
+      - name: Deploy to VPS
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }} # SSH private key stored as a GitHub secret
+          SSH_WEB_PATH: ${{ secrets.SSH_WEB_PATH }}
+        run: |
+          # Save the private key for SSH
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > "~/.ssh/id_$SSH_USER"
+          chmod 600 "~/.ssh/id_$SSH_USER"
+
+          # Copy the artifact to the VPS
+          scp -i "~/.ssh/id_$SSH_USER" -P "$SSH_PORT" project.zip "$SSH_USER@$SSH_HOST:${SSH_WEB_PATH:.}"
+
+          # Connect to the VPS and unzip the project
+          ssh -i "~/.ssh/id_$SSH_USER" -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" << 'EOF'
+            cd ${SSH_WEB_PATH:.}/
+            unzip ./project.zip
+            rm ./project.zip
+EOF
