@@ -44,7 +44,6 @@ jobs:
         run: bash -c 'set -e;for file in $(find ./src -type f -regex ".*\.\(php\|phtml\)" -print); do php -e -l -f "$file"; done'
 
   deploy:
-    name: Deploy to VPS
     needs: linter
     runs-on: ubuntu-latest
     environment: production
@@ -55,7 +54,7 @@ jobs:
       - name: Compress Artifacts
         run: zip -r project.zip .
 
-      - name: Deploy to VPS
+      - name: Deploy to Remote
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
