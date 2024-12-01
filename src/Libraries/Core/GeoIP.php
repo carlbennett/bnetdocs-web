@@ -1,11 +1,12 @@
 <?php
-namespace BNETDocs\Libraries;
+
+namespace BNETDocs\Libraries\Core;
 
 use \CarlBennett\MVC\Libraries\Common;
 
 class GeoIP
 {
-  private static $reader;
+  private static ?\GeoIp2\ProviderInterface $reader = null;
 
   private function __construct() {}
 

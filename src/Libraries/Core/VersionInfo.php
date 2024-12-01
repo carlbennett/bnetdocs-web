@@ -1,5 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
-namespace BNETDocs\Libraries;
+
+namespace BNETDocs\Libraries\Core;
 
 class VersionInfo
 {

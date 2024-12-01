@@ -48,13 +48,13 @@ class Status extends Base
         'geoip' => Common::$config->geoip->enabled && file_exists(Common::$config->geoip->database_file),
       ],
       'remote_address' => $remote_address,
-      'remote_geoinfo' => Common::$config->geoip->enabled ? \BNETDocs\Libraries\GeoIP::getRecord($remote_address) : null,
+      'remote_geoinfo' => Common::$config->geoip->enabled ? \BNETDocs\Libraries\Core\GeoIP::getRecord($remote_address) : null,
       'remote_is_blizzard' => \BNETDocs\Libraries\Core\BlizzardCheck::is_blizzard(),
       'remote_is_browser' => Common::isBrowser($ua),
       'remote_is_slack' => \BNETDocs\Libraries\Core\SlackCheck::is_slack(),
       'remote_user_agent' => $ua,
       'timestamp' => new \BNETDocs\Libraries\DateTimeImmutable('now', $utc),
-      'version_info' => \BNETDocs\Libraries\VersionInfo::get(),
+      'version_info' => \BNETDocs\Libraries\Core\VersionInfo::get(),
     ];
 
     foreach ($model->status['healthcheck'] as $key => $val)

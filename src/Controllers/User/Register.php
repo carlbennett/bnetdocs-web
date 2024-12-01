@@ -138,7 +138,7 @@ class Register extends \BNETDocs\Controllers\Base
         }
       }
     }
-    $their_country = \BNETDocs\Libraries\GeoIP::getCountryISOCode(getenv('REMOTE_ADDR'));
+    $their_country = \BNETDocs\Libraries\Core\GeoIP::getCountryISOCode(getenv('REMOTE_ADDR'));
     if ($their_country) {
       foreach ($countrycode_denylist as $bad_country => $reason) {
         if (strtoupper($their_country) == strtoupper($bad_country)) {

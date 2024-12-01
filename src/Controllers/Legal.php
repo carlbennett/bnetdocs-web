@@ -30,7 +30,7 @@ class Legal extends Base
     $this->model->email_mailbox = $privacy_contact->email_mailbox;
 
     $this->model->license = \file_get_contents(self::LICENSE_FILE);
-    $this->model->license_version = \BNETDocs\Libraries\VersionInfo::$version['bnetdocs'][3] ?? null;
+    $this->model->license_version = \BNETDocs\Libraries\Core\VersionInfo::$version['bnetdocs'][3] ?? null;
 
     if (!\is_null($this->model->license_version))
     {
