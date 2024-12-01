@@ -1,6 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\User;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;

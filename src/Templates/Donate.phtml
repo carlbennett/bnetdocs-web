@@ -10,7 +10,7 @@ $btc_address = $this->getContext()->donations->btc_address;
 $email_address = $this->getContext()->donations->email_address;
 $paypal_url = $this->getContext()->donations->paypal_url;
 $user_id = $this->getContext()->donations->user_id;
-$user = (!empty($user_id) ? new \BNETDocs\Libraries\User($user_id) : null);
+$user = (!empty($user_id) ? new \BNETDocs\Libraries\User\User($user_id) : null);
 require('./header.inc.phtml'); ?>
 <div class="container">
   <h1>Support Us</h1>

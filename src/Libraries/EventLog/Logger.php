@@ -5,7 +5,7 @@ namespace BNETDocs\Libraries\EventLog;
 use \BNETDocs\Libraries\Discord\Embed as DiscordEmbed;
 use \BNETDocs\Libraries\Discord\Webhook as DiscordWebhook;
 use \BNETDocs\Libraries\EventLog\Event;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \CarlBennett\MVC\Libraries\Common;
 
 class Logger

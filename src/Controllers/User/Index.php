@@ -1,7 +1,8 @@
 <?php
+
 namespace BNETDocs\Controllers\User;
 
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 
 class Index extends \BNETDocs\Controllers\Base
 {

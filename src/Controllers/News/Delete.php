@@ -16,7 +16,7 @@ class Delete extends \BNETDocs\Controllers\Base
   public function invoke(?array $args): bool
   {
     $this->model->acl_allowed = $this->model->active_user
-      && $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_NEWS_DELETE);
+      && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_NEWS_DELETE);
 
     if (!$this->model->acl_allowed)
     {

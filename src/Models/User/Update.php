@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Models\User;
 
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \BNETDocs\Libraries\User\Profile as UserProfile;
 
 class Update extends \BNETDocs\Models\ActiveUser

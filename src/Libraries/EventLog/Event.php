@@ -5,7 +5,7 @@ namespace BNETDocs\Libraries\EventLog;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\EventLog\EventTypes;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \DateTimeInterface;
 use \DateTimeZone;
 use \LengthException;

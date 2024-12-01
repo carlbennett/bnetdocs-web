@@ -5,7 +5,7 @@ namespace BNETDocs\Libraries\User;
 use \BNETDocs\Interfaces\DatabaseObject;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeZone;
 use \InvalidArgumentException;

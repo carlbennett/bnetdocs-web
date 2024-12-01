@@ -5,7 +5,7 @@ namespace BNETDocs\Controllers\News;
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\News\Post as NewsPost;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 
 class View extends \BNETDocs\Controllers\Base
 {

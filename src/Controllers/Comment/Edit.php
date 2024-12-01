@@ -28,7 +28,7 @@ class Edit extends \BNETDocs\Controllers\Base
     catch (\UnexpectedValueException) { $this->model->comment = null; }
 
     $this->model->acl_allowed = $this->model->active_user && (
-      $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_COMMENT_MODIFY) ||
+      $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_COMMENT_MODIFY) ||
       ($this->model->comment && $this->model->active_user->getId() === $this->model->comment->getUserId())
     );
 

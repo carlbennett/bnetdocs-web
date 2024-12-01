@@ -20,7 +20,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
   public function invoke(?array $args): bool
   {
-    if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_SERVER_DELETE)))
+    if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_SERVER_DELETE)))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = DeleteModel::ERROR_ACCESS_DENIED;

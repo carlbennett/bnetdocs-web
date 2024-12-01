@@ -29,7 +29,7 @@ class Verify extends \BNETDocs\Controllers\Base
 
     if (is_numeric($this->model->user_id))
     {
-      try { $this->model->user = new \BNETDocs\Libraries\User((int) $this->model->user_id); }
+      try { $this->model->user = new \BNETDocs\Libraries\User\User((int) $this->model->user_id); }
       catch (\UnexpectedValueException) { $this->model->user = null; }
     }
 

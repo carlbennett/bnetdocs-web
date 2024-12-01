@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries\User;
 
 use \BNETDocs\Libraries\Db\MariaDb;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \StdClass;
 use \UnexpectedValueException;
 

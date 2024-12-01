@@ -7,7 +7,7 @@ use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\Packet\Application as ApplicationLayer;
 use \BNETDocs\Libraries\Packet\Transport as TransportLayer;
 use \BNETDocs\Libraries\Product;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;

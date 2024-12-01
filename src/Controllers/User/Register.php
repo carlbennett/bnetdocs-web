@@ -8,7 +8,7 @@ use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Core\Template;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \PHPMailer\PHPMailer\PHPMailer;
 

@@ -5,7 +5,7 @@ namespace BNETDocs\Controllers\User;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \BNETDocs\Models\User\Login as LoginModel;
 use \CarlBennett\MVC\Libraries\Common;
 

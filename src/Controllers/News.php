@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 
 class News extends Base
 {

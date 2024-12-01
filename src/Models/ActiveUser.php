@@ -9,7 +9,7 @@ class ActiveUser extends Errorable implements \JsonSerializable
    *
    * @var \BNETDocs\Libraries\User|null
    */
-  public ?\BNETDocs\Libraries\User $active_user = null;
+  public ?\BNETDocs\Libraries\User\User $active_user = null;
 
   /**
    * When constructed, sets the $active_user to that of the Authentication::$user value.

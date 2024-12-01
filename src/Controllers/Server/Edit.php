@@ -23,7 +23,7 @@ class Edit extends \BNETDocs\Controllers\Base
   {
     $this->model->server_edit = true;
 
-    if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_SERVER_MODIFY)))
+    if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_SERVER_MODIFY)))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = FormModel::ERROR_ACCESS_DENIED;

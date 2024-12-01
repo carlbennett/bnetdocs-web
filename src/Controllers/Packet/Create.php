@@ -19,7 +19,7 @@ class Create extends \BNETDocs\Controllers\Base
 
   public function invoke(?array $args): bool
   {
-    if (!$this->model->active_user || !$this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_PACKET_CREATE))
+    if (!$this->model->active_user || !$this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_PACKET_CREATE))
     {
       $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
       $this->model->error = FormModel::ERROR_ACL_DENIED;

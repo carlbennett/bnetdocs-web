@@ -5,7 +5,7 @@ namespace BNETDocs\Libraries\Server;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\Server\Type as ServerType;
-use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;
