@@ -52,7 +52,7 @@ class News extends Base
     {
       try
       {
-        $this->model->pagination = new \BNETDocs\Libraries\Pagination(
+        $this->model->pagination = new \BNETDocs\Libraries\Core\Pagination(
           $this->model->news_posts, $page ?? 0, self::NEWS_PER_PAGE
         );
         $this->model->news_posts = $this->model->pagination->getPage();
