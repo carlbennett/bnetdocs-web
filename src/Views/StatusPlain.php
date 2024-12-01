@@ -11,7 +11,7 @@ class StatusPlain extends \BNETDocs\Views\Base\Plain
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    echo \BNETDocs\Libraries\ArrayFlattener::flatten($model->status);
+    echo \BNETDocs\Libraries\Core\ArrayFlattener::flatten($model->status);
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

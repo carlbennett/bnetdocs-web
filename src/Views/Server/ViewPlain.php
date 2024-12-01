@@ -15,6 +15,6 @@ class ViewPlain extends \BNETDocs\Views\Base\Plain
     if (!$model->server) return;
 
     $json = $model->server->jsonSerialize();
-    echo \BNETDocs\Libraries\ArrayFlattener::flatten($json);
+    echo \BNETDocs\Libraries\Core\ArrayFlattener::flatten($json);
   }
 }
