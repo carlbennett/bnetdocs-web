@@ -3,8 +3,8 @@
 namespace BNETDocs\Controllers\Comment;
 
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\Router;
 
 class Delete extends \BNETDocs\Controllers\Base
 {

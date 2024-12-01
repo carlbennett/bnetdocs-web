@@ -3,9 +3,9 @@
 namespace BNETDocs\Controllers\News;
 
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\NewsPost;
-use \BNETDocs\Libraries\Router;
 
 class Delete extends \BNETDocs\Controllers\Base
 {

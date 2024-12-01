@@ -4,10 +4,10 @@ namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Exceptions\UserNotFoundException;
 use \BNETDocs\Libraries\Core\Recaptcha;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Core\Template;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\Router;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \PHPMailer\PHPMailer\PHPMailer;

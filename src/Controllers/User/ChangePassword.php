@@ -2,9 +2,9 @@
 
 namespace BNETDocs\Controllers\User;
 
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\Router;
+use \CarlBennett\MVC\Libraries\Common;
 
 class ChangePassword extends \BNETDocs\Controllers\Base
 {

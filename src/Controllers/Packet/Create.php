@@ -3,10 +3,10 @@
 namespace BNETDocs\Controllers\Packet;
 
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\Product;
-use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Packet\Form as FormModel;
 use \OutOfBoundsException;
 

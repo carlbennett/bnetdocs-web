@@ -27,7 +27,7 @@ class Index extends \BNETDocs\Controllers\Base
       return true;
     }
 
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
     $this->model->order = $q['order'] ?? 'datetime-desc';
 
     switch ($this->model->order)

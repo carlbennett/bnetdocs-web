@@ -23,7 +23,7 @@ class Verify extends \BNETDocs\Controllers\Base
    */
   public function invoke(?array $args): bool
   {
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
     $this->model->token = $q['t'] ?? null;
     $this->model->user_id = $q['u'] ?? null;
 

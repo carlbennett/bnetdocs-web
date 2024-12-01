@@ -11,7 +11,7 @@ class Index extends \BNETDocs\Controllers\Base
 
   public function invoke(?array $args): bool
   {
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
     $this->model->order = $q['order'] ?? 'title-asc';
 
     $orderMap = [ // This code was refactored by OpenAI

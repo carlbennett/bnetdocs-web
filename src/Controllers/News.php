@@ -30,7 +30,7 @@ class News extends Base
       User::OPTION_ACL_NEWS_DELETE
     ));
 
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
     $page = (isset($q['page']) ? ((int) $q['page']) - 1 : null);
     $rss = \array_shift($args);
     $this->model->news_posts = \BNETDocs\Libraries\NewsPost::getAllNews(true);

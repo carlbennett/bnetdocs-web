@@ -25,7 +25,7 @@ class Index extends \BNETDocs\Controllers\Base
    */
   public function invoke(?array $args): bool
   {
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
     $this->model->order = $q['order'] ?? 'registered-desc';
 
     // Translate order value to SQL-compatible properties

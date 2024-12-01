@@ -20,7 +20,7 @@
 
 namespace BNETDocs;
 
-use \BNETDocs\Libraries\Router;
+use \BNETDocs\Libraries\Core\Router;
 use \CarlBennett\MVC\Libraries\Common;
 
 function main(): void

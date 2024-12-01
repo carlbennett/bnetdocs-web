@@ -3,11 +3,11 @@ namespace BNETDocs\Controllers\Packet;
 
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\Packet;
 use \BNETDocs\Libraries\Product;
-use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Packet\Form as FormModel;
 use \OutOfBoundsException;
 use \UnexpectedValueException;
@@ -28,7 +28,7 @@ class Edit extends \BNETDocs\Controllers\Base
       return true;
     }
 
-    $this->model->form_fields = \BNETDocs\Libraries\Router::query();
+    $this->model->form_fields = Router::query();
     $this->model->products = Product::getAllProducts();
 
     $id = $this->model->form_fields['id'] ?? null;

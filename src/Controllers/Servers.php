@@ -22,7 +22,7 @@ class Servers extends Base
    */
   public function invoke(?array $args): bool
   {
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
 
     $this->model->server_types    = array();
     $this->model->servers         = ServerLib::getAllServers();

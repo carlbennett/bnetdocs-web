@@ -3,7 +3,7 @@
 namespace BNETDocs\Controllers;
 
 use \BNETDocs\Libraries\Core\HttpCode;
-use \BNETDocs\Libraries\Router;
+use \BNETDocs\Libraries\Core\Router;
 use \CarlBennett\MVC\Libraries\Common;
 
 class Legacy extends Base

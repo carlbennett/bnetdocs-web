@@ -14,7 +14,7 @@ class Index extends \BNETDocs\Controllers\Base
     if (is_null($args) || count($args) != 1)
       throw new \InvalidArgumentException('Arguments must have exactly 1 item');
 
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
     $this->model->order = isset($q['order']) ? $q['order'] : 'packet-id-asc';
     $this->model->pktapplayer = isset($q['pktapplayer']) ? $q['pktapplayer'] : [];
 

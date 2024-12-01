@@ -3,10 +3,10 @@
 namespace BNETDocs\Controllers\News;
 
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\NewsCategory;
 use \BNETDocs\Libraries\NewsPost;
-use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\News\Create as CreateModel;
 
 class Create extends \BNETDocs\Controllers\Base

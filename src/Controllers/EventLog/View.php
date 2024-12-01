@@ -22,7 +22,7 @@ class View extends \BNETDocs\Controllers\Base
       return true;
     }
 
-    $q = \BNETDocs\Libraries\Router::query();
+    $q = \BNETDocs\Libraries\Core\Router::query();
     $this->model->id = isset($q['id']) ? (int) $q['id'] : null;
 
     try { if (!is_null($this->model->id)) $this->model->event = new \BNETDocs\Libraries\EventLog\Event($this->model->id); }

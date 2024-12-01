@@ -3,8 +3,8 @@
 namespace BNETDocs\Controllers\Server;
 
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Server\Delete as DeleteModel;
 
 class Delete extends \BNETDocs\Controllers\Base
