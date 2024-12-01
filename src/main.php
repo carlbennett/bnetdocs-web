@@ -41,7 +41,7 @@ function main(): void
   \BNETDocs\Libraries\ExceptionHandler::register();
   \BNETDocs\Libraries\Authentication::verify();
   \BNETDocs\Libraries\Core\BlizzardCheck::log_blizzard_request();
-  \BNETDocs\Libraries\SlackCheck::log_slack_request();
+  \BNETDocs\Libraries\Core\SlackCheck::log_slack_request();
 
   if (Common::$config->bnetdocs->maintenance[0]) {
     Router::$routes = [

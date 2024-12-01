@@ -51,7 +51,7 @@ class Status extends Base
       'remote_geoinfo' => Common::$config->geoip->enabled ? \BNETDocs\Libraries\GeoIP::getRecord($remote_address) : null,
       'remote_is_blizzard' => \BNETDocs\Libraries\Core\BlizzardCheck::is_blizzard(),
       'remote_is_browser' => Common::isBrowser($ua),
-      'remote_is_slack' => \BNETDocs\Libraries\SlackCheck::is_slack(),
+      'remote_is_slack' => \BNETDocs\Libraries\Core\SlackCheck::is_slack(),
       'remote_user_agent' => $ua,
       'timestamp' => new \BNETDocs\Libraries\DateTimeImmutable('now', $utc),
       'version_info' => \BNETDocs\Libraries\VersionInfo::get(),
