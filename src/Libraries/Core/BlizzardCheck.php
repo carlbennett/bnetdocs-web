@@ -1,6 +1,6 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\Core;
 
 use \BNETDocs\Libraries\Authentication;
 use \BNETDocs\Libraries\EventLog\Logger;

@@ -27,7 +27,7 @@ function main(): void
 {
   if (!file_exists(__DIR__ . '/../lib/autoload.php'))
   {
-    \http_response_code(500);
+    \http_response_code(\BNETDocs\Libraries\HttpCode::HTTP_INTERNAL_SERVER_ERROR);
     die('Server misconfigured. Please run `composer install`.');
   }
   require(__DIR__ . '/../lib/autoload.php');
@@ -40,7 +40,7 @@ function main(): void
 
   \BNETDocs\Libraries\ExceptionHandler::register();
   \BNETDocs\Libraries\Authentication::verify();
-  \BNETDocs\Libraries\BlizzardCheck::log_blizzard_request();
+  \BNETDocs\Libraries\Core\BlizzardCheck::log_blizzard_request();
   \BNETDocs\Libraries\SlackCheck::log_slack_request();
 
   if (Common::$config->bnetdocs->maintenance[0]) {
