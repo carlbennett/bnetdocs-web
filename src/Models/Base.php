@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Models;
 
-class Base implements \BNETDocs\Interfaces\Model
+class Base implements \BNETDocs\Interfaces\Model, \JsonSerializable
 {
     public int $_responseCode = 500;
     public array $_responseHeaders = [
@@ -11,4 +11,9 @@ class Base implements \BNETDocs\Interfaces\Model
         'X-Frame-Options' => 'DENY', // DENY tells the browser to prevent archaic frame/iframe embeds of all pages including from ourselves (see also: SAMEORIGIN).
         'X-XSS-Protection' => '1;mode=block', // Block pages from loading when they detect reflected XSS attacks.
     ];
+
+    public function jsonSerialize(): mixed
+    {
+        return [];
+    }
 }
