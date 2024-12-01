@@ -3,7 +3,6 @@ namespace BNETDocs\Templates;
 use \BNETDocs\Libraries\Core\BlizzardCheck;
 use \BNETDocs\Libraries\Core\VersionInfo;
 use \BNETDocs\Libraries\Document;
-use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Libraries\Packet\Packet;
 use \BNETDocs\Libraries\User;
 use \BNETDocs\Libraries\User\Authentication;
@@ -122,7 +121,7 @@ function _header_nav_html($nav, $unique_asset)
       {
         _line('<div class="dropdown-divider"></div>');
         _line('<div class="dropdown-header">Recent News</div>');
-        $recent_news = NewsPost::getNewsPostsByLastEdited(10);
+        $recent_news = \BNETDocs\Libraries\News\Post::getNewsPostsByLastEdited(10);
         $acl_news_modify = (Authentication::$user && (Authentication::$user->getOptions() & User::OPTION_ACL_NEWS_MODIFY));
         foreach ($recent_news as $news)
         {

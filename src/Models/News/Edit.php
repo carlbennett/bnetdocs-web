@@ -10,7 +10,7 @@ class Edit extends \BNETDocs\Models\ActiveUser
   public ?string $content = null;
   public bool $markdown = false;
   public ?array $news_categories = null;
-  public ?\BNETDocs\Libraries\NewsPost $news_post = null;
+  public ?\BNETDocs\Libraries\News\Post $news_post = null;
   public ?int $news_post_id = null;
   public bool $published = false;
   public bool $rss_exempt = true;

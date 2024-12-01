@@ -29,7 +29,7 @@ class Edit extends \BNETDocs\Controllers\Base
     $q = Router::query();
     $this->model->news_post_id = $q['id'] ?? null;
 
-    try { $this->model->news_post = new \BNETDocs\Libraries\NewsPost($this->model->news_post_id); }
+    try { $this->model->news_post = new \BNETDocs\Libraries\News\Post($this->model->news_post_id); }
     catch (\UnexpectedValueException) { $this->model->news_post = null; }
 
     if (!$this->model->news_post)

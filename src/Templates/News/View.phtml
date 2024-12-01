@@ -1,7 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
 use \BNETDocs\Libraries\Comment;
-use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \CarlBennett\MVC\Libraries\Pair;
@@ -59,7 +58,7 @@ require('./header.inc.phtml'); ?>
 <?    } ?>
     </span>
     <h1><a href="<?=$url?>"><?=filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></a></h1>
-<?  if (!($object->getOptionsBitmask() & NewsPost::OPTION_PUBLISHED)) { ?>
+<?  if (!($object->getOptionsBitmask() & \BNETDocs\Libraries\News\Post::OPTION_PUBLISHED)) { ?>
     <section class="red"><p><strong>Warning:</strong> This news post is not yet published. You can view this because you are allowed to create, modify, or delete news posts.</p></section>
 <?  } ?>
     <div style="background-color:rgba(0,0,0,0.45);" class="font-weight-bold float-left mb-2 mr-2 p-2 rounded small shadow text-center"><img alt="<?=$object->getCategory()->getLabel()?>" title="<?=$object->getCategory()->getLabel()?>" src="<?=Common::relativeUrlToAbsolute('/a/news_categories/' . $object->getCategory()->getFilename())?>"/><br/><?=$object->getCategory()->getLabel()?></div><?=$object->getContent(true)?>

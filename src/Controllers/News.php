@@ -33,7 +33,7 @@ class News extends Base
     $q = \BNETDocs\Libraries\Core\Router::query();
     $page = (isset($q['page']) ? ((int) $q['page']) - 1 : null);
     $rss = \array_shift($args);
-    $this->model->news_posts = \BNETDocs\Libraries\NewsPost::getAllNews(true);
+    $this->model->news_posts = \BNETDocs\Libraries\News\Post::getAllNews(true);
 
     // Remove news posts that are not published or are RSS exempt
     if ($this->model->news_posts)

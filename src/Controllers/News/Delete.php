@@ -5,7 +5,6 @@ namespace BNETDocs\Controllers\News;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\NewsPost;
 
 class Delete extends \BNETDocs\Controllers\Base
 {
@@ -29,7 +28,7 @@ class Delete extends \BNETDocs\Controllers\Base
     $q = Router::query();
     $this->model->id = isset($q['id']) ? (int) $q['id'] : null;
 
-    try { if (!is_null($this->model->id)) $this->model->news_post = new NewsPost($this->model->id); }
+    try { if (!is_null($this->model->id)) $this->model->news_post = new \BNETDocs\Libraries\News\Post($this->model->id); }
     catch (\UnexpectedValueException) { $this->model->news_post = null; }
 
     if (!$this->model->news_post)

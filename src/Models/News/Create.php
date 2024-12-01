@@ -14,7 +14,7 @@ class Create extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
   public string $content = '';
   public mixed $error = 'INTERNAL_ERROR';
   public bool $markdown = false;
-  public ?\BNETDocs\Libraries\NewsPost $news_post = null;
+  public ?\BNETDocs\Libraries\News\Post $news_post = null;
   public ?array $news_categories = null;
   public bool $rss_exempt = false;
   public string $title = '';

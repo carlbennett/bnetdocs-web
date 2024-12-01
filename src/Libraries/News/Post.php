@@ -1,6 +1,6 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\News;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
@@ -13,7 +13,7 @@ use \OutOfBoundsException;
 use \Parsedown;
 use \StdClass;
 
-class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
+class Post implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 {
   public const MAX_CATEGORY_ID = 0xFFFFFFFFFFFFFFFF;
   public const MAX_CONTENT = 0xFFFFFF;

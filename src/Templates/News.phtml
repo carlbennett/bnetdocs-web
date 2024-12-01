@@ -1,6 +1,5 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates;
-use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \CarlBennett\MVC\Libraries\Pair;
@@ -46,7 +45,7 @@ else
     if ($edit_visible || $delete_visible) echo '</span>';
 
     echo '<h1><a href="' . $url . '">' . filter_var($news_post_title, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '</a></h1>';
-    if (!($news_post->getOptionsBitmask() & NewsPost::OPTION_PUBLISHED))
+    if (!($news_post->getOptionsBitmask() & \BNETDocs\Libraries\News\Post::OPTION_PUBLISHED))
     {
       echo '<div class="alert alert-warning"><p><strong>Warning:</strong> This news post is not yet published. '
         . 'You can view this because you are allowed to create, modify, or delete news posts.</p></div>';

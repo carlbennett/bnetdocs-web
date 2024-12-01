@@ -6,7 +6,6 @@ use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\NewsCategory;
-use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Models\News\Create as CreateModel;
 
 class Create extends \BNETDocs\Controllers\Base
@@ -78,7 +77,7 @@ class Create extends \BNETDocs\Controllers\Base
     }
     else
     {
-      $this->model->news_post = new NewsPost(null);
+      $this->model->news_post = new \BNETDocs\Libraries\News\Post(null);
 
       $this->model->news_post->setCategoryId($this->model->category_id);
       $this->model->news_post->setContent($this->model->content);
