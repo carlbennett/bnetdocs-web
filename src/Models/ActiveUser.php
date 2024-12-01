@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Models;
 
-class ActiveUser extends Errorable implements \JsonSerializable
+class ActiveUser extends \BNETDocs\Models\Core\Errorable implements \JsonSerializable
 {
   /**
    * The current user that is logged in to the site, or null if not logged in.

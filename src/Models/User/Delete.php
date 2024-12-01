@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Models\User;
 
-class Delete extends \BNETDocs\Models\HttpForm implements \JsonSerializable
+class Delete extends \BNETDocs\Models\Core\HttpForm implements \JsonSerializable
 {
     public const ERROR_ACL_NOT_SET = 'ACL_NOT_SET';
     public const ERROR_INTERNAL_ERROR = 'INTERNAL_ERROR';

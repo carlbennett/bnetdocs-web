@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Models\Server;
 
-class Form extends \BNETDocs\Models\HttpForm implements \JsonSerializable
+class Form extends \BNETDocs\Models\Core\HttpForm implements \JsonSerializable
 {
   public const ERROR_ACCESS_DENIED = 'ACCESS_DENIED';
   public const ERROR_INTERNAL = 'INTERNAL_ERROR';

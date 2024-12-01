@@ -1,8 +1,8 @@
 <?php
 
-namespace BNETDocs\Models;
+namespace BNETDocs\Models\Core;
 
-class Errorable extends Base implements \JsonSerializable
+class Errorable extends \BNETDocs\Models\Base implements \JsonSerializable
 {
     /**
      * Stores error state information between Controller and downstream handlers, useful for Template rendering.

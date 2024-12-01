@@ -1,8 +1,8 @@
 <?php
 
-namespace BNETDocs\Models;
+namespace BNETDocs\Models\Core;
 
-class HttpForm extends ActiveUser implements \JsonSerializable
+class HttpForm extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
     /**
      * The key-value store of the form.
