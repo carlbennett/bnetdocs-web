@@ -85,7 +85,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $this->setApplicationLayerId(self::DEFAULT_APPLICATION_LAYER_ID);
     $this->setBrief('');
-    $this->setCreatedDateTime(new DateTime('now'));
+    $this->setCreatedDateTime(new DateTimeImmutable('now'));
     $this->setDirection(self::DEFAULT_DIRECTION);
     $this->setEditedCount(0);
     $this->setEditedDateTime(null);
