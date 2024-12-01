@@ -39,7 +39,7 @@ class Edit extends \BNETDocs\Controllers\Base
       return true;
     }
 
-    $this->model->news_categories = \BNETDocs\Libraries\NewsCategory::getAll();
+    $this->model->news_categories = \BNETDocs\Libraries\News\Category::getAll();
     usort($this->model->news_categories, function($a, $b){
       $oA = $a->getSortId();
       $oB = $b->getSortId();

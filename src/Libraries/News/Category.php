@@ -1,11 +1,11 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\News;
 
 use \BNETDocs\Libraries\Db\MariaDb;
 use \StdClass;
 
-class NewsCategory implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
+class Category implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 {
   public const MAX_FILENAME = 255;
   public const MAX_LABEL = 255;

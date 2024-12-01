@@ -5,7 +5,6 @@ namespace BNETDocs\Controllers\News;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\NewsCategory;
 use \BNETDocs\Models\News\Create as CreateModel;
 
 class Create extends \BNETDocs\Controllers\Base
@@ -33,7 +32,7 @@ class Create extends \BNETDocs\Controllers\Base
       return true;
     }
 
-    $this->model->news_categories = NewsCategory::getAll();
+    $this->model->news_categories = \BNETDocs\Libraries\News\Category::getAll();
     usort($this->model->news_categories, function($a, $b){
       $oA = $a->getSortId();
       $oB = $b->getSortId();

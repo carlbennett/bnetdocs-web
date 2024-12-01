@@ -4,7 +4,7 @@ namespace BNETDocs\Libraries\News;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
-use \BNETDocs\Libraries\NewsCategory;
+use \BNETDocs\Libraries\News\Category as NewsCategory;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
