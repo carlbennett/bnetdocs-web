@@ -11,7 +11,7 @@ class EditHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'Document/Edit'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'Document/Edit'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

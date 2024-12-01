@@ -1,10 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Controllers\User;
 
+use \BNETDocs\Libraries\Core\Template;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\Router;
-use \BNETDocs\Libraries\Template;
 use \BNETDocs\Libraries\User;
 use \BNETDocs\Models\User\ResetPassword as ResetPasswordModel;
 use \CarlBennett\MVC\Libraries\Common;

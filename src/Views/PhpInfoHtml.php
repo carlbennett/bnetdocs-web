@@ -11,7 +11,7 @@ class PhpInfoHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'PhpInfo'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'PhpInfo'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

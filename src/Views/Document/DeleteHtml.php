@@ -11,7 +11,7 @@ class DeleteHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'Document/Delete'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'Document/Delete'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

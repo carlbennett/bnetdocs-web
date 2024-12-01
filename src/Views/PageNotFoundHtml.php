@@ -11,7 +11,7 @@ class PageNotFoundHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'PageNotFound'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'PageNotFound'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

@@ -11,7 +11,7 @@ class ResetPasswordHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'User/ResetPassword'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'User/ResetPassword'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

@@ -11,7 +11,7 @@ class VerifyHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'User/Verify'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'User/Verify'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

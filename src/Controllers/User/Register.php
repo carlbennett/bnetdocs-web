@@ -4,11 +4,11 @@ namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Exceptions\RecaptchaException;
 use \BNETDocs\Exceptions\UserNotFoundException;
+use \BNETDocs\Libraries\Core\Template;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\Recaptcha;
 use \BNETDocs\Libraries\Router;
-use \BNETDocs\Libraries\Template;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \PHPMailer\PHPMailer\PHPMailer;
@@ -242,11 +242,11 @@ class Register extends \BNETDocs\Controllers\Base
         $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
         ob_start();
-        (new Template($state, 'Email/User/Register.rich'))->render();
+        (new Template($state, 'Email/User/Register.rich'))->invoke();
         $mail->Body = ob_get_clean();
 
         ob_start();
-        (new Template($state, 'Email/User/Register.plain'))->render();
+        (new Template($state, 'Email/User/Register.plain'))->invoke();
         $mail->AltBody = ob_get_clean();
 
         $mail->send();

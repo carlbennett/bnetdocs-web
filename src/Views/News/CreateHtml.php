@@ -11,7 +11,7 @@ class CreateHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'News/Create'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'News/Create'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

@@ -11,7 +11,7 @@ class NewsRSS extends \BNETDocs\Views\Base\RSS
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'News.rss'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'News.rss'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

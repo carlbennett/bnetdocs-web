@@ -11,7 +11,7 @@ class ChangePasswordHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'User/ChangePassword'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'User/ChangePassword'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

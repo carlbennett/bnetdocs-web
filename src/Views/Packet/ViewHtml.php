@@ -11,7 +11,7 @@ class ViewHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'Packet/View'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'Packet/View'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

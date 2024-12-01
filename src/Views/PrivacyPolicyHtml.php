@@ -11,7 +11,7 @@ class PrivacyPolicyHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'PrivacyPolicy'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'PrivacyPolicy'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

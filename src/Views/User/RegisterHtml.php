@@ -11,7 +11,7 @@ class RegisterHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'User/Register'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'User/Register'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

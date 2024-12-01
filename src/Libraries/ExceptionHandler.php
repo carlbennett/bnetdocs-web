@@ -139,7 +139,7 @@ class ExceptionHandler
     $display_errors = \ini_get('display_errors');
     if (!$display_errors || \strtolower($display_errors) == 'off')
     {
-      (new \BNETDocs\Libraries\Template(null, 'ExceptionHandler'))->invoke();
+      (new \BNETDocs\Libraries\Core\Template(null, 'ExceptionHandler'))->invoke();
     }
     else
     {

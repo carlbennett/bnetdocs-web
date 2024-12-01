@@ -11,7 +11,7 @@ class MaintenanceHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'Maintenance'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'Maintenance'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

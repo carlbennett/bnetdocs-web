@@ -11,7 +11,7 @@ class RedirectSoftHtml extends \BNETDocs\Views\Base\Html
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Template($model, 'RedirectSoft'))->invoke();
+    (new \BNETDocs\Libraries\Core\Template($model, 'RedirectSoft'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }
