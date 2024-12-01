@@ -1,17 +1,17 @@
 <?php
 
-namespace BNETDocs\Controllers;
+namespace BNETDocs\Controllers\Server;
 
 use \BNETDocs\Libraries\Server\Server as ServerLib;
 
-class Servers extends Base
+class Index extends \BNETDocs\Controllers\Base
 {
   /**
    * Constructs a Controller, typically to initialize properties.
    */
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Servers();
+    $this->model = new \BNETDocs\Models\Server\Index();
   }
 
   /**
@@ -24,7 +24,7 @@ class Servers extends Base
   {
     $q = \BNETDocs\Libraries\Core\Router::query();
 
-    $this->model->server_types    = array();
+    $this->model->server_types    = [];
     $this->model->servers         = ServerLib::getAllServers();
     $this->model->status_bitmasks = [
       [
