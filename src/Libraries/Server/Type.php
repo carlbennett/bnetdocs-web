@@ -1,12 +1,12 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\Server;
 
 use \BNETDocs\Libraries\Db\MariaDb;
 use \OutOfBoundsException;
 use \StdClass;
 
-class ServerType implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
+class Type implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 {
   public const MAX_ID = 0xFFFFFFFFFFFFFFFF; // bigint(20) unsigned
   public const MAX_LABEL = 0xFF; // varchar(255)

@@ -50,7 +50,7 @@ class Edit extends \BNETDocs\Controllers\Base
     }
 
     $this->model->_responseCode = HttpCode::HTTP_OK;
-    $this->model->server_types = \BNETDocs\Libraries\ServerType::getAllServerTypes();
+    $this->model->server_types = \BNETDocs\Libraries\Server\Type::getAllServerTypes();
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost();
     return true;
   }

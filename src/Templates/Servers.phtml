@@ -1,6 +1,5 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates;
-use \BNETDocs\Libraries\ServerType;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \CarlBennett\MVC\Libraries\Pair;
@@ -36,7 +35,7 @@ require('./header.inc.phtml'); ?>
       <thead><tr><th scope="col">Status</th><th scope="col">Label</th><th scope="col">Address</th><th scope="col"></th></tr></thead><tbody>
 <?    foreach ($servers_by_type as $type_id => $servers)
       {
-        $server_type = new ServerType($type_id);
+        $server_type = new \BNETDocs\Libraries\Server\Type($type_id);
         $server_type_label = filter_var($server_type->getLabel(), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         printf('<tr><th scope="row" colspan="4">%s</th></tr>', $server_type_label);
         foreach ($servers as $server)
