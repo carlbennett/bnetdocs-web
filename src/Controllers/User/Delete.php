@@ -67,7 +67,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
                 $event = Logger::initEvent(
                     EventTypes::USER_DELETED,
-                    $this->model->target_user->getId(),
+                    $this->model->active_user->getId(),
                     getenv('REMOTE_ADDR'),
                     $this->model
                 );
