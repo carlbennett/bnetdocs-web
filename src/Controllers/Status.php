@@ -44,7 +44,7 @@ class Status extends Base
 
     $model->status = [
       'healthcheck' => [
-        'database' => (!is_null(\BNETDocs\Libraries\Database::instance())),
+        'database' => (!is_null(\BNETDocs\Libraries\Db\MariaDb::instance())),
         'geoip' => Common::$config->geoip->enabled && file_exists(Common::$config->geoip->database_file),
       ],
       'remote_address' => $remote_address,

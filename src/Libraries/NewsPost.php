@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\NewsCategory;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
@@ -66,7 +66,7 @@ class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $id = $this->getId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `category_id`,
         `content`,
@@ -100,7 +100,7 @@ class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `news_posts` (
         `category_id`,
         `content`,
@@ -146,7 +146,7 @@ class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     }
 
     if (!$q || !$q->execute($p)) return false;
-    if (is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+    if (is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     $q->closeCursor();
     return true;
   }
@@ -160,7 +160,7 @@ class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `news_posts` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `news_posts` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }
@@ -168,7 +168,7 @@ class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   public static function getAllNews(bool $reverse): ?array
   {
     $o = $reverse ? 'DESC' : 'ASC';
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT
         `category_id`,
         `content`,
@@ -190,7 +190,7 @@ class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getNewsPostsByLastEdited(int $limit): ?array
   {
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT
         `category_id`,
         `content`,
@@ -212,7 +212,7 @@ class NewsPost implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getNewsPostsByUserId(int $user_id): ?array
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `category_id`,
         `content`,

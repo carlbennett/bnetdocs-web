@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Libraries;
 
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \StdClass;
 
 class NewsCategory implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
@@ -37,7 +37,7 @@ class NewsCategory implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializ
     $id = $this->getId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `filename`,
         `id`,
@@ -61,7 +61,7 @@ class NewsCategory implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializ
 
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `news_categories` (
         `filename`,
         `id`,
@@ -84,7 +84,7 @@ class NewsCategory implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializ
     ];
 
     if (!$q || !$q->execute($p)) return false;
-    if (is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+    if (is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     $q->closeCursor();
     return true;
   }
@@ -98,14 +98,14 @@ class NewsCategory implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializ
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `news_categories` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `news_categories` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }
 
   public static function getAll(): ?array
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `filename`,
         `id`,

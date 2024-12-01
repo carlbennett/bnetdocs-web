@@ -4,7 +4,7 @@ namespace BNETDocs\Libraries\User;
 
 use \BNETDocs\Interfaces\DatabaseObject;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeZone;
@@ -51,7 +51,7 @@ class Authentication
    */
   protected static function discard(string $key): bool
   {
-    $q = Database::instance()->prepare('DELETE FROM `user_sessions` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `user_sessions` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$key]); }
     finally { if ($q) $q->closeCursor(); }
   }
@@ -189,7 +189,7 @@ class Authentication
 
     $now = (new DateTimeImmutable('now', new DateTimeZone(DatabaseObject::DATE_TZ)))->format(DatabaseObject::DATE_SQL);
 
-    $q = Database::instance()->prepare(
+    $q = MariaDb::instance()->prepare(
      'SELECT `ip_address`, `user_agent`, `user_id`
       FROM `user_sessions` WHERE `id` = UNHEX(:id) AND
         (`expires_datetime` = NULL OR `expires_datetime` > :dt)
@@ -217,7 +217,7 @@ class Authentication
       throw new UnexpectedValueException('key must be exactly 64 characters in length formatted as a hexadecimal string');
     }
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `user_sessions` (
         `created_datetime`,
         `expires_datetime`,

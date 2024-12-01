@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\Discord\EmbedAuthor as DiscordEmbedAuthor;
 use \BNETDocs\Libraries\UserProfile;
 use \CarlBennett\MVC\Libraries\Common;
@@ -132,7 +132,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $id = $this->getId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `created_datetime`,
         `display_name`,
@@ -180,7 +180,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `users` (
         `created_datetime`,
         `display_name`,
@@ -237,7 +237,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     }
 
     if (!$q || !$q->execute($p)) return false;
-    if (is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+    if (is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     $q->closeCursor();
     return true;
   }
@@ -300,7 +300,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `users` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `users` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }
@@ -316,7 +316,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     if (!filter_var($value, FILTER_VALIDATE_EMAIL))
       throw new UnexpectedValueException('email is not formatted as a valid email address');
 
-    $q = Database::instance()->prepare('SELECT `id` FROM `users` WHERE `email` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('SELECT `id` FROM `users` WHERE `email` = ? LIMIT 1;');
     if (!$q || !$q->execute([$value]) || $q->rowCount() == 0) return null;
     $r = $q->fetchObject();
     $q->closeCursor();
@@ -331,7 +331,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public static function findIdByUsername(string $value): ?int
   {
-    $q = Database::instance()->prepare('SELECT `id` FROM `users` WHERE `username` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('SELECT `id` FROM `users` WHERE `username` = ? LIMIT 1;');
     if (!$q || !$q->execute([$value]) || $q->rowCount() == 0) return null;
     $r = $q->fetchObject();
     $q->closeCursor();
@@ -373,7 +373,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
       $limit_clause = '';
     }
 
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT
         `created_datetime`,
         `display_name`,
@@ -582,7 +582,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public static function getUserCount(): int|false
   {
-    $q = Database::instance()->prepare('SELECT COUNT(*) AS `count` FROM `users`;');
+    $q = MariaDb::instance()->prepare('SELECT COUNT(*) AS `count` FROM `users`;');
     if (!$q || !$q->execute() || $q->rowCount() != 1) return false;
     $r = (int) $q->fetchObject()->count;
     $q->closeCursor();

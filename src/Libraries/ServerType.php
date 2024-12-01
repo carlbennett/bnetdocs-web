@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Libraries;
 
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \OutOfBoundsException;
 use \StdClass;
 
@@ -32,7 +32,7 @@ class ServerType implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializab
     $this->setLabel('');
     $id = $this->getId();
     if (is_null($id)) return true;
-    $q = Database::instance()->prepare('SELECT `id`, `label` FROM `server_types` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('SELECT `id`, `label` FROM `server_types` WHERE `id` = ? LIMIT 1;');
     if (!$q || !$q->execute([$id]) || $q->rowCount() != 1) return false;
     $this->allocateObject($q->fetchObject());
     $q->closeCursor();
@@ -47,7 +47,7 @@ class ServerType implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializab
 
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('UPDATE `server_types` SET `id` = :id, `label` = :label WHERE `id` = :id LIMIT 1;');
+    $q = MariaDb::instance()->prepare('UPDATE `server_types` SET `id` = :id, `label` = :label WHERE `id` = :id LIMIT 1;');
     $p = [':id' => $this->getId(), ':label' => $this->getLabel()];
     try { return $q && $q->execute($p) && $q->rowCount() === 1; }
     finally { if ($q) $q->closeCursor(); }
@@ -62,14 +62,14 @@ class ServerType implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializab
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `server_types` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `server_types` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }
 
   public static function getAllServerTypes(): ?array
   {
-    $q = Database::instance()->prepare('SELECT `id`, `label` FROM `server_types` ORDER BY `id` ASC;');
+    $q = MariaDb::instance()->prepare('SELECT `id`, `label` FROM `server_types` ORDER BY `id` ASC;');
     if (!$q || !$q->execute()) return null;
     $r = [];
     while ($row = $q->fetchObject()) $r[] = new self($row);

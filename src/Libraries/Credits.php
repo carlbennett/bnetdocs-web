@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Libraries;
 
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 
 class Credits
 {
@@ -16,7 +16,7 @@ class Credits
 
   public static function getTotalUsers(): int|false
   {
-    $q = Database::instance()->prepare('SELECT COUNT(*) AS `sum` FROM `users`;');
+    $q = MariaDb::instance()->prepare('SELECT COUNT(*) AS `sum` FROM `users`;');
     if (!$q || !$q->execute()) return false;
     $r = $q->fetchObject();
     $q->closeCursor();
@@ -25,7 +25,7 @@ class Credits
 
   protected static function getTopContributors(string $table, string $anonymous = self::DEFAULT_ANONYMOUS, int $limit = self::DEFAULT_LIMIT): array|false
   {
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT
         `u`.`id` AS `user_id`,
         IFNULL(IFNULL(`u`.`display_name`, `u`.`username`), \'%s\') AS `name`,
@@ -75,7 +75,7 @@ class Credits
 
   protected static function getTotalByUserId(string $table, int $user_id): int|false
   {
-    $q = Database::instance()->prepare(sprintf('SELECT COUNT(*) AS `sum` FROM `%s` WHERE `user_id` = :id;', $table));
+    $q = MariaDb::instance()->prepare(sprintf('SELECT COUNT(*) AS `sum` FROM `%s` WHERE `user_id` = :id;', $table));
     if (!$q || !$q->execute([':id' => $user_id])) return false;
     $o = $q->fetchObject();
     $q->closeCursor();

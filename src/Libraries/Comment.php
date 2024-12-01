@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
@@ -68,7 +68,7 @@ class Comment implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $id = $this->getId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `content`,
         `created_datetime`,
@@ -105,7 +105,7 @@ class Comment implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `comments` (
         `content`,
         `created_datetime`,
@@ -154,7 +154,7 @@ class Comment implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     }
 
     if (!$q || !$q->execute($p)) return false;
-    if (is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+    if (is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     $q->closeCursor();
     return true;
   }
@@ -168,14 +168,14 @@ class Comment implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `comments` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `comments` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }
 
   public static function getAll(int $parent_type, int $parent_id): ?array
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `content`,
         `created_datetime`,
@@ -202,7 +202,7 @@ class Comment implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   public static function getCommentsByUserId(int $user_id, bool $descending): ?array
   {
     $o = $descending ? 'DESC' : 'ASC';
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT
         `content`,
         `created_datetime`,

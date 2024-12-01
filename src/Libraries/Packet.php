@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\Packet\Application as ApplicationLayer;
 use \BNETDocs\Libraries\Packet\Transport as TransportLayer;
 use \BNETDocs\Libraries\Product;
@@ -101,7 +101,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $id = $this->getId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `created_datetime`,
         `edited_count`,
@@ -123,7 +123,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $r = $q->fetchObject();
     $q->closeCursor();
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT `u`.`bnet_product_id` AS `used_by` FROM `packet_used_by` AS `u`
       INNER JOIN `products` AS `p` ON `u`.`bnet_product_id` = `p`.`bnet_product_id`
       WHERE `u`.`id` = ? ORDER BY `p`.`sort` ASC;
@@ -165,7 +165,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `packets` (
         `created_datetime`,
         `edited_count`,
@@ -227,13 +227,13 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
     if (!$q || !$q->execute($p)) return false;
     $q->closeCursor();
-    if (is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+    if (is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     $id = $this->getId();
 
-    $q = Database::instance()->prepare('DELETE FROM `packet_used_by` WHERE `id` = :id;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `packet_used_by` WHERE `id` = :id;');
     if (!$q || !$q->execute([':id' => $id])) return false;
 
-    $q = Database::instance()->prepare('INSERT INTO `packet_used_by` (`id`, `bnet_product_id`) VALUES (:i, :p);');
+    $q = MariaDb::instance()->prepare('INSERT INTO `packet_used_by` (`id`, `bnet_product_id`) VALUES (:i, :p);');
     foreach ($this->used_by as $v)
     {
       if (!$v) continue;
@@ -256,7 +256,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `packets` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `packets` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }
@@ -289,7 +289,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
       $limit_clause
     ;
 
-    $q = Database::instance()->prepare(sprintf('SELECT `id` FROM `packets` %s ORDER BY %s;', $where_clause, $order_clause));
+    $q = MariaDb::instance()->prepare(sprintf('SELECT `id` FROM `packets` %s ORDER BY %s;', $where_clause, $order_clause));
     if (!$q || !$q->execute()) return false;
     $r = [];
     while ($row = $q->fetchObject()) $r[] = new self((int) $row->id);
@@ -299,7 +299,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getPacketsByLastEdited(int $count): array|false
   {
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT `id` FROM `packets`
       ORDER BY IFNULL(`edited_datetime`, `created_datetime`) DESC
       LIMIT %d;
@@ -445,7 +445,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getPacketsByUserId(int $user_id): array|false
   {
-    $q = Database::instance()->prepare('SELECT `id` FROM `packets` WHERE `user_id` = ? ORDER BY `id` ASC;');
+    $q = MariaDb::instance()->prepare('SELECT `id` FROM `packets` WHERE `user_id` = ? ORDER BY `id` ASC;');
     if (!$q || !$q->execute([$user_id])) return false;
     $r = [];
     while ($row = $q->fetchObject()) $r[] = new self((int) $row->id);
@@ -455,7 +455,7 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getPacketCount(): int|false
   {
-    $q = Database::instance()->prepare('SELECT COUNT(*) AS `count` FROM `packets`;');
+    $q = MariaDb::instance()->prepare('SELECT COUNT(*) AS `count` FROM `packets`;');
     if (!$q || !$q->execute() || $q->rowCount() == 0) return false;
     $r = $q->fetchObject();
     $q->closeCursor();

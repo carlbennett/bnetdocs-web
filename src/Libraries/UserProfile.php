@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Libraries;
 
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\User;
 use \StdClass;
 use \UnexpectedValueException;
@@ -60,7 +60,7 @@ class UserProfile implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializa
     $this->setTwitterUsername(null);
     $this->setWebsite(null);
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `biography`,
         `discord_username`,
@@ -103,7 +103,7 @@ class UserProfile implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializa
     $user_id = $this->getUserId();
     if (is_null($user_id)) throw new UnexpectedValueException('user id cannot be null');
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `user_profiles` (
         `biography`,
         `discord_username`,
@@ -174,7 +174,7 @@ class UserProfile implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializa
   {
     $id = $this->getUserId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `user_profiles` WHERE `user_id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `user_profiles` WHERE `user_id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }

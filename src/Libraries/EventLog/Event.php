@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries\EventLog;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\User;
 use \DateTimeInterface;
@@ -56,7 +56,7 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
     try
     {
-      $q = Database::instance()->prepare('
+      $q = MariaDb::instance()->prepare('
         SELECT
           `event_datetime` AS `datetime`,
           `event_type_id` AS `type_id`,
@@ -98,7 +98,7 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
           `user_id`
         FROM `event_log`%s%s%s;', $where_clause, $order_clause, $limit_clause
       );
-      $q = Database::instance()->prepare($q);
+      $q = MariaDb::instance()->prepare($q);
       if (!$q || !$q->execute()) return null;
       $r = [];
       while ($row = $q->fetchObject()) $r[] = new self($row);
@@ -124,7 +124,7 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     try
     {
-      $q = Database::instance()->prepare('
+      $q = MariaDb::instance()->prepare('
         INSERT INTO `event_log` (
           `event_datetime`,
           `event_type_id`,
@@ -161,7 +161,7 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
       }
 
       if (!$q || !$q->execute($p)) return false;
-      if (\is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+      if (\is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     }
     finally
     {
@@ -175,7 +175,7 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (\is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `event_log` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `event_log` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { if ($q) $q->closeCursor(); }
   }
@@ -187,7 +187,7 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
       $where_clause = empty($filter) ? '' : \sprintf(
         ' WHERE `event_type_id` IN (%s)', \implode(',', $filter)
       );
-      $q = Database::instance()->prepare(sprintf(
+      $q = MariaDb::instance()->prepare(sprintf(
         'SELECT COUNT(*) AS `count` FROM `event_log`%s;', $where_clause
       ));
       if (!$q || !$q->execute() || $q->rowCount() != 1) return null;

@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
@@ -69,7 +69,7 @@ class Document implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $id = $this->getId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `brief`,
         `content`,
@@ -111,7 +111,7 @@ class Document implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `documents` (
         `brief`,
         `content`,
@@ -157,7 +157,7 @@ class Document implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     }
 
     if (!$q || !$q->execute($p)) return false;
-    if (is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+    if (is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     $q->closeCursor();
     return true;
   }
@@ -171,14 +171,14 @@ class Document implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `documents` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `documents` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { if ($q) $q->closeCursor(); }
   }
 
   public static function getAllDocuments(?array $order = null, bool $published_only = false): array|false
   {
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT
         `brief`,
         `content`,
@@ -226,7 +226,7 @@ class Document implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getDocumentsByLastEdited(int $count): array|false
   {
-    $q = Database::instance()->prepare(sprintf('
+    $q = MariaDb::instance()->prepare(sprintf('
       SELECT
         `brief`,
         `content`,
@@ -250,7 +250,7 @@ class Document implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getDocumentsByUserId(int $user_id): array|false
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `brief`,
         `content`,

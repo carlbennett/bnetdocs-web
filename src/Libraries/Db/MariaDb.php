@@ -1,10 +1,10 @@
 <?php /* vim: set colorcolumn=: */
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\Db;
 
 use \PDO;
 
-class Database extends PDO
+class MariaDb extends PDO
 {
   private static ?self $instance = null;
 

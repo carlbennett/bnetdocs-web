@@ -1,7 +1,7 @@
 <?php
 namespace BNETDocs\Libraries;
 
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \StdClass;
 
 class Product implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
@@ -37,7 +37,7 @@ class Product implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $id = $this->getBnetProductId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `bnet_product_id`,
         `bnet_product_raw`,
@@ -79,14 +79,14 @@ class Product implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getBnetProductId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `products` WHERE `bnet_product_id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `products` WHERE `bnet_product_id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { if ($q) $q->closeCursor(); }
   }
 
   public static function getAllProducts(): ?array
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `bnet_product_id`,
         `bnet_product_raw`,

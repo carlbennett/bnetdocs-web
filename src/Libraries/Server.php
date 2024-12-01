@@ -3,7 +3,7 @@
 namespace BNETDocs\Libraries;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
-use \BNETDocs\Libraries\Database;
+use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\ServerType;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
@@ -62,7 +62,7 @@ class Server implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     $id = $this->getId();
     if (is_null($id)) return true;
 
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `address`,
         `created_datetime`,
@@ -99,7 +99,7 @@ class Server implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public function commit(): bool
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       INSERT INTO `servers` (
         `address`,
         `created_datetime`,
@@ -144,7 +144,7 @@ class Server implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     }
 
     if (!$q || !$q->execute($p)) return false;
-    if (is_null($p[':id'])) $this->setId(Database::instance()->lastInsertId());
+    if (is_null($p[':id'])) $this->setId(MariaDb::instance()->lastInsertId());
     $q->closeCursor();
     return true;
   }
@@ -158,7 +158,7 @@ class Server implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return false;
-    $q = Database::instance()->prepare('DELETE FROM `servers` WHERE `id` = ? LIMIT 1;');
+    $q = MariaDb::instance()->prepare('DELETE FROM `servers` WHERE `id` = ? LIMIT 1;');
     try { return $q && $q->execute([$id]); }
     finally { $q->closeCursor(); }
   }
@@ -170,7 +170,7 @@ class Server implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getAllServers(): ?array
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `address`,
         `created_datetime`,
@@ -225,7 +225,7 @@ class Server implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public static function getServersByUserId(int $user_id): ?array
   {
-    $q = Database::instance()->prepare('
+    $q = MariaDb::instance()->prepare('
       SELECT
         `address`,
         `created_datetime`,
