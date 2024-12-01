@@ -4,9 +4,9 @@ namespace BNETDocs\Models\User;
 
 class Register extends \BNETDocs\Models\ActiveUser
 {
-  public $email;
-  public $error_extra;
-  public $recaptcha;
-  public $username;
-  public $username_max_len;
+    public ?string $email = null;
+    public ?string $error_extra = null;
+    public ?\BNETDocs\Libraries\Core\Recaptcha $recaptcha = null;
+    public ?string $username = null;
+    public int $username_max_len = 0;
 }
