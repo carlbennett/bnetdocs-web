@@ -19,7 +19,7 @@ $object_user_id = ($object instanceof Event ? $object->getUserId() : null);
 
 try
 {
-  $object_user = ($object_user_id ? $object->getUser() : null);
+  $object_user = is_null($object_user_id) ? null : $object->getUser();
 }
 catch (\BNETDocs\Exceptions\UserNotFoundException)
 {
