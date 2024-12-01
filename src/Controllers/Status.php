@@ -53,7 +53,7 @@ class Status extends Base
       'remote_is_browser' => Common::isBrowser($ua),
       'remote_is_slack' => \BNETDocs\Libraries\Core\SlackCheck::is_slack(),
       'remote_user_agent' => $ua,
-      'timestamp' => new \BNETDocs\Libraries\DateTimeImmutable('now', $utc),
+      'timestamp' => new \BNETDocs\Libraries\Core\DateTimeImmutable('now', $utc),
       'version_info' => \BNETDocs\Libraries\Core\VersionInfo::get(),
     ];
 

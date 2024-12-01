@@ -1,13 +1,13 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\Core;
 
 use \DateTimeInterface;
 
 /**
- * This subclass of PHP's DateTimeImmutable exists so that it can be serialized to custom formats.
+ * This subclass of PHP's DateTime exists so that it can be serialized to custom formats.
  */
-class DateTimeImmutable extends \DateTimeImmutable implements \JsonSerializable
+class DateTime extends \DateTime implements \JsonSerializable
 {
     public function jsonSerialize(): mixed
     {

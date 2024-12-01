@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Libraries;
 
+use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Database;
-use \BNETDocs\Libraries\DateTimeImmutable;
 use \BNETDocs\Libraries\ServerType;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;

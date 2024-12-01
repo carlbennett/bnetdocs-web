@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Libraries\EventLog;
 
+use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Database;
-use \BNETDocs\Libraries\DateTimeImmutable;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\User;
 use \DateTimeInterface;

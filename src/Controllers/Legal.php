@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
-use \BNETDocs\Libraries\DateTimeImmutable;
+use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \DateTimeZone;
 
 class Legal extends Base

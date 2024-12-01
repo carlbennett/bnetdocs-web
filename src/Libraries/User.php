@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Libraries;
 
+use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Database;
-use \BNETDocs\Libraries\DateTimeImmutable;
 use \BNETDocs\Libraries\Discord\EmbedAuthor as DiscordEmbedAuthor;
 use \BNETDocs\Libraries\UserProfile;
 use \CarlBennett\MVC\Libraries\Common;
