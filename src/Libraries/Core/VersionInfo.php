@@ -9,7 +9,7 @@ class VersionInfo
   public const EOL = "\n";
 
   // Default path to version file relative to src/ directory.
-  const VERSION_INFO_FILE = __DIR__ . '/../../etc/.rsync-version';
+  const VERSION_INFO_FILE = __DIR__ . '/../../../etc/.rsync-version';
 
   private static ?array $version = null;
 
