@@ -45,12 +45,12 @@ function main(): void
 
   if (Common::$config->bnetdocs->maintenance[0]) {
     Router::$routes = [
-      ['#.*#', 'Maintenance', ['MaintenanceHtml'], Common::$config->bnetdocs->maintenance[1]],
+      ['#.*#', 'Core\\Maintenance', ['Core\\MaintenanceHtml'], Common::$config->bnetdocs->maintenance[1]],
     ];
   } else {
     Router::$routes = [
-      ['#^/$#', 'Legacy', ['LegacyHtml']],
-      ['#^/\.well-known/change-password$#', 'RedirectSoft', ['RedirectSoftHtml', 'RedirectSoftJson', 'RedirectSoftPlain'], '/user/changepassword'],
+      ['#^/$#', 'Core\\Legacy', ['Core\\LegacyHtml']],
+      ['#^/\.well-known/change-password$#', 'Core\\RedirectSoft', ['Core\\RedirectSoftHtml', 'Core\\RedirectSoftJson', 'Core\\RedirectSoftPlain'], '/user/changepassword'],
       ['#^/comment/create/?$#', 'Comment\\Create', ['Comment\\CreateJson']],
       ['#^/comment/delete/?$#', 'Comment\\Delete', ['Comment\\DeleteHtml']],
       ['#^/comment/edit/?$#', 'Comment\\Edit', ['Comment\\EditHtml']],
@@ -96,9 +96,9 @@ function main(): void
       ['#^/packet/index\.php$#', 'Packet\\Index', ['Packet\\IndexPhp'], true],
       ['#^/packet/index\.vb$#', 'Packet\\Index', ['Packet\\IndexVb'], true],
       ['#^/packet/index/?$#', 'Packet\\Index', ['Packet\\IndexHtml', 'Packet\\IndexJson'], false],
-      ['#^/phpinfo/?$#', 'PhpInfo', ['PhpInfoHtml']],
+      ['#^/phpinfo/?$#', 'Core\\PhpInfo', ['Core\\PhpInfoHtml']],
       ['#^/privacy(?:/|\.html?)?$#', 'PrivacyPolicy', ['PrivacyPolicyHtml']],
-      ['#^/robots\.txt$#', 'Robotstxt', ['Robotstxt']],
+      ['#^/robots\.txt$#', 'Core\\Robotstxt', ['Core\\Robotstxt']],
       ['#^/server/(\d+)/?.*\.html?$#', 'Server\\View', ['Server\\ViewHtml']],
       ['#^/server/(\d+)/?.*\.json$#', 'Server\\View', ['Server\\ViewJson']],
       ['#^/server/(\d+)/?.*\.txt$#', 'Server\\View', ['Server\\ViewPlain']],
@@ -110,9 +110,9 @@ function main(): void
       ['#^/servers\.html?$#', 'Servers', ['ServersHtml']],
       ['#^/servers\.json$#', 'Servers', ['ServersJson']],
       ['#^/servers/?$#', 'Servers', ['ServersHtml', 'ServersJson']],
-      ['#^/status\.json$#', 'Status', ['StatusJson']],
-      ['#^/status\.txt$#', 'Status', ['StatusPlain']],
-      ['#^/status/?$#', 'Status', ['StatusJson', 'StatusPlain']],
+      ['#^/status\.json$#', 'Core\\Status', ['Core\\StatusJson']],
+      ['#^/status\.txt$#', 'Core\\Status', ['Core\\StatusPlain']],
+      ['#^/status/?$#', 'Core\\Status', ['Core\\StatusJson', 'Core\\StatusPlain']],
       ['#^/user/(\d+)/?.*\.html?$#', 'User\\View', ['User\\ViewHtml']],
       ['#^/user/(\d+)/?.*\.json$#', 'User\\View', ['User\\ViewJson']],
       ['#^/user/(\d+)/?#', 'User\\View', ['User\\ViewHtml', 'User\\ViewJson']],
@@ -129,7 +129,7 @@ function main(): void
       ['#^/welcome/?$#', 'Welcome', ['WelcomeHtml']],
     ];
 
-    Router::$route_not_found = ['PageNotFound', ['PageNotFoundHtml', 'PageNotFoundJson', 'PageNotFoundPlain']];
+    Router::$route_not_found = ['Core\\NotFound', ['Core\\NotFoundHtml', 'Core\\NotFoundJson', 'Core\\NotFoundPlain']];
   }
 
   Router::invoke();
