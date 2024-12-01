@@ -18,6 +18,7 @@ class Create extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
     {
         return \array_merge(parent::jsonSerialize(), [
             'acl_allowed' => $this->acl_allowed,
+            'comment' => $this->comment,
             'origin' => $this->origin,
             'response' => $this->response,
         ]);
