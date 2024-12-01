@@ -38,7 +38,7 @@ function main(): void
     __DIR__ . '/../etc/config.phoenix.json'
   ));
 
-  \BNETDocs\Libraries\ExceptionHandler::register();
+  \BNETDocs\Libraries\Core\ExceptionHandler::register();
   \BNETDocs\Libraries\User\Authentication::verify();
   \BNETDocs\Libraries\Core\BlizzardCheck::log_blizzard_request();
   \BNETDocs\Libraries\Core\SlackCheck::log_slack_request();

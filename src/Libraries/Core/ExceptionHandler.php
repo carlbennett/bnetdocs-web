@@ -1,6 +1,6 @@
 <?php /* vim: set colorcolumn=: */
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\Core;
 
 use \StdClass;
 
@@ -49,7 +49,7 @@ class ExceptionHandler
     // Remove our handler from the stack if present:
     if ($context->stacktrace[0]['function'] == 'errorHandler'
       && $context->stacktrace[0]['type'] == '::'
-      && $context->stacktrace[0]['class'] == 'BNETDocs\\Libraries\\ExceptionHandler')
+      && $context->stacktrace[0]['class'] == 'BNETDocs\\Libraries\\Core\\ExceptionHandler')
     {
       \array_shift($context->stacktrace);
     }
@@ -91,7 +91,7 @@ class ExceptionHandler
     // Remove our handler from the stack if present:
     if ($context->stacktrace[0]['function'] == 'exceptionHandler'
       && $context->stacktrace[0]['type'] == '::'
-      && $context->stacktrace[0]['class'] == 'BNETDocs\\Libraries\\ExceptionHandler')
+      && $context->stacktrace[0]['class'] == 'BNETDocs\\Libraries\\Core\\ExceptionHandler')
     {
       \array_shift($context->stacktrace);
     }
@@ -175,10 +175,10 @@ class ExceptionHandler
   public static function register(): void
   {
     self::$overridden_error_handler = \set_error_handler(
-      '\\BNETDocs\\Libraries\\ExceptionHandler::errorHandler'
+      '\\BNETDocs\\Libraries\\Core\\ExceptionHandler::errorHandler'
     );
     self::$overridden_exception_handler = \set_exception_handler(
-      '\\BNETDocs\\Libraries\\ExceptionHandler::exceptionHandler'
+      '\\BNETDocs\\Libraries\\Core\\ExceptionHandler::exceptionHandler'
     );
   }
 }
