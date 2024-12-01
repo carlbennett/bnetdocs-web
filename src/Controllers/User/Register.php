@@ -2,12 +2,11 @@
 
 namespace BNETDocs\Controllers\User;
 
-use \BNETDocs\Exceptions\RecaptchaException;
 use \BNETDocs\Exceptions\UserNotFoundException;
+use \BNETDocs\Libraries\Core\Recaptcha;
 use \BNETDocs\Libraries\Core\Template;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\Recaptcha;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Libraries\User;
 use \CarlBennett\MVC\Libraries\Common;
@@ -73,7 +72,7 @@ class Register extends \BNETDocs\Controllers\Base
         $this->model->error = 'INVALID_CAPTCHA';
         return;
       }
-    } catch (RecaptchaException $e) {
+    } catch (\BNETDocs\Exceptions\RecaptchaException) {
       $this->model->error = 'INVALID_CAPTCHA';
       return;
     }
@@ -158,14 +157,14 @@ class Register extends \BNETDocs\Controllers\Base
         $this->model->error = 'EMAIL_ALREADY_USED';
         return;
       }
-    } catch (UserNotFoundException $e) {}
+    } catch (UserNotFoundException) {}
 
     try {
       if (User::findIdByUsername($username)) {
         $this->model->error = 'USERNAME_TAKEN';
         return;
       }
-    } catch (UserNotFoundException $e) {}
+    } catch (UserNotFoundException) {}
 
     $user = new User(null);
     $user->setEmail($email);
