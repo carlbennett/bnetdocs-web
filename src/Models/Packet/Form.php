@@ -23,7 +23,7 @@ class Form extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 
   public ?array $comments = null;
   public array $form_fields = [];
-  public ?\BNETDocs\Libraries\Packet $packet = null;
+  public ?\BNETDocs\Libraries\Packet\Packet $packet = null;
   public ?array $products = null;
 
   /**

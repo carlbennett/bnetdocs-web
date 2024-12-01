@@ -7,7 +7,7 @@ use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Credits;
 use \BNETDocs\Libraries\Document;
 use \BNETDocs\Libraries\NewsPost;
-use \BNETDocs\Libraries\Packet;
+use \BNETDocs\Libraries\Packet\Packet;
 use \BNETDocs\Libraries\Server;
 use \BNETDocs\Libraries\User;
 

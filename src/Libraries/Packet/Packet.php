@@ -1,6 +1,6 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\Packet;
 
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;

@@ -41,7 +41,7 @@ class Index extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->packets = \BNETDocs\Libraries\Packet::getAllPackets(
+    $this->model->packets = \BNETDocs\Libraries\Packet\Packet::getAllPackets(
       '`packet_application_layer_id` IN (' . implode( ',', $this->model->pktapplayer ) . ')',
       $this->model->order
     );

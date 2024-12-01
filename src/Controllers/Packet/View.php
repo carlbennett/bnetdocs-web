@@ -15,7 +15,7 @@ class View extends \BNETDocs\Controllers\Base
   {
     $this->model->packet_id = (int) array_shift($args);
 
-    try { $this->model->packet = new \BNETDocs\Libraries\Packet($this->model->packet_id); }
+    try { $this->model->packet = new \BNETDocs\Libraries\Packet\Packet($this->model->packet_id); }
     catch (\UnexpectedValueException) { $this->model->packet = null; }
 
     if (!$this->model->packet)

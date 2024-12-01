@@ -28,7 +28,7 @@ class Create extends \BNETDocs\Controllers\Base
 
     $this->model->form_fields = Router::query();
     $this->model->products = Product::getAllProducts();
-    $this->model->packet = new \BNETDocs\Libraries\Packet(null);
+    $this->model->packet = new \BNETDocs\Libraries\Packet\Packet(null);
     $packet = &$this->model->packet;
 
     self::assignDefault($this->model->form_fields, 'application_layer', $packet->getApplicationLayerId());

@@ -29,7 +29,7 @@ class Delete extends \BNETDocs\Controllers\Base
     $q = Router::query();
     $this->model->id = $q['id'] ?? null;
 
-    try { if (!is_null($this->model->id)) $this->model->packet = new \BNETDocs\Libraries\Packet($this->model->id); }
+    try { if (!is_null($this->model->id)) $this->model->packet = new \BNETDocs\Libraries\Packet\Packet($this->model->id); }
     catch (\UnexpectedValueException) { $this->model->packet = null; }
 
     if (!$this->model->packet)
