@@ -418,7 +418,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   public function getAvatarURI(?int $size): string
   {
     return Common::relativeUrlToAbsolute(
-      (new \BNETDocs\Libraries\Gravatar($this->getEmail()))->getUrl($size, 'identicon')
+      (new \BNETDocs\Libraries\User\Gravatar($this->getEmail()))->getUrl($size, 'identicon')
     );
   }
 

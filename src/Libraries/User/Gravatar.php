@@ -1,6 +1,6 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\User;
 
 class Gravatar implements \JsonSerializable
 {
