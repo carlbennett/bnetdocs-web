@@ -9,13 +9,13 @@ class HttpForm extends ActiveUser implements \JsonSerializable
      *
      * @var array
      */
-    public array $form = [];
+    public array $form_fields = [];
 
     /**
      * Implements the JSON serialization function from the JsonSerializable interface.
      */
     public function jsonSerialize(): mixed
     {
-        return \array_merge(parent::jsonSerialize(), ['form' => $this->form]);
+        return \array_merge(parent::jsonSerialize(), ['form_fields' => $this->form_fields]);
     }
 }

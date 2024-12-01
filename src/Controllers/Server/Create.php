@@ -31,7 +31,7 @@ class Create extends \BNETDocs\Controllers\Base
     }
 
     $this->model->_responseCode = HttpCode::HTTP_OK;
-    $this->model->form = Router::query();
+    $this->model->form_fields = Router::query();
     $this->model->server = new \BNETDocs\Libraries\Server\Server(null);
     $this->model->server_types = \BNETDocs\Libraries\Server\Type::getAllServerTypes();
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost();
@@ -40,7 +40,7 @@ class Create extends \BNETDocs\Controllers\Base
 
   protected function handlePost(): void
   {
-    $q = &$this->model->form;
+    $q = &$this->model->form_fields;
     $this->model->server->setUser($this->model->active_user);
 
     try { $this->model->server->setAddress($q['address'] ?? ''); }
@@ -55,8 +55,8 @@ class Create extends \BNETDocs\Controllers\Base
     try { $this->model->server->setTypeId(isset($q['type']) ? (int) $q['type'] : 0); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_INVALID_TYPE; return; }
 
-    $this->model->server->setDisabled((bool) ($this->model->form['disabled'] ?? null));
-    $this->model->server->setOnline((bool) ($this->model->form['online'] ?? null));
+    $this->model->server->setDisabled((bool) ($this->model->form_fields['disabled'] ?? null));
+    $this->model->server->setOnline((bool) ($this->model->form_fields['online'] ?? null));
 
     $this->model->error = $this->model->server->commit() ? FormModel::ERROR_SUCCESS : FormModel::ERROR_INTERNAL;
 

@@ -118,6 +118,7 @@ function main(): void
       ['#^/user/(\d+)/?#', 'User\\View', ['User\\ViewHtml', 'User\\ViewJson']],
       ['#^/user/changepassword/?$#', 'User\\ChangePassword', ['User\\ChangePasswordHtml']],
       ['#^/user/createpassword/?$#', 'User\\CreatePassword', ['User\\CreatePasswordHtml']],
+      ['#^/user/delete/?#', 'User\\Delete', ['User\\DeleteHtml', 'User\\DeleteJson']],
       ['#^/user/index/?$#', 'User\\Index', ['User\\IndexHtml']],
       ['#^/user/login/?$#', 'User\\Login', ['User\\LoginHtml']],
       ['#^/user/logout/?$#', 'User\\Logout', ['User\\LogoutHtml']],

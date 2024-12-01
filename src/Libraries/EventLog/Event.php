@@ -232,7 +232,14 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 
   public function getUser(): ?User
   {
-    return \is_null($this->user_id) ? null : new User($this->user_id);
+    try
+    {
+      return \is_null($this->user_id) ? null : new User($this->user_id);
+    }
+    catch (\BNETDocs\Exceptions\UserNotFoundException)
+    {
+      return null;
+    }
   }
 
   public function getUserId(): ?int

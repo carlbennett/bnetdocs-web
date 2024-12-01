@@ -1,0 +1,61 @@
+<?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
+namespace BNETDocs\Templates\User;
+use \BNETDocs\Models\User\Delete as DeleteModel;
+use \CarlBennett\MVC\Libraries\Pair;
+$title = 'Delete User';
+$description = 'This page confirms if the user wishes to delete another user.';
+$this->opengraph->attach(new Pair('url', '/user/delete'));
+$this->opengraph->attach(new Pair('type', 'article'));
+switch ($this->getContext()->error)
+{
+  case DeleteModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete users.'; break;
+  case DeleteModel::ERROR_NOT_FOUND: $message = 'Cannot find user by that id.'; break;
+  case DeleteModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to delete users.'; break;
+  case DeleteModel::ERROR_INTERNAL_ERROR: $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  default: $message = $this->getContext()->error;
+}
+$target_id = $this->getContext()->target_id;
+$target_user = $this->getContext()->target_user;
+if ($target_user)
+{
+  $target_user_avatar = $target_user->getAvatarURI(22);
+  $target_user_id     = $target_user->getId();
+  $target_user_name   = $target_user->getName();
+  $target_user_url    = $target_user->getURI();
+}
+require('./header.inc.phtml'); ?>
+<div class="container">
+<? if (is_null($this->getContext()->error)) { ?>
+
+  <h2 class="text-danger">Delete User</h2>
+  <p class="text-danger">Are you sure you wish to delete this user?</p>
+  <form method="POST" action="?id=<?=rawurlencode($target_id)?>">
+    <table class="table table-striped text-white-50"><tbody>
+      <tr><td><a href="<?=$target_user_url?>"><img class="avatar" src="<?=$target_user_avatar?>"/> <?=filter_var($target_user_name, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></a></td></tr>
+    </tbody></table>
+    <a class="btn btn-primary" href="javascript:history.go(-1);">Back</a>
+    <input class="btn btn-danger" type="submit" value="Delete" tabindex="1" autofocus="autofocus"/>
+  </form>
+
+<? } else if ($this->getContext()->error === false) { ?>
+
+  <h2 class="text-success">Delete User</h2>
+  <div class="alert alert-success">
+    <p class="mb-0"><strong>The user was successfully deleted!</strong></p>
+  </div>
+  <a class="btn btn-primary" href="<?=\CarlBennett\MVC\Libraries\Common::relativeUrlToAbsolute('/user/index')?>">Back</a>
+
+<? } else { ?>
+
+  <h2 class="text-danger">Delete User</h2>
+  <div class="alert alert-danger">
+    <p class="mb-0"><strong>An error occurred while attempting to delete the user:</strong></p>
+    <p class="mb-0"><?=$message?></p>
+  </div>
+<? if (isset($target_user_url) && !empty($target_user_url)) { ?>
+  <a class="btn btn-primary" href="<?=$target_user_url?>">Back</a>
+<? } ?>
+
+<? } ?>
+</div>
+<? require('./footer.inc.phtml'); ?>
