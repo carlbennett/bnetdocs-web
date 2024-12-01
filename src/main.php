@@ -27,7 +27,7 @@ function main(): void
 {
   if (!file_exists(__DIR__ . '/../lib/autoload.php'))
   {
-    \http_response_code(\BNETDocs\Libraries\HttpCode::HTTP_INTERNAL_SERVER_ERROR);
+    \http_response_code(\BNETDocs\Libraries\Core\HttpCode::HTTP_INTERNAL_SERVER_ERROR);
     die('Server misconfigured. Please run `composer install`.');
   }
   require(__DIR__ . '/../lib/autoload.php');

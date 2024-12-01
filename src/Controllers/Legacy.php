@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
-use \BNETDocs\Libraries\HttpCode;
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \CarlBennett\MVC\Libraries\Common;
 

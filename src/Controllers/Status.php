@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
-use \BNETDocs\Libraries\HttpCode;
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Models\Status as StatusModel;
 use \CarlBennett\MVC\Libraries\Common;
 

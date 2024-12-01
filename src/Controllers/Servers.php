@@ -115,7 +115,7 @@ class Servers extends Base
     foreach ($server_types as $id)
       $this->model->server_types[] = new \BNETDocs\Libraries\ServerType($id);
 
-    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
+    $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_OK;
     return true;
   }
 }

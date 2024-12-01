@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Controllers\EventLog;
 
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Event;
-use \BNETDocs\Libraries\HttpCode;
 
 class Index extends \BNETDocs\Controllers\Base
 {

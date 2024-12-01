@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Controllers\User;
 
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\HttpCode;
 
 class Verify extends \BNETDocs\Controllers\Base
 {

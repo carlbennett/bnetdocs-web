@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Controllers\Server;
 
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Server\Form as FormModel;
 use \OutOfBoundsException;

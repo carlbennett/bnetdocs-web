@@ -2,7 +2,7 @@
 namespace BNETDocs\Controllers\Packet;
 
 use \BNETDocs\Libraries\Comment;
-use \BNETDocs\Libraries\HttpCode;
+use \BNETDocs\Libraries\Core\HttpCode;
 
 class View extends \BNETDocs\Controllers\Base
 {

@@ -3,8 +3,8 @@
 namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Libraries\Authentication;
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Logout extends \BNETDocs\Controllers\Base

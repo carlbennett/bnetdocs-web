@@ -2,9 +2,9 @@
 namespace BNETDocs\Controllers\Packet;
 
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Packet;
 use \BNETDocs\Libraries\Product;
 use \BNETDocs\Libraries\Router;

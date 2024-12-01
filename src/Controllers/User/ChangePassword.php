@@ -20,7 +20,7 @@ class ChangePassword extends \BNETDocs\Controllers\Base
     else if (Router::requestMethod() == Router::METHOD_POST)
       $this->tryChangePassword();
 
-    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
+    $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_OK;
     return true;
   }
 

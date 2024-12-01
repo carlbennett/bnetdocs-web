@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Controllers\News;
 
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\NewsCategory;
 use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Libraries\Router;

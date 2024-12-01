@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Controllers\Server;
 
-use \BNETDocs\Libraries\HttpCode;
+use \BNETDocs\Libraries\Core\HttpCode;
 
 class View extends \BNETDocs\Controllers\Base
 {

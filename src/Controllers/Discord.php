@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
-use \BNETDocs\Libraries\HttpCode;
+use \BNETDocs\Libraries\Core\HttpCode;
 
 class Discord extends Base
 {

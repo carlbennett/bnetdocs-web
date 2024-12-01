@@ -25,7 +25,7 @@ class PrivacyPolicy extends Base
     $this->model->email_domain = $privacy->contact->email_domain;
     $this->model->email_mailbox = $privacy->contact->email_mailbox;
     $this->model->organization = $privacy->organization;
-    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
+    $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_OK;
     return true;
   }
 }

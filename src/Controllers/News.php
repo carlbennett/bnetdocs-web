@@ -67,7 +67,7 @@ class News extends Base
       $this->model->pagination = null;
     }
 
-    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
+    $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_OK;
     return true;
   }
 }

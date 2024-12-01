@@ -3,8 +3,8 @@
 namespace BNETDocs\Controllers\Comment;
 
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Create extends \BNETDocs\Controllers\Base

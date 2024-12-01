@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Controllers\User;
 
+use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Libraries\User;
 use \BNETDocs\Models\User\Login as LoginModel;

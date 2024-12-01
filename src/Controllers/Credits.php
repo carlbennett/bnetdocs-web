@@ -22,7 +22,7 @@ class Credits extends Base
    */
   public function invoke(?array $args): bool
   {
-    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
+    $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_OK;
     $this->model->top_contributors_by_comments = CreditsLib::getTopContributorsByComments();
     $this->model->top_contributors_by_documents = CreditsLib::getTopContributorsByDocuments();
     $this->model->top_contributors_by_news_posts = CreditsLib::getTopContributorsByNewsPosts();

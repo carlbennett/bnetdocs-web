@@ -21,7 +21,7 @@ class Update extends \BNETDocs\Controllers\Base
     {
         if (!$this->model->active_user)
         {
-            $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_FORBIDDEN;
+            $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_FORBIDDEN;
             return true;
         }
 
