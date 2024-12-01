@@ -6,15 +6,13 @@ use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\Comment\Create as CreateModel;
 
 class Create extends \BNETDocs\Controllers\Base
 {
-  public const EMPTY_CONTENT = 'EMPTY_CONTENT';
-  public const INTERNAL_ERROR = 'INTERNAL_ERROR';
-
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Comment\Create();
+    $this->model = new CreateModel();
   }
 
   public function invoke(?array $args): bool
@@ -25,6 +23,7 @@ class Create extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
+      $this->model->error = $this->model->active_user ? CreateModel::ERROR_ACL_NOT_SET : CreateModel::ERROR_NOT_LOGGED_IN;
       $this->model->response = ['error' => 'Unauthorized'];
     }
     else if (Router::requestMethod() !== Router::METHOD_POST)
@@ -53,7 +52,8 @@ class Create extends \BNETDocs\Controllers\Base
 
     if (empty($content))
     {
-      $this->model->error = self::EMPTY_CONTENT;
+      $this->model->error = CreateModel::ERROR_EMPTY_CONTENT;
+      $this->model->response = ['error' => 'Empty Content'];
       return HttpCode::HTTP_BAD_REQUEST;
     }
 
@@ -68,7 +68,7 @@ class Create extends \BNETDocs\Controllers\Base
 
     if (!$this->model->comment->commit())
     {
-      $this->model->error = self::INTERNAL_ERROR;
+      $this->model->error = CreateModel::ERROR_INTERNAL;
       return HttpCode::HTTP_INTERNAL_SERVER_ERROR;
     }
 

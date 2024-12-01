@@ -1,5 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Comment;
+use \BNETDocs\Models\Comment\Edit as EditModel;
 use \CarlBennett\MVC\Libraries\Common;
 use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Edit Comment';
@@ -8,10 +9,11 @@ $this->opengraph->attach(new Pair('url', '/comment/edit'));
 $this->opengraph->attach(new Pair('type', 'article'));
 switch ($this->getContext()->error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to edit this comment.'; break;
-  case 'NOT_FOUND': $message = 'Cannot find comment by that id.'; break;
-  case 'NOT_LOGGED_IN': $message = 'You must be logged in to edit comments.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case EditModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to edit this comment.'; break;
+  case EditModel::ERROR_EMPTY_CONTENT: $message = 'You must submit a comment with at least 1 character.'; break;
+  case EditModel::ERROR_NOT_FOUND: $message = 'Cannot find comment by that id.'; break;
+  case EditModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to edit comments.'; break;
+  case EditModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
   default: $message = $this->getContext()->error;
 }
 $c = $this->getContext()->comment;

@@ -5,16 +5,13 @@ namespace BNETDocs\Controllers\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\Comment\Delete as DeleteModel;
 
 class Delete extends \BNETDocs\Controllers\Base
 {
-  public const ACL_NOT_SET = 'ACL_NOT_SET';
-  public const INTERNAL_ERROR = 'INTERNAL_ERROR';
-  public const NOT_FOUND = 'NOT_FOUND';
-
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Comment\Delete();
+    $this->model = new DeleteModel();
   }
 
   public function invoke(?array $args): bool
@@ -32,14 +29,14 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = self::ACL_NOT_SET;
+      $this->model->error = $this->model->active_user ? DeleteModel::ERROR_ACL_NOT_SET : DeleteModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
     if (!$this->model->comment)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
-      $this->model->error = self::NOT_FOUND;
+      $this->model->error = DeleteModel::ERROR_NOT_FOUND;
       return true;
     }
 
@@ -49,7 +46,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (Router::requestMethod() == Router::METHOD_POST) $this->tryDelete();
 
-    $this->model->_responseCode = HttpCode::HTTP_OK;
+    $this->model->_responseCode = !$this->model->error ? HttpCode::HTTP_OK : HttpCode::HTTP_INTERNAL_SERVER_ERROR;
     return true;
   }
 
@@ -57,7 +54,7 @@ class Delete extends \BNETDocs\Controllers\Base
   {
     if (!$this->model->comment->deallocate())
     {
-      $this->model->error = self::INTERNAL_ERROR;
+      $this->model->error = DeleteModel::ERROR_INTERNAL;
       return;
     }
 

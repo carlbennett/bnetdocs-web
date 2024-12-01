@@ -2,14 +2,32 @@
 
 namespace BNETDocs\Models\Comment;
 
-class Edit extends \BNETDocs\Models\ActiveUser
+class Edit extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
-  public $acl_allowed;
-  public $comment;
-  public $content;
-  public $id;
-  public $parent_id;
-  public $parent_type;
-  public $return_url;
-  public $user;
+    public const ERROR_ACL_NOT_SET = 'ACL_NOT_SET';
+    public const ERROR_EMPTY_CONTENT = 'EMPTY_CONTENT';
+    public const ERROR_INTERNAL = 'INTERNAL_ERROR';
+    public const ERROR_NOT_FOUND = 'NOT_FOUND';
+    public const ERROR_NOT_LOGGED_IN = 'NOT_LOGGED_IN';
+
+    public bool $acl_allowed = false;
+    public ?\BNETDocs\Libraries\Comment $comment = null;
+    public ?string $content = null;
+    public ?int $id = null;
+    public ?int $parent_id = null;
+    public ?int $parent_type = null;
+    public ?string $return_url = null;
+
+    public function jsonSerialize(): mixed
+    {
+        return \array_merge(parent::jsonSerialize(), [
+            'acl_allowed' => $this->acl_allowed,
+            'comment' => $this->comment,
+            'content' => $this->content,
+            'id' => $this->id,
+            'parent_id' => $this->parent_id,
+            'parent_type' => $this->parent_type,
+            'return_url' => $this->return_url,
+        ]);
+    }
 }

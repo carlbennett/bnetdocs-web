@@ -1,5 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Comment;
+use \BNETDocs\Models\Comment\Delete as DeleteModel;
 use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete Comment';
 $description = 'This page confirms if the user wishes to delete a comment.';
@@ -7,10 +8,10 @@ $this->opengraph->attach(new Pair('url', '/comment/delete'));
 $this->opengraph->attach(new Pair('type', 'article'));
 switch ($this->getContext()->error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to delete comments.'; break;
-  case 'NOT_FOUND': $message = 'Cannot find comment by that id.'; break;
-  case 'NOT_LOGGED_IN': $message = 'You must be logged in to delete comments.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case DeleteModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete comments.'; break;
+  case DeleteModel::ERROR_NOT_FOUND: $message = 'Cannot find comment by that id.'; break;
+  case DeleteModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to delete comments.'; break;
+  case DeleteModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
   default: $message = $this->getContext()->error;
 }
 $c = $this->getContext()->comment;
