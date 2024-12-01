@@ -4,6 +4,7 @@ namespace BNETDocs\Controllers\Packet;
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Packet;
 use \BNETDocs\Libraries\Product;
 use \BNETDocs\Libraries\Router;
@@ -23,7 +24,7 @@ class Edit extends \BNETDocs\Controllers\Base
     if (!$this->model->active_user || !$this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_PACKET_MODIFY))
     {
       $this->model->error = FormModel::ERROR_ACL_DENIED;
-      $this->model->_responseCode = 401;
+      $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
       return true;
     }
 
@@ -37,7 +38,7 @@ class Edit extends \BNETDocs\Controllers\Base
     if (is_null($this->model->packet))
     {
       $this->model->error = FormModel::ERROR_NOT_FOUND;
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       return true;
     }
 
@@ -140,7 +141,7 @@ class Edit extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 

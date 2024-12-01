@@ -59,7 +59,7 @@ class Index extends \BNETDocs\Controllers\Base
     // Post-filter summary of users
     $this->model->sum_users = count($this->model->users);
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
     return true;
   }
 }

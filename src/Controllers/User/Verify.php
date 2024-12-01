@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 
 class Verify extends \BNETDocs\Controllers\Base
 {
@@ -36,7 +37,7 @@ class Verify extends \BNETDocs\Controllers\Base
     if (!$this->model->user || $user_token !== $this->model->token)
     {
       $this->model->error = 'INVALID_TOKEN';
-      $this->model->_responseCode = 400;
+      $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
       return true;
     }
 
@@ -64,7 +65,7 @@ class Verify extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 }

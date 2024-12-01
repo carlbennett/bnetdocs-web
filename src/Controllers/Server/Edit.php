@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Server;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Server\Form as FormModel;
 use \OutOfBoundsException;
@@ -24,7 +25,7 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_SERVER_MODIFY)))
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = FormModel::ERROR_ACCESS_DENIED;
       return true;
     }
@@ -33,7 +34,7 @@ class Edit extends \BNETDocs\Controllers\Base
     $id = $this->model->form['id'] ?? null;
     if (!is_numeric($id))
     {
-      $this->model->_responseCode = 400;
+      $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
       $this->model->error = FormModel::ERROR_INVALID_ID;
       return true;
     }
@@ -44,11 +45,11 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (!$this->model->server)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       return true;
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     $this->model->server_types = \BNETDocs\Libraries\ServerType::getAllServerTypes();
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost();
     return true;

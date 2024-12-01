@@ -20,7 +20,7 @@ class PageNotFound extends Base
    */
   public function invoke(?array $args): bool
   {
-    $this->model->_responseCode = 404;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_NOT_FOUND;
     return true;
   }
 }

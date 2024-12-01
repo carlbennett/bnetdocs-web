@@ -4,6 +4,7 @@ namespace BNETDocs\Controllers\Packet;
 
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Product;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Packet\Form as FormModel;
@@ -20,7 +21,7 @@ class Create extends \BNETDocs\Controllers\Base
   {
     if (!$this->model->active_user || !$this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_PACKET_CREATE))
     {
-      $this->model->_responseCode = 401;
+      $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
       $this->model->error = FormModel::ERROR_ACL_DENIED;
       return true;
     }
@@ -123,7 +124,7 @@ class Create extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->_responseCode = ($this->model->error === FormModel::ERROR_SUCCESS ? 200 : 500);
+    $this->model->_responseCode = ($this->model->error === FormModel::ERROR_SUCCESS ? HttpCode::HTTP_OK : HttpCode::HTTP_INTERNAL_SERVER_ERROR);
     return true;
   }
 

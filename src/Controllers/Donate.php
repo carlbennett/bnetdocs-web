@@ -21,7 +21,7 @@ class Donate extends Base
   public function invoke(?array $args): bool
   {
     $this->model->donations = \CarlBennett\MVC\Libraries\Common::$config->bnetdocs->donations;
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
     return true;
   }
 }

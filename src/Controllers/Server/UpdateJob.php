@@ -6,6 +6,7 @@ use \BNETDocs\Libraries\DateTimeImmutable;
 use \BNETDocs\Libraries\Discord\Embed as DiscordEmbed;
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\Discord\Webhook as DiscordWebhook;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Libraries\Server;
 use \DateTimeZone;
@@ -25,7 +26,7 @@ class UpdateJob extends \BNETDocs\Controllers\Base
   {
     if (Router::requestMethod() !== Router::METHOD_POST)
     {
-      $this->model->_responseCode = 405;
+      $this->model->_responseCode = HttpCode::HTTP_METHOD_NOT_ALLOWED;
       $this->model->_responseHeaders['Allow'] = Router::METHOD_POST;
       return true;
     }
@@ -38,13 +39,13 @@ class UpdateJob extends \BNETDocs\Controllers\Base
 
     if ($job_token !== $c->bnetdocs->server_update_job_token)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       return true;
     }
 
     if (!is_int($server_id) || !is_int($status))
     {
-      $this->model->_responseCode = 400;
+      $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
       return true;
     }
 
@@ -53,7 +54,7 @@ class UpdateJob extends \BNETDocs\Controllers\Base
 
     if (!$this->model->server)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       return true;
     }
 
@@ -69,7 +70,7 @@ class UpdateJob extends \BNETDocs\Controllers\Base
       );
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 

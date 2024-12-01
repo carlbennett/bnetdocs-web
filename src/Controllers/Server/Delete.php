@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Server;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Server\Delete as DeleteModel;
 
@@ -21,7 +22,7 @@ class Delete extends \BNETDocs\Controllers\Base
   {
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_SERVER_DELETE)))
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = DeleteModel::ERROR_ACCESS_DENIED;
       return true;
     }
@@ -29,7 +30,7 @@ class Delete extends \BNETDocs\Controllers\Base
     $id = Router::query()['id'] ?? null;
     if (!is_numeric($id))
     {
-      $this->model->_responseCode = 400;
+      $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
       $this->model->error = DeleteModel::ERROR_INVALID_ID;
       return true;
     }
@@ -40,12 +41,12 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (!$this->model->server)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       $this->model->error = DeleteModel::ERROR_INVALID_ID;
       return true;
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost();
     return true;
   }

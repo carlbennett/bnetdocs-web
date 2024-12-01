@@ -55,7 +55,7 @@ class Index extends \BNETDocs\Controllers\Base
     }
 
     $this->model->timestamp = new \BNETDocs\Libraries\DateTimeImmutable('now');
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
     return true;
   }
 }

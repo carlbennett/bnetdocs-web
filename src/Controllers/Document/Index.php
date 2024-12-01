@@ -33,7 +33,7 @@ class Index extends \BNETDocs\Controllers\Base
     $this->model->documents = \BNETDocs\Libraries\Document::getAllDocuments($order, !$acl);
     $this->model->sum_documents = count($this->model->documents);
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
     return true;
   }
 }

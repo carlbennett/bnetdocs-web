@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Document;
 
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\HttpCode;
 
 class View extends \BNETDocs\Controllers\Base
 {
@@ -30,7 +31,7 @@ class View extends \BNETDocs\Controllers\Base
     if ($this->model->document && !$this->model->document->isPublished()
       && !($this->model->active_user && $this->model->active_user->isStaff()))
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->document = null;
       return true;
     }
@@ -40,7 +41,7 @@ class View extends \BNETDocs\Controllers\Base
       $this->model->comments = Comment::getAll(Comment::PARENT_TYPE_DOCUMENT, $this->model->document_id);
     }
 
-    $this->model->_responseCode = $this->model->document ? 200 : 404;
+    $this->model->_responseCode = $this->model->document ? HttpCode::HTTP_OK : HttpCode::HTTP_NOT_FOUND;
     return true;
   }
 }

@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Server;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Server\Form as FormModel;
 use \OutOfBoundsException;
@@ -24,12 +25,12 @@ class Create extends \BNETDocs\Controllers\Base
 
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_SERVER_CREATE)))
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = FormModel::ERROR_ACCESS_DENIED;
       return true;
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     $this->model->form = Router::query();
     $this->model->server = new \BNETDocs\Libraries\Server(null);
     $this->model->server_types = \BNETDocs\Libraries\ServerType::getAllServerTypes();

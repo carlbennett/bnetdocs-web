@@ -2,6 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Models\Status as StatusModel;
 use \CarlBennett\MVC\Libraries\Common;
 
@@ -25,7 +26,7 @@ class Status extends Base
    */
   public function invoke(?array $args): bool
   {
-    $code = (self::getStatus($this->model) ? 200 : 500);
+    $code = (self::getStatus($this->model) ? HttpCode::HTTP_OK : HttpCode::HTTP_INTERNAL_SERVER_ERROR);
     $this->model->_responseCode = $code;
     return true;
   }

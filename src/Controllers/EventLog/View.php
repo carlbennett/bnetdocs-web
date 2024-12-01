@@ -2,6 +2,8 @@
 
 namespace BNETDocs\Controllers\EventLog;
 
+use \BNETDocs\Libraries\HttpCode;
+
 class View extends \BNETDocs\Controllers\Base
 {
   public function __construct()
@@ -16,7 +18,7 @@ class View extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       return true;
     }
 
@@ -26,7 +28,7 @@ class View extends \BNETDocs\Controllers\Base
     try { if (!is_null($this->model->id)) $this->model->event = new \BNETDocs\Libraries\EventLog\Event($this->model->id); }
     catch (\UnexpectedValueException) { $this->model->event = null; }
 
-    $this->model->_responseCode = $this->model->event ? 200 : 404;
+    $this->model->_responseCode = $this->model->event ? HttpCode::HTTP_OK : HttpCode::HTTP_NOT_FOUND;
     return true;
   }
 }

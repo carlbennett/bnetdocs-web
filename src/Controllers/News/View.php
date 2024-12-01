@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\News;
 
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Libraries\User;
 
@@ -49,7 +50,7 @@ class View extends \BNETDocs\Controllers\Base
       );
     }
 
-    $this->model->_responseCode = ($this->model->news_post ? 200 : 404);
+    $this->model->_responseCode = ($this->model->news_post ? HttpCode::HTTP_OK : HttpCode::HTTP_NOT_FOUND);
     return true;
   }
 }

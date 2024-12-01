@@ -4,6 +4,7 @@ namespace BNETDocs\Controllers\Comment;
 
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Create extends \BNETDocs\Controllers\Base
@@ -23,12 +24,12 @@ class Create extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->response = ['error' => 'Unauthorized'];
     }
     else if (Router::requestMethod() !== Router::METHOD_POST)
     {
-      $this->model->_responseCode = 405;
+      $this->model->_responseCode = HttpCode::HTTP_METHOD_NOT_ALLOWED;
       $this->model->_responseHeaders['Allow'] = Router::METHOD_POST;
       $this->model->response = ['error' => 'Method Not Allowed', 'allow' => [Router::METHOD_POST]];
     }
@@ -53,7 +54,7 @@ class Create extends \BNETDocs\Controllers\Base
     if (empty($content))
     {
       $this->model->error = self::EMPTY_CONTENT;
-      return 400;
+      return HttpCode::HTTP_BAD_REQUEST;
     }
 
     $this->model->comment = new Comment(null);
@@ -68,7 +69,7 @@ class Create extends \BNETDocs\Controllers\Base
     if (!$this->model->comment->commit())
     {
       $this->model->error = self::INTERNAL_ERROR;
-      return 500;
+      return HttpCode::HTTP_INTERNAL_SERVER_ERROR;
     }
 
     $this->model->error = false;
@@ -94,6 +95,6 @@ class Create extends \BNETDocs\Controllers\Base
       Logger::logToDiscord($event, $embed);
     }
 
-    return 303;
+    return HttpCode::HTTP_SEE_OTHER;
   }
 }

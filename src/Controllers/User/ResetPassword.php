@@ -50,7 +50,7 @@ class ResetPassword extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
     return true;
   }
 

@@ -2,6 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \CarlBennett\MVC\Libraries\Common;
 
@@ -58,10 +59,10 @@ class Legacy extends Base
     if (is_null($this->model->url)) {
       $this->model->url = Common::$config->bnetdocs->navigation->front_page;
       $this->model->is_legacy = false;
-      $code = 302;
+      $code = HttpCode::HTTP_FOUND;
     } else {
       $this->model->is_legacy = true;
-      $code = 301;
+      $code = HttpCode::HTTP_MOVED_PERMANENTLY;
     }
 
     $this->model->url = Common::relativeUrlToAbsolute($this->model->url);

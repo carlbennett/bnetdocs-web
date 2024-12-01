@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Libraries\User;
 use \BNETDocs\Models\User\Login as LoginModel;
@@ -19,12 +20,12 @@ class Login extends \BNETDocs\Controllers\Base
   {
     if ($this->model->active_user)
     {
-      $this->model->_responseCode = 400;
+      $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
       $this->model->error = LoginModel::ERROR_ALREADY_LOGGED_IN;
       return true;
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     $this->model->error = LoginModel::ERROR_NONE;
 
     $q = Router::query();
@@ -62,7 +63,7 @@ class Login extends \BNETDocs\Controllers\Base
       $this->model->user->setPassword($this->model->password);
       if (!$this->model->user->commit())
       {
-        $this->model->_responseCode = 500;
+        $this->model->_responseCode = HttpCode::HTTP_INTERNAL_SERVER_ERROR;
         $this->model->error = LoginModel::ERROR_INTERNAL;
         return true;
       }

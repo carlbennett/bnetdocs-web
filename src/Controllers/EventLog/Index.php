@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\EventLog;
 
 use \BNETDocs\Libraries\EventLog\Event;
+use \BNETDocs\Libraries\HttpCode;
 
 class Index extends \BNETDocs\Controllers\Base
 {
@@ -22,7 +23,7 @@ class Index extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       return true;
     }
 
@@ -55,7 +56,7 @@ class Index extends \BNETDocs\Controllers\Base
     );
 
     $this->model->sum_events = count($this->model->events);
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 }

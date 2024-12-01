@@ -2,8 +2,9 @@
 
 namespace BNETDocs\Controllers\News;
 
-use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Edit extends \BNETDocs\Controllers\Base
@@ -20,7 +21,7 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = 'ACL_NOT_SET';
       return true;
     }
@@ -33,7 +34,7 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (!$this->model->news_post)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       $this->model->error = 'NOT_FOUND';
       return true;
     }
@@ -56,7 +57,7 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost();
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 

@@ -2,6 +2,8 @@
 
 namespace BNETDocs\Controllers;
 
+use \BNETDocs\Libraries\HttpCode;
+
 class PhpInfo extends Base
 {
   /**
@@ -23,14 +25,14 @@ class PhpInfo extends Base
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User::OPTION_ACL_PHPINFO)))
     {
       $this->model->phpinfo = null;
-      $this->model->_responseCode = 401;
+      $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
     }
     else
     {
       \ob_start();
       \phpinfo(INFO_ALL);
       $this->model->phpinfo = \ob_get_clean();
-      $this->model->_responseCode = 200;
+      $this->model->_responseCode = HttpCode::HTTP_OK;
     }
     return true;
   }

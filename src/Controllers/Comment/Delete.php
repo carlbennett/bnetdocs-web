@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Comment;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Delete extends \BNETDocs\Controllers\Base
@@ -30,14 +31,14 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = self::ACL_NOT_SET;
       return true;
     }
 
     if (!$this->model->comment)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       $this->model->error = self::NOT_FOUND;
       return true;
     }
@@ -48,7 +49,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (Router::requestMethod() == Router::METHOD_POST) $this->tryDelete();
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 

@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Document;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 use \BNETDocs\Models\Document\Delete as DeleteModel;
 
@@ -20,7 +21,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = DeleteModel::ERROR_ACCESS_DENIED;
       return true;
     }
@@ -33,7 +34,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (!$this->model->document)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       $this->model->error = DeleteModel::ERROR_NOT_FOUND;
       return true;
     }
@@ -71,7 +72,7 @@ class Delete extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 }

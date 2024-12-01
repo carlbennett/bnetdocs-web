@@ -2,6 +2,7 @@
 namespace BNETDocs\Controllers\Packet;
 
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\HttpCode;
 
 class View extends \BNETDocs\Controllers\Base
 {
@@ -19,13 +20,13 @@ class View extends \BNETDocs\Controllers\Base
 
     if (!$this->model->packet)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       return true;
     }
 
     $this->model->comments = Comment::getAll(Comment::PARENT_TYPE_PACKET, $this->model->packet_id);
     $this->model->used_by = \BNETDocs\Libraries\Product::getProductsFromIds($this->model->packet->getUsedBy());
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 }

@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\News;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Libraries\Router;
 
@@ -20,7 +21,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 401;
+      $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
       $this->model->error = 'ACL_NOT_SET';
       return true;
     }
@@ -33,7 +34,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (!$this->model->news_post)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       $this->model->error = 'NOT_FOUND';
       return true;
     }
@@ -41,7 +42,7 @@ class Delete extends \BNETDocs\Controllers\Base
     $this->model->title = $this->model->news_post->getTitle();
 
     if (Router::requestMethod() == Router::METHOD_POST) $this->tryDelete();
-    $this->model->_responseCode = $this->model->error ? 500 : 200;
+    $this->model->_responseCode = $this->model->error ? HttpCode::HTTP_INTERNAL_SERVER_ERROR : HttpCode::HTTP_OK;
     return true;
   }
 

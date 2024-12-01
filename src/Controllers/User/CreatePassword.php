@@ -12,7 +12,7 @@ class CreatePassword extends \BNETDocs\Controllers\Base
   public function invoke(?array $args): bool
   {
     $q = \BNETDocs\Libraries\Router::query();
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_OK;
     $this->model->input = $q['input'] ?? null;
     $this->model->output = empty($this->model->input) ? null : \BNETDocs\Libraries\User::createPassword($this->model->input);
     return true;

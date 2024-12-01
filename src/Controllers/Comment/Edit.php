@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Comment;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Edit extends \BNETDocs\Controllers\Base
@@ -33,19 +34,19 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = $this->model->active_user ? self::ACL_NOT_SET : self::NOT_LOGGED_IN;
       return true;
     }
 
     if (!$this->model->comment)
     {
-      $this->model->_responseCode = 404;
+      $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
       $this->model->error = self::NOT_FOUND;
       return true;
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     $this->model->parent_id = $this->model->comment->getParentId();
     $this->model->parent_type = $this->model->comment->getParentType();
     $this->model->return_url = $this->model->comment->getParentUrl();

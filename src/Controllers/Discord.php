@@ -2,6 +2,8 @@
 
 namespace BNETDocs\Controllers;
 
+use \BNETDocs\Libraries\HttpCode;
+
 class Discord extends Base
 {
   /**
@@ -26,7 +28,7 @@ class Discord extends Base
     $this->model->discord_url = \sprintf('https://discord.gg/%s', $config->invite_code);
     $this->model->enabled = $config->enabled;
 
-    $this->model->_responseCode = ($this->model->enabled ? 200 : 503);
+    $this->model->_responseCode = ($this->model->enabled ? HttpCode::HTTP_OK : HttpCode::HTTP_SERVICE_UNAVAILABLE);
     return true;
   }
 }

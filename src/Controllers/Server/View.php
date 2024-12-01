@@ -2,6 +2,8 @@
 
 namespace BNETDocs\Controllers\Server;
 
+use \BNETDocs\Libraries\HttpCode;
+
 class View extends \BNETDocs\Controllers\Base
 {
   public function __construct()
@@ -20,7 +22,7 @@ class View extends \BNETDocs\Controllers\Base
     try { $this->model->server = new \BNETDocs\Libraries\Server((int) \array_shift($args)); }
     catch (\UnexpectedValueException) { $this->model->server = null; }
 
-    $this->model->_responseCode = $this->model->server ? 200 : 404;
+    $this->model->_responseCode = $this->model->server ? HttpCode::HTTP_OK : HttpCode::HTTP_NOT_FOUND;
     return true;
   }
 }

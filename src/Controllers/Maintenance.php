@@ -21,7 +21,7 @@ class Maintenance extends Base
   public function invoke(?array $args): bool
   {
     $this->model->message = \array_shift($args);
-    $this->model->_responseCode = 503;
+    $this->model->_responseCode = \BNETDocs\Libraries\HttpCode::HTTP_SERVICE_UNAVAILABLE;
     return true;
   }
 }

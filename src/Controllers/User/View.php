@@ -5,6 +5,7 @@ namespace BNETDocs\Controllers\User;
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Credits;
 use \BNETDocs\Libraries\Document;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\NewsPost;
 use \BNETDocs\Libraries\Packet;
 use \BNETDocs\Libraries\Server;
@@ -28,14 +29,14 @@ class View extends \BNETDocs\Controllers\Base
    */
   public function invoke(?array $args) : bool
   {
-    $this->model->_responseCode = 404;
+    $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
     $this->model->user_id = array_shift($args);
 
     // Try to get the user
     try { $this->model->user = new User($this->model->user_id); }
     catch (\Throwable) { $this->model->user = null; return true; }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     $this->model->user_id = $this->model->user->getId();
     $this->model->user_profile = ($this->model->user ? $this->model->user->getUserProfile() : null);
 
@@ -142,7 +143,7 @@ class View extends \BNETDocs\Controllers\Base
       });
     }
 
-    $this->model->_responseCode = ($this->model->user ? 200 : 404);
+    $this->model->_responseCode = ($this->model->user ? HttpCode::HTTP_OK : HttpCode::HTTP_NOT_FOUND);
     return true;
   }
 }

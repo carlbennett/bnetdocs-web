@@ -4,6 +4,7 @@ namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Libraries\Authentication;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Logout extends \BNETDocs\Controllers\Base
@@ -17,11 +18,11 @@ class Logout extends \BNETDocs\Controllers\Base
   {
     if (!$this->model->active_user)
     {
-      $this->model->_responseCode = 400;
+      $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
       return true;
     }
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     $this->model->error = false;
     if (Router::requestMethod() == Router::METHOD_POST) $this->tryLogout();
     return true;

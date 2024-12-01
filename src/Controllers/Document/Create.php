@@ -3,6 +3,7 @@
 namespace BNETDocs\Controllers\Document;
 
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\HttpCode;
 use \BNETDocs\Libraries\Router;
 
 class Create extends \BNETDocs\Controllers\Base
@@ -23,7 +24,7 @@ class Create extends \BNETDocs\Controllers\Base
 
     if (!$this->model->acl_allowed)
     {
-      $this->model->_responseCode = 403;
+      $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = 'ACL_NOT_SET';
       return true;
     }
@@ -33,7 +34,7 @@ class Create extends \BNETDocs\Controllers\Base
     else if (Router::requestMethod() == Router::METHOD_GET)
       $this->model->markdown = true;
 
-    $this->model->_responseCode = 200;
+    $this->model->_responseCode = HttpCode::HTTP_OK;
     return true;
   }
 
