@@ -39,7 +39,7 @@ function main(): void
   ));
 
   \BNETDocs\Libraries\ExceptionHandler::register();
-  \BNETDocs\Libraries\Authentication::verify();
+  \BNETDocs\Libraries\User\Authentication::verify();
   \BNETDocs\Libraries\Core\BlizzardCheck::log_blizzard_request();
   \BNETDocs\Libraries\Core\SlackCheck::log_slack_request();
 

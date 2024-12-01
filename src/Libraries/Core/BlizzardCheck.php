@@ -2,8 +2,8 @@
 
 namespace BNETDocs\Libraries\Core;
 
-use \BNETDocs\Libraries\Authentication;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Libraries\User\Authentication;
 use \CarlBennett\MVC\Libraries\Common;
 use \CarlBennett\MVC\Libraries\IP;
 

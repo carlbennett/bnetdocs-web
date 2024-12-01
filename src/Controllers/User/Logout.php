@@ -2,10 +2,10 @@
 
 namespace BNETDocs\Controllers\User;
 
-use \BNETDocs\Libraries\Authentication;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\Router;
+use \BNETDocs\Libraries\User\Authentication;
 
 class Logout extends \BNETDocs\Controllers\Base
 {

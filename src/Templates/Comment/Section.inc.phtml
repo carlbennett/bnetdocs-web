@@ -1,8 +1,8 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Comment;
-use \BNETDocs\Libraries\Authentication;
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\User;
+use \BNETDocs\Libraries\User\Authentication;
 use \CarlBennett\MVC\Libraries\Common;
 $active_user = $this->getContext()->active_user ?? Authentication::$user;
 $active_user_id = ($active_user ? $active_user->getId() : null);

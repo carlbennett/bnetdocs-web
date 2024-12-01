@@ -17,7 +17,7 @@ class ActiveUser extends Errorable implements \JsonSerializable
    */
   public function __construct()
   {
-    $this->active_user = &\BNETDocs\Libraries\Authentication::$user;
+    $this->active_user = &\BNETDocs\Libraries\User\Authentication::$user;
   }
 
   /**

@@ -69,7 +69,7 @@ class Login extends \BNETDocs\Controllers\Base
       }
     }
 
-    \BNETDocs\Libraries\Authentication::login($this->model->user);
+    \BNETDocs\Libraries\User\Authentication::login($this->model->user);
     $this->model->error = LoginModel::ERROR_SUCCESS;
 
     $event = Logger::initEvent(

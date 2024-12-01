@@ -1,6 +1,6 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\User;
 
 use \BNETDocs\Interfaces\DatabaseObject;
 use \BNETDocs\Libraries\Database;
