@@ -40,7 +40,7 @@ class Edit extends \BNETDocs\Controllers\Base
     }
     $id = (int) $id;
 
-    try { $this->model->server = new \BNETDocs\Libraries\Server($id); }
+    try { $this->model->server = new \BNETDocs\Libraries\Server\Server($id); }
     catch (\UnexpectedValueException) { $this->model->server = null; }
 
     if (!$this->model->server)

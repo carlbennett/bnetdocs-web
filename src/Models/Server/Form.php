@@ -13,7 +13,7 @@ class Form extends \BNETDocs\Models\HttpForm implements \JsonSerializable
   public const ERROR_INVALID_TYPE = 'INVALID_TYPE';
   public const ERROR_SUCCESS = 'SUCCESS';
 
-  public ?\BNETDocs\Libraries\Server $server = null;
+  public ?\BNETDocs\Libraries\Server\Server $server = null;
   public bool $server_edit = false;
   public ?array $server_types = null;
 

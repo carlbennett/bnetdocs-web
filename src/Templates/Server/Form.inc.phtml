@@ -1,6 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Server;
-use \BNETDocs\Libraries\Server; ?>
+use \BNETDocs\Libraries\Server\Server; ?>
   <form method="POST" action="<?=(is_null($model->server->getId()) ? '' : sprintf('?id=%d', $model->server->getId()))?>">
     <div class="form-group">
       <div class="custom-control custom-control-inline custom-switch">

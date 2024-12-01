@@ -7,7 +7,7 @@ use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Credits;
 use \BNETDocs\Libraries\Document;
 use \BNETDocs\Libraries\Packet\Packet;
-use \BNETDocs\Libraries\Server;
+use \BNETDocs\Libraries\Server\Server;
 use \BNETDocs\Libraries\User;
 
 class View extends \BNETDocs\Controllers\Base

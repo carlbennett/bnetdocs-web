@@ -19,7 +19,7 @@ class View extends \BNETDocs\Controllers\Base
    */
   public function invoke(?array $args): bool
   {
-    try { $this->model->server = new \BNETDocs\Libraries\Server((int) \array_shift($args)); }
+    try { $this->model->server = new \BNETDocs\Libraries\Server\Server((int) \array_shift($args)); }
     catch (\UnexpectedValueException) { $this->model->server = null; }
 
     $this->model->_responseCode = $this->model->server ? HttpCode::HTTP_OK : HttpCode::HTTP_NOT_FOUND;

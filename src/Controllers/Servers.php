@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Controllers;
 
-use \BNETDocs\Libraries\Server as ServerLib;
+use \BNETDocs\Libraries\Server\Server as ServerLib;
 
 class Servers extends Base
 {

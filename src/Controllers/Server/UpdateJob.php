@@ -8,7 +8,7 @@ use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Discord\Embed as DiscordEmbed;
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\Discord\Webhook as DiscordWebhook;
-use \BNETDocs\Libraries\Server;
+use \BNETDocs\Libraries\Server\Server;
 use \DateTimeZone;
 
 class UpdateJob extends \BNETDocs\Controllers\Base

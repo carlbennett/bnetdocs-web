@@ -32,7 +32,7 @@ class Create extends \BNETDocs\Controllers\Base
 
     $this->model->_responseCode = HttpCode::HTTP_OK;
     $this->model->form = Router::query();
-    $this->model->server = new \BNETDocs\Libraries\Server(null);
+    $this->model->server = new \BNETDocs\Libraries\Server\Server(null);
     $this->model->server_types = \BNETDocs\Libraries\Server\Type::getAllServerTypes();
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost();
     return true;
