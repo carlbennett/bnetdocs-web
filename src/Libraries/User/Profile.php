@@ -1,13 +1,13 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\User;
 
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\User;
 use \StdClass;
 use \UnexpectedValueException;
 
-class UserProfile implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
+class Profile implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 {
   public const MAX_LEN = 0xFF; // table design: varchar(255)
   public const MAX_USER_ID = User::MAX_ID;

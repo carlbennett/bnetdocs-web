@@ -5,7 +5,6 @@ namespace BNETDocs\Controllers\User;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\User;
-use \BNETDocs\Libraries\UserProfile;
 use \CarlBennett\MVC\Libraries\Common;
 use \Throwable;
 use \UnexpectedValueException;
@@ -66,7 +65,7 @@ class Update extends \BNETDocs\Controllers\Base
         $this->model->profile = $this->model->user->getUserProfile();
         if (!$this->model->profile)
         {
-            $this->model->profile = new UserProfile(null);
+            $this->model->profile = new \BNETDocs\Libraries\User\Profile(null);
             $this->model->profile->setBiography($this->model->biography);
             $this->model->profile->setDiscordUsername($this->model->discord_username);
             $this->model->profile->setFacebookUsername($this->model->facebook_username);

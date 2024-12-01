@@ -5,7 +5,7 @@ namespace BNETDocs\Libraries;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\Discord\EmbedAuthor as DiscordEmbedAuthor;
-use \BNETDocs\Libraries\UserProfile;
+use \BNETDocs\Libraries\User\Profile as UserProfile;
 use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;

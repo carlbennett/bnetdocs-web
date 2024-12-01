@@ -3,7 +3,7 @@
 namespace BNETDocs\Models\User;
 
 use \BNETDocs\Libraries\User;
-use \BNETDocs\Libraries\UserProfile;
+use \BNETDocs\Libraries\User\Profile as UserProfile;
 
 class Update extends \BNETDocs\Models\ActiveUser
 {
@@ -22,7 +22,7 @@ class Update extends \BNETDocs\Models\ActiveUser
   public ?array $username_error = null;
   public int $username_max_len = User::MAX_USERNAME;
 
-  public ?\BNETDocs\Libraries\UserProfile $profile = null;
+  public ?UserProfile $profile = null;
 
   public ?string $biography = null;
   public ?array $biography_error = null;
