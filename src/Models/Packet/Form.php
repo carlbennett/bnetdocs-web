@@ -33,7 +33,6 @@ class Form extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
   {
     return \array_merge(parent::jsonSerialize(), [
       'comments' => $this->comments,
-      'error' => $this->error,
       'form_fields' => $this->form_fields,
       'packet' => $this->packet,
       'products' => $this->products,
