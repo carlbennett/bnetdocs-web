@@ -1,10 +1,10 @@
 <?php
 
-namespace BNETDocs\Controllers;
+namespace BNETDocs\Controllers\News;
 
 use \BNETDocs\Libraries\User\User;
 
-class News extends Base
+class Index extends \BNETDocs\Controllers\Base
 {
   public const NEWS_PER_PAGE = 5;
 
@@ -13,7 +13,7 @@ class News extends Base
    */
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\News();
+    $this->model = new \BNETDocs\Models\News\Index();
   }
 
   /**

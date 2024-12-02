@@ -4,7 +4,7 @@ namespace BNETDocs\Libraries\Core;
 
 use \OutOfBoundsException;
 
-class Pagination
+class Pagination implements \JsonSerializable
 {
   private array $dataset;
   private int $limit;
@@ -41,6 +41,16 @@ class Pagination
     }
 
     return $set;
+  }
+
+  public function jsonSerialize(): mixed
+  {
+    return [
+      'current_page' => $this->currentPage(),
+      'page_count' => $this->pageCount(),
+      'items_per_page' => $this->limit,
+      'page_items' => $this->getPage(),
+    ];
   }
 
   public function nextPage(): int
