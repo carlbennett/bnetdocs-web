@@ -22,7 +22,7 @@ class Create extends \BNETDocs\Controllers\Base
     if (!$this->model->active_user || !$this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_PACKET_CREATE))
     {
       $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
-      $this->model->error = FormModel::ERROR_ACL_DENIED;
+      $this->model->error = $this->model->active_user ? FormModel::ERROR_ACL_NOT_SET : FormModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -46,9 +46,9 @@ class Create extends \BNETDocs\Controllers\Base
     self::assignDefault($this->model->form_fields, 'used_by', Product::getProductsFromIds($packet->getUsedBy()));
 
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost($this->model);
-    else $this->model->error = FormModel::ERROR_NONE;
+    else $this->model->error = null;
 
-    if ($this->model->error === FormModel::ERROR_SUCCESS)
+    if ($this->model->error === false)
     {
       $event = Logger::initEvent(
         \BNETDocs\Libraries\EventLog\EventTypes::PACKET_CREATED,
@@ -124,7 +124,7 @@ class Create extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->_responseCode = ($this->model->error === FormModel::ERROR_SUCCESS ? HttpCode::HTTP_OK : HttpCode::HTTP_INTERNAL_SERVER_ERROR);
+    $this->model->_responseCode = !$this->model->error ? HttpCode::HTTP_OK : HttpCode::HTTP_INTERNAL_SERVER_ERROR;
     return true;
   }
 
@@ -184,6 +184,6 @@ class Create extends \BNETDocs\Controllers\Base
     $this->model->packet->setPublished($published ? true : false);
     $this->model->packet->setUser($this->model->active_user);
 
-    $this->model->error = $this->model->packet->commit() ? FormModel::ERROR_SUCCESS : FormModel::ERROR_INTERNAL;
+    $this->model->error = $this->model->packet->commit() ? false : FormModel::ERROR_INTERNAL;
   }
 }

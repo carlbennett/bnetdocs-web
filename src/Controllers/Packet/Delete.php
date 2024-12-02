@@ -6,12 +6,13 @@ use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Discord\EmbedField as DiscordEmbedField;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\Packet\Delete as DeleteModel;
 
 class Delete extends \BNETDocs\Controllers\Base
 {
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Packet\Delete();
+    $this->model = new DeleteModel();
   }
 
   public function invoke(?array $args): bool
@@ -22,24 +23,24 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
-      $this->model->error = 'ACL_NOT_SET';
+      $this->model->error = $this->model->active_user ? DeleteModel::ERROR_ACL_NOT_SET : DeleteModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
     $q = Router::query();
-    $this->model->id = $q['id'] ?? null;
+    $this->model->packet_id = $q['id'] ?? null;
 
-    try { if (!is_null($this->model->id)) $this->model->packet = new \BNETDocs\Libraries\Packet\Packet($this->model->id); }
+    try { if (!is_null($this->model->packet_id)) $this->model->packet = new \BNETDocs\Libraries\Packet\Packet($this->model->packet_id); }
     catch (\UnexpectedValueException) { $this->model->packet = null; }
 
     if (!$this->model->packet)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
-      $this->model->error = 'NOT_FOUND';
+      $this->model->error = DeleteModel::ERROR_NOT_FOUND;
       return true;
     }
 
-    $this->model->title = $this->model->packet->getLabel();
+    $this->model->label = $this->model->packet->getLabel();
 
     if (Router::requestMethod() == Router::METHOD_POST) $this->tryDelete();
     $this->model->_responseCode = $this->model->error ? HttpCode::HTTP_INTERNAL_SERVER_ERROR : HttpCode::HTTP_OK;
@@ -48,7 +49,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
   protected function tryDelete(): void
   {
-    $this->model->error = $this->model->packet->deallocate() ? false : 'INTERNAL_ERROR';
+    $this->model->error = $this->model->packet->deallocate() ? false : DeleteModel::ERROR_INTERNAL;
 
     $event = Logger::initEvent(
       \BNETDocs\Libraries\EventLog\EventTypes::PACKET_DELETED,
@@ -56,7 +57,7 @@ class Delete extends \BNETDocs\Controllers\Base
       getenv('REMOTE_ADDR'),
       [
         'error' => $this->model->error,
-        'packet_id' => $this->model->id,
+        'packet_id' => $this->model->packet_id,
         'packet' => $this->model->packet,
       ]
     );

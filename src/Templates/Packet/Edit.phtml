@@ -13,10 +13,10 @@ $comments = $this->getContext()->comments;
 $error = $this->getContext()->error;
 switch ($error)
 {
-  case FormModel::ERROR_ACL_DENIED: $message = 'You do not have the privilege to edit packets.'; break;
+  case FormModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to edit packets.'; break;
   case FormModel::ERROR_INTERNAL: $message = 'An internal error occurred. Try again later.'; break;
-  case FormModel::ERROR_NONE: $message = null; break;
   case FormModel::ERROR_NOT_FOUND: $message = 'The requested packet does not exist or could not be found.'; break;
+  case FormModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to edit packets.'; break;
   case FormModel::ERROR_OUTOFBOUNDS_APPLICATION_LAYER_ID: $message = sprintf('The application layer must be between 0-%d.', Packet::MAX_APPLICATION_LAYER_ID); break;
   case FormModel::ERROR_OUTOFBOUNDS_DIRECTION: $message = sprintf('The direction must be between 0-%d.', Packet::MAX_DIRECTION); break;
   case FormModel::ERROR_OUTOFBOUNDS_FORMAT: $message = sprintf('The format length must be between 1-%d.', Packet::MAX_FORMAT); break;
@@ -26,7 +26,6 @@ switch ($error)
   case FormModel::ERROR_OUTOFBOUNDS_REMARKS: $message = sprintf('The remarks length must be between 0-%d.', Packet::MAX_REMARKS); break;
   case FormModel::ERROR_OUTOFBOUNDS_TRANSPORT_LAYER_ID: $message = sprintf('The transport layer must be between 0-%d.', Packet::MAX_TRANSPORT_LAYER_ID); break;
   case FormModel::ERROR_OUTOFBOUNDS_USED_BY: $message = 'The products selected as using this packet were invalid.'; break;
-  case FormModel::ERROR_SUCCESS: $message = 'The packet has been edited successfully!'; break;
   default: $message = $error;
 }
 $form_fields = $this->getContext()->form_fields;
@@ -34,14 +33,14 @@ $form_products = $this->getContext()->products;
 $packet = $this->getContext()->packet;
 require('./header.inc.phtml');
 echo '<div class="container">' . PHP_EOL;
-if ($error === FormModel::ERROR_ACL_DENIED)
+if ($error === FormModel::ERROR_ACL_NOT_SET || $error === FormModel::ERROR_NOT_LOGGED_IN)
 {
   require('./LoginRequired.inc.phtml');
 }
-else if ($error === FormModel::ERROR_SUCCESS)
+else if ($error === false)
 {
   printf('<h1 class="text-success">%s</h1>%s', $title, PHP_EOL);
-  printf('<div class="alert alert-success"><p class="mb-0">%s</p></div>%s', $message, PHP_EOL);
+  printf('<div class="alert alert-success"><p class="mb-0">The packet has been edited successfully!</p></div>%s', PHP_EOL);
   printf('<div class="text-center">%s', PHP_EOL);
   printf('<a class="btn btn-primary" href="javascript:history.go(-1);">Back</a>%s', PHP_EOL);
   if (isset($packet))

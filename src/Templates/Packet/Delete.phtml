@@ -1,5 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Packet;
+use \BNETDocs\Models\Packet\Delete as DeleteModel;
 use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete Packet';
 $description = 'This form allows an individual to delete a packet.';
@@ -8,23 +9,23 @@ $this->opengraph->attach(new Pair('type', 'article'));
 $error = $this->getContext()->error;
 switch ($error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to delete packets.'; break;
-  case 'NOT_FOUND': $message = 'Cannot find packet by that id.'; break;
-  case 'NOT_LOGGED_IN': $message = 'You must be logged in to delete packets.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case DeleteModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete packets.'; break;
+  case DeleteModel::ERROR_INTERNAL: $message = 'An internal error occurred. Try again later.'; break;
+  case DeleteModel::ERROR_NOT_FOUND: $message = 'The requested packet does not exist or could not be found.'; break;
+  case DeleteModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to delete packets.'; break;
   default: $message = $error;
 }
-$id = filter_var($this->getContext()->id, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$packet_id = filter_var($this->getContext()->packet_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 require('./header.inc.phtml'); ?>
 <div class="container">
 <? if (is_null($error)) { ?>
   <h1 class="text-danger"><?=$title?></h1>
   <p class="text-danger"><?=$description?></p>
-  <form method="POST" action="?id=<?=$id?>">
+  <form method="POST" action="?id=<?=$packet_id?>">
     <div class="alert alert-danger">
       <p class="mb-0">Are you sure you wish to delete this packet?</p>
     </div>
-    <pre><code class="language-objectivec"><?=filter_var($this->getContext()->title, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></code></pre>
+    <pre><code class="language-objectivec"><?=filter_var($this->getContext()->label, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></code></pre>
     <input class="btn btn-danger" type="submit" value="Delete Packet" tabindex="2" autofocus="autofocus"/>
   </form>
 <? } else if ($error === false) { ?>

@@ -23,7 +23,7 @@ class Edit extends \BNETDocs\Controllers\Base
   {
     if (!$this->model->active_user || !$this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_PACKET_MODIFY))
     {
-      $this->model->error = FormModel::ERROR_ACL_DENIED;
+      $this->model->error = $this->model->active_user ? FormModel::ERROR_ACL_NOT_SET : FormModel::ERROR_NOT_LOGGED_IN;
       $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
       return true;
     }
@@ -60,7 +60,7 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (Router::requestMethod() == Router::METHOD_POST) $this->handlePost($this->model);
 
-    if ($this->model->error === FormModel::ERROR_SUCCESS)
+    if ($this->model->error === false)
     {
       $event = Logger::initEvent(
         \BNETDocs\Libraries\EventLog\EventTypes::PACKET_EDITED,
@@ -141,7 +141,7 @@ class Edit extends \BNETDocs\Controllers\Base
       }
     }
 
-    $this->model->_responseCode = HttpCode::HTTP_OK;
+    $this->model->_responseCode = !$this->model->error ? HttpCode::HTTP_OK : HttpCode::HTTP_INTERNAL_SERVER_ERROR;
     return true;
   }
 
@@ -167,54 +167,52 @@ class Edit extends \BNETDocs\Controllers\Base
     $transport_layer = $this->model->form_fields['transport_layer'] ?? null;
     $used_by = $this->model->form_fields['used_by'] ?? [];
 
-    $this->model->error = FormModel::ERROR_SUCCESS;
+    $this->model->error = false;
 
     try { $this->model->packet->setApplicationLayerId($application_layer); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_APPLICATION_LAYER_ID; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_APPLICATION_LAYER_ID; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setBrief($brief); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_BRIEF; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_BRIEF; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setDirection((int) $direction); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_DIRECTION; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_DIRECTION; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setPacketId($packet_id); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_PACKET_ID; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_PACKET_ID; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setName($name); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_NAME; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_NAME; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setFormat($format); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_FORMAT; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_FORMAT; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setRemarks($remarks); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_REMARKS; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_REMARKS; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setTransportLayerId($transport_layer); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_TRANSPORT_LAYER_ID; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_TRANSPORT_LAYER_ID; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
+    finally { if ($this->model->error !== false) return; }
 
     try { $this->model->packet->setUsedBy($used_by); }
     catch (OutOfBoundsException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_USED_BY; }
     catch (UnexpectedValueException) { $this->model->error = FormModel::ERROR_OUTOFBOUNDS_USED_BY; }
-    finally { if ($this->model->error !== FormModel::ERROR_SUCCESS) return; }
-
-    $this->model->error = FormModel::ERROR_INTERNAL;
+    finally { if ($this->model->error !== false) return; }
 
     $this->model->packet->setOption(Packet::OPTION_DEPRECATED, $deprecated ? true : false);
     $this->model->packet->setOption(Packet::OPTION_MARKDOWN, $markdown ? true : false);
@@ -222,6 +220,6 @@ class Edit extends \BNETDocs\Controllers\Base
     $this->model->packet->setOption(Packet::OPTION_RESEARCH, $research ? true : false);
     $this->model->packet->incrementEdited();
 
-    if ($this->model->packet->commit()) $this->model->error = FormModel::ERROR_SUCCESS;
+    $this->model->error = $this->model->packet->commit() ? false : FormModel::ERROR_INTERNAL;
   }
 }
