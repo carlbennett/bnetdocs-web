@@ -6,7 +6,7 @@ $title       = 'Discord';
 $description = 'Join our Discord and have a chat with us!';
 $this->opengraph->attach(new Pair('url', '/discord'));
 $this->opengraph->attach(new Pair('type', 'article'));
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h2><?=$title?></h2>
   <p><?=$description?></p>
@@ -31,4 +31,4 @@ require('./header.inc.phtml'); ?>
   </div>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

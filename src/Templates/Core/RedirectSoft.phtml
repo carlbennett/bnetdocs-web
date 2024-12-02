@@ -1,7 +1,7 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Core;
 $title = 'Soft Redirect';
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h1><?=$title?></h1>
   <div class="alert alert-warning">
@@ -9,4 +9,4 @@ require('./header.inc.phtml'); ?>
     <p><a href="<?=$this->getContext()->location?>"><?=$this->getContext()->location?></a></p>
   </div>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

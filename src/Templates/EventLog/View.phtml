@@ -71,7 +71,7 @@ if (stripos($tpl_referer, '/eventlog/view?id=' . $object_id) !== false)
   $tpl_referer = '';
 }
 
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (!$this->getContext()->acl_allowed) { ?>
   <div class="alert alert-danger">
@@ -101,4 +101,4 @@ require('./header.inc.phtml'); ?>
   <? } ?>
 <? } ?>
 </div>
-<? require("./footer.inc.phtml"); ?>
+<? require("./Includes/footer.inc.phtml"); ?>

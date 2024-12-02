@@ -11,7 +11,7 @@ $email_address = $this->getContext()->donations->email_address;
 $paypal_url = $this->getContext()->donations->paypal_url;
 $user_id = $this->getContext()->donations->user_id;
 $user = (!empty($user_id) ? new \BNETDocs\Libraries\User\User($user_id) : null);
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h1>Support Us</h1>
   <p>The following are the methods available for supporting us:</p>
@@ -39,4 +39,4 @@ require('./header.inc.phtml'); ?>
   </ol>
   <p>Please see our <a href="<?=Common::relativeUrlToAbsolute('/legal')?>">Legal</a> and <a href="<?=Common::relativeUrlToAbsolute('/privacy')?>">Privacy Policy</a> pages for more info.</p>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

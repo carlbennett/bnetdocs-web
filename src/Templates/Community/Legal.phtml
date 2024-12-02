@@ -8,7 +8,7 @@ $this->opengraph->attach(new Pair('url', '/legal'));
 $this->opengraph->attach(new Pair('type', 'article'));
 $email_domain = $this->getContext()->email_domain;
 $email_mailbox = $this->getContext()->email_mailbox;
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h1>Disclaimer &amp; Terms of Service</h1>
   <p>
@@ -76,4 +76,4 @@ and/or other countries.
   <p>Last updated: <time datetime="<?=$this->getContext()->license_version[1]->format('c')?>"><?=$this->getContext()->license_version[1]->format('l, F j, Y')?></time><? if ($this->getContext()->license_version[0]) { ?> (<a href="https://github.com/BNETDocs/bnetdocs-web/commit/<?=$this->getContext()->license_version[0]?>">version</a>)<? } ?></p>
   <pre class="border border-primary overflow-auto pre-scrollable rounded bg-dark text-light"><code class="language-plaintext"><?=filter_var($this->getContext()->license, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></code></pre>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

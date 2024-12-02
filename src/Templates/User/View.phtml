@@ -64,7 +64,7 @@ if (!empty($biography)) $description = $biography;
 
 $this->opengraph->attach(new Pair('type', 'profile'));
 $this->opengraph->attach(new Pair('url', $url));
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <span class="float-right">
 <?  if ($active_user && $user && $active_user->getId() == $user->getId()) { ?>
@@ -221,4 +221,4 @@ require('./header.inc.phtml'); ?>
     require('./Comment/Section.inc.phtml');
   } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

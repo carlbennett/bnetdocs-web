@@ -17,10 +17,10 @@ switch ($error)
   case DeleteModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to delete documents.'; break;
   default: $message = $error;
 }
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if ($error === DeleteModel::ERROR_ACL_NOT_SET) { ?>
-<? require('./LoginRequired.inc.phtml'); ?>
+<? require('./Includes/LoginRequired.inc.phtml'); ?>
 <? } else if (\is_null($error)) { ?>
   <h1 class="text-danger">Delete Document</h1>
   <form method="POST" action="?id=<?=filter_var($id, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?>">
@@ -46,4 +46,4 @@ require('./header.inc.phtml'); ?>
   </div>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

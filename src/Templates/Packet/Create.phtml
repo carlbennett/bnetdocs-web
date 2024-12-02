@@ -31,11 +31,11 @@ switch ($error)
 $form_fields = $this->getContext()->form_fields;
 $form_products = $this->getContext()->products;
 $packet = $this->getContext()->packet;
-require('./header.inc.phtml');
+require('./Includes/header.inc.phtml');
 echo '<div class="container">' . PHP_EOL;
 if ($error === FormModel::ERROR_ACL_NOT_SET || $error === FormModel::ERROR_NOT_LOGGED_IN)
 {
-  require('./LoginRequired.inc.phtml');
+  require('./Includes/LoginRequired.inc.phtml');
 }
 else if ($error === false)
 {
@@ -60,4 +60,4 @@ else
   require('./Packet/Form.inc.phtml');
 }
 echo '</div>' . PHP_EOL;
-require('./footer.inc.phtml');
+require('./Includes/footer.inc.phtml');

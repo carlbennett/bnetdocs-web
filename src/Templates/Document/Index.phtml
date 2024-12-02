@@ -21,7 +21,7 @@ $form_order_by = [
   'user-id-desc' => 'User Id (Descending)',
 ];
 require_once('./MarkdownBootstrapFix.inc.php');
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h2><?=$title?></h2>
   <p><?=$description?></p>
@@ -57,7 +57,7 @@ require('./header.inc.phtml'); ?>
         $doc_brief = rtrim(Common::stripUpTo(Common::stripUpTo(trim(strip_tags($doc_content)), "\n", 128), '. ', 128), '.');
       }
       ob_start();
-      if (!$document->isPublished()) require('./Draft.inc.phtml');
+      if (!$document->isPublished()) require('./Includes/Draft.inc.phtml');
       $doc_draft = ob_get_clean();
       if (!empty($doc_draft)) $doc_draft = ' ' . $doc_draft;
       printf('<tr><td><strong><a href="%s">%s</a></strong>%s<br/><span class="text-muted">%s</span></td><td>%s</td></tr>',
@@ -77,4 +77,4 @@ require('./header.inc.phtml'); ?>
       });
     });
   </script>
-<? $_footer_script = ob_get_clean(); require('./footer.inc.phtml'); ?>
+<? $_footer_script = ob_get_clean(); require('./Includes/footer.inc.phtml'); ?>

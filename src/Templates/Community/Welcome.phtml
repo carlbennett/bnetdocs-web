@@ -6,7 +6,7 @@ $title = 'Welcome';
 $description = 'Welcome to the documentation and discussion for the Battle.net&trade; protocol';
 $this->opengraph->attach(new Pair('url', '/welcome'));
 $this->opengraph->attach(new Pair('type', 'article'));
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h1>Welcome to BNETDocs!</h1>
   <p>BNETDocs is a community website that documents and discusses the Battle.net&trade; protocol.</p>
@@ -32,4 +32,4 @@ require('./header.inc.phtml'); ?>
     <a class="btn btn-success m-1" href="<?=Common::relativeUrlToAbsolute('/servers')?>">View Servers</a>
   </div></div>
 </div>
-<?php require('./footer.inc.phtml'); ?>
+<?php require('./Includes/footer.inc.phtml'); ?>

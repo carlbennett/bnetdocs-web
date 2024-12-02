@@ -24,7 +24,7 @@ $order = $this->getContext()->order;
 $no_prev = ($page <= 1);
 $no_next = ($page >= $pages);
 
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (!$this->getContext()->acl_allowed) { ?>
   <div class="alert alert-danger">
@@ -94,4 +94,4 @@ require('./header.inc.phtml'); ?>
   </nav>
 </div>
 <? } ?>
-<? require("./footer.inc.phtml"); ?>
+<? require("./Includes/footer.inc.phtml"); ?>

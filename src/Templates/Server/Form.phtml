@@ -19,12 +19,12 @@ switch ($model->error)
   case FormModel::ERROR_SUCCESS: $message = sprintf('The server has been %s!', $model->server_edit ? 'edited' : 'created'); break;
   default: $message = $model->error;
 }
-require('./header.inc.phtml');
+require('./Includes/header.inc.phtml');
 echo '<div class="container">';
 printf('<h1>%s</h1><p>%s</p>', $title, $description);
 if ($model->error === FormModel::ERROR_ACCESS_DENIED)
 {
-  require('./LoginRequired.inc.phtml');
+  require('./Includes/LoginRequired.inc.phtml');
 }
 else if ($model->error === FormModel::ERROR_SUCCESS)
 {
@@ -41,4 +41,4 @@ else
   if ($model->server) require('./Server/Form.inc.phtml');
 }
 echo '</div>';
-require('./footer.inc.phtml');
+require('./Includes/footer.inc.phtml');

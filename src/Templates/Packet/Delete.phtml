@@ -16,7 +16,7 @@ switch ($error)
   default: $message = $error;
 }
 $packet_id = filter_var($this->getContext()->packet_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (is_null($error)) { ?>
   <h1 class="text-danger"><?=$title?></h1>
@@ -41,4 +41,4 @@ require('./header.inc.phtml'); ?>
   </div>
 <? } ?>
 </div>
-<? require("./footer.inc.phtml"); ?>
+<? require("./Includes/footer.inc.phtml"); ?>

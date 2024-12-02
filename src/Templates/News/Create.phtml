@@ -21,12 +21,12 @@ $form_rss_exempt = $this->getContext()->rss_exempt;
 $form_title = filter_var($this->getContext()->title, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $news_post_id = null;
 $news_post_url = null;
-require('./header.inc.phtml');
+require('./Includes/header.inc.phtml');
 if (!$this->getContext()->acl_allowed) {
   echo '<div class="container">';
-  require('./LoginRequired.inc.phtml');
+  require('./Includes/LoginRequired.inc.phtml');
   echo '</div>';
-  require('./footer.inc.phtml');
+  require('./Includes/footer.inc.phtml');
   return;
 } ?>
 <div class="container">
@@ -45,4 +45,4 @@ if (!$this->getContext()->acl_allowed) {
   </div>
 <?  } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

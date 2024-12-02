@@ -111,7 +111,7 @@ switch ($this->getContext()->website_error[1] ?? null)
   default: $website_error = 'Internal error: ' . $this->getContext()->website_error[1];
 }
 $avatar = ($this->getContext()->user ? $this->getContext()->user->getAvatarURI(512) : null);
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if ($this->getContext()->_responseCode == 401) { ?>
   <h1 class="text-danger"><?=$title?></h1>
@@ -263,4 +263,4 @@ require('./header.inc.phtml'); ?>
   </form>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

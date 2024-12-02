@@ -58,7 +58,7 @@ else
 }
 $this->opengraph->attach(new Pair('type', 'article'));
 if (!empty($url)) $this->opengraph->attach(new Pair('url', $url));
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (!$server) { ?>
   <h1 class="text-danger"><?=filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></h1>
@@ -79,4 +79,4 @@ require('./header.inc.phtml'); ?>
   </tbody></table>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

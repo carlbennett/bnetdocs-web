@@ -14,7 +14,7 @@ switch ($error)
 }
 $token = filter_var($this->getContext()->token, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $user_id = filter_var($this->getContext()->user_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if ($this->getContext()->error !== false) { ?>
   <h1>Verify Account</h1>
@@ -45,4 +45,4 @@ require('./header.inc.phtml'); ?>
   </div>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

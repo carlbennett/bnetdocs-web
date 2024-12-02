@@ -29,7 +29,7 @@ if ($c)
   $c_user_url    = $c_user->getURI();
   $c_user_avatar = $c_user->getAvatarURI(22);
 }
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (is_null($this->getContext()->error) && !is_null($c)) { ?>
 
@@ -67,4 +67,4 @@ require('./header.inc.phtml'); ?>
 
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

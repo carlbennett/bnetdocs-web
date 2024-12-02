@@ -26,7 +26,7 @@ $form_title = filter_var($this->getContext()->title, FILTER_SANITIZE_FULL_SPECIA
 $news_categories = $this->getContext()->news_categories;
 $news_post = $this->getContext()->news_post;
 $news_post_id = filter_var($this->getContext()->news_post_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if ($this->getContext()->acl_allowed) { ?>
   <h1><?=$title?></h1>
@@ -44,6 +44,6 @@ require('./header.inc.phtml'); ?>
     <p class="mb-0">Your news post has been edited successfully!</p>
   </div>
 <?  }
-  } else { require('./LoginRequired.inc.phtml'); } ?>
+  } else { require('./Includes/LoginRequired.inc.phtml'); } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

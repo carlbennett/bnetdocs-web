@@ -17,11 +17,11 @@ switch ($model->error)
 }
 $id = $model->server ? $model->server->getId() : null;
 $json = $model->server ? json_encode($model->server, \BNETDocs\Views\Server\ViewJson::jsonFlags()) : null;
-require('./header.inc.phtml');
+require('./Includes/header.inc.phtml');
 echo '<div class="container">';
 if ($model->error === DeleteModel::ERROR_ACL_NOT_SET)
 {
-  require('./LoginRequired.inc.phtml');
+  require('./Includes/LoginRequired.inc.phtml');
 }
 else if ($model->error === false)
 {
@@ -48,4 +48,4 @@ else
   }
 }
 echo '</div>';
-require('./footer.inc.phtml');
+require('./Includes/footer.inc.phtml');

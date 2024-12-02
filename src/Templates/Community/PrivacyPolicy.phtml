@@ -17,7 +17,7 @@ $description = sprintf(
   $title, $org, Common::relativeUrlToAbsolute('/')
 );
 
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <h1><?=filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></h1>
 <p>Last Updated: March 1, 2024</p>
@@ -106,4 +106,4 @@ require('./header.inc.phtml'); ?>
 <?=(Common::$config->discord->enabled ? '<p>Alternatively, you may try reaching ' . filter_var($org, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' staff via <a href="' . Common::relativeUrlToAbsolute('/discord') . '">Discord</a>.</p>' : '')?>
 
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

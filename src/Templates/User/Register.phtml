@@ -33,7 +33,7 @@ switch ($error)
 $register_disabled = ($error == 'REGISTER_DISABLED');
 $email = filter_var($this->getContext()->email, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $username = filter_var($this->getContext()->username, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <script async defer="defer" src="https://www.google.com/recaptcha/api.js"><![CDATA[]]></script>
   <div class="card mx-auto mb-3" style="width:22rem;">
@@ -75,4 +75,4 @@ require('./header.inc.phtml'); ?>
   <div class="alert alert-success"><p class="mb-0">You have successfully created an account!</p></div>
 <?  } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

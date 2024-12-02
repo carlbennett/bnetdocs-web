@@ -21,7 +21,7 @@ switch ($error)
   case LoginModel::ERROR_USER_NOT_VERIFIED: $message = 'The account\'s identity has not been verified yet. No email yet? Use the Recover Password button.'; break;
   default: $message = $error;
 }
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if ($error !== false) { ?>
   <form method="POST">
@@ -49,4 +49,4 @@ require('./header.inc.phtml'); ?>
   <div class="alert alert-success"><p class="mb-0">You have successfully logged in!</p></div>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

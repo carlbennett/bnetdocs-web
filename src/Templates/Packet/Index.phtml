@@ -19,7 +19,7 @@ $form_order_by = [
   'user-id-desc' => 'User Id (Descending)',
 ];
 require_once('./MarkdownBootstrapFix.inc.php');
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h2><?=$title?></h2>
   <p><?=$description?></p>
@@ -83,9 +83,9 @@ require('./header.inc.phtml'); ?>
       }
 
       ob_start();
-      if ($deprecated) require('./Deprecated.inc.phtml');
-      if ($research) require('./InResearch.inc.phtml');
-      if (!$published) require('./Draft.inc.phtml');
+      if ($deprecated) require('./Includes/Deprecated.inc.phtml');
+      if ($research) require('./Includes/InResearch.inc.phtml');
+      if (!$published) require('./Includes/Draft.inc.phtml');
       $tpl_packet_flags = ob_get_clean();
       if (!empty($tpl_packet_flags)) $tpl_packet_flags = ' ' . $tpl_packet_flags;
 
@@ -163,4 +163,4 @@ require('./header.inc.phtml'); ?>
       $('input[name="pktapplayer[]"]').click(sync_pktapplayer_all);
     });
   </script>
-<? $_footer_script = ob_get_clean(); require('./footer.inc.phtml'); ?>
+<? $_footer_script = ob_get_clean(); require('./Includes/footer.inc.phtml'); ?>

@@ -16,7 +16,7 @@ switch ($error)
   case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
   default: $message = $error;
 }
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (is_null($this->getContext()->error)) { ?>
   <h1 class="text-danger">Delete News Post</h1>
@@ -42,4 +42,4 @@ require('./header.inc.phtml'); ?>
   </div>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

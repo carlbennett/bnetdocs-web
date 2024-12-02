@@ -16,7 +16,7 @@ ksort($servers_by_type);
 $can_server_create = $this->getContext()->active_user && $this->getContext()->active_user->getOption(User::OPTION_ACL_SERVER_CREATE);
 $can_server_modify = $this->getContext()->active_user && $this->getContext()->active_user->getOption(User::OPTION_ACL_SERVER_MODIFY);
 
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <?=($can_server_create ? sprintf('<a class="btn btn-success text-white float-right" href="%s">Create Server</a>', Common::relativeUrlToAbsolute('/server/create')) : '')?>
   <h1><?=$title?></h1>
@@ -76,4 +76,4 @@ require('./header.inc.phtml'); ?>
       });
     });
   </script>
-<? $_footer_script = ob_get_clean(); require('./footer.inc.phtml'); ?>
+<? $_footer_script = ob_get_clean(); require('./Includes/footer.inc.phtml'); ?>

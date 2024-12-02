@@ -23,7 +23,7 @@ if ($target_user)
   $target_user_name   = $target_user->getName();
   $target_user_url    = $target_user->getURI();
 }
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (is_null($this->getContext()->error)) { ?>
 
@@ -58,4 +58,4 @@ require('./header.inc.phtml'); ?>
 
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

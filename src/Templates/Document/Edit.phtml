@@ -26,7 +26,7 @@ $form_brief = filter_var($this->getContext()->brief, FILTER_SANITIZE_FULL_SPECIA
 $form_content = filter_var($this->getContext()->content, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $form_markdown = $this->getContext()->markdown;
 $form_title = filter_var($this->getContext()->title, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if ($this->getContext()->acl_allowed) { ?>
   <h1><?=$title?></h1>
@@ -46,6 +46,6 @@ require('./header.inc.phtml'); ?>
     <a class="btn btn-primary" href="<?=Common::relativeUrlToAbsolute('/document/' . rawurlencode($document_id))?>"><img class="float-left" src="<?=Common::relativeUrlToAbsolute('/a/svg/chevron-right-white.svg' . $_unique_asset)?>"/> Return to Document</a>
   </div>
 <?  }
-  } else { require('./LoginRequired.inc.phtml'); } ?>
+  } else { require('./Includes/LoginRequired.inc.phtml'); } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

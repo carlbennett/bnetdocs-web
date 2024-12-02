@@ -12,7 +12,7 @@ $top_contributors_by_news_posts = $this->getContext()->top_contributors_by_news_
 $top_contributors_by_packets = $this->getContext()->top_contributors_by_packets;
 $top_contributors_by_servers = $this->getContext()->top_contributors_by_servers;
 $users = []; // used for User object lookup cache
-require('./header.inc.phtml');
+require('./Includes/header.inc.phtml');
 ?>
 <div class="container">
   <h2>Contributors</h2>
@@ -193,4 +193,4 @@ require('./header.inc.phtml');
   } ?>
   </tbody></table>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

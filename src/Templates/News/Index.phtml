@@ -6,7 +6,7 @@ use \CarlBennett\MVC\Libraries\Pair;
 $title = 'News';
 $description = 'BNETDocs News';
 $this->opengraph->attach(new Pair('url', '/news'));
-require('./header.inc.phtml');
+require('./Includes/header.inc.phtml');
 
 $news_posts = $this->getContext()->news_posts;
 $pagination = $this->getContext()->pagination;
@@ -118,4 +118,4 @@ else
   }
 }
 
-require('./footer.inc.phtml');
+require('./Includes/footer.inc.phtml');

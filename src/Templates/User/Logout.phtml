@@ -3,7 +3,7 @@ namespace BNETDocs\Templates\User;
 $title = 'Logout';
 $description = 'Log out of the BNETDocs website';
 $this->opengraph->attach(new \CarlBennett\MVC\Libraries\Pair('url', '/user/logout'));
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (!$this->getContext()->active_user) { ?>
   <h1 class="text-success">Logged Out</h1>
@@ -23,4 +23,4 @@ require('./header.inc.phtml'); ?>
   </secton>
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>

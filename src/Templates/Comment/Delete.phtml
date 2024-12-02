@@ -26,7 +26,7 @@ if ($c)
   $c_user_url    = $c_user->getURI();
 }
 $id = $this->getContext()->id;
-require('./header.inc.phtml'); ?>
+require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (is_null($this->getContext()->error)) { ?>
 
@@ -63,4 +63,4 @@ require('./header.inc.phtml'); ?>
 
 <? } ?>
 </div>
-<? require('./footer.inc.phtml'); ?>
+<? require('./Includes/footer.inc.phtml'); ?>
