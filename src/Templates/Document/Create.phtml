@@ -1,6 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document;
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Models\Document\Create as CreateModel;
 use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Create Document';
 $description = 'This page enables a user to create documents on the site.';
@@ -11,10 +11,11 @@ $document_url = null;
 $error = $this->getContext()->error;
 switch ($error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to create documents.'; break;
-  case 'EMPTY_TITLE': $message = 'The title of the document is required.'; break;
-  case 'EMPTY_CONTENT': $message = 'The content of the document is required.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case CreateModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to create documents.'; break;
+  case CreateModel::ERROR_EMPTY_TITLE: $message = 'The title of the document is required.'; break;
+  case CreateModel::ERROR_EMPTY_CONTENT: $message = 'The content of the document is required.'; break;
+  case CreateModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to create documents.'; break;
+  case CreateModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
   default: $message = $error;
 }
 $form_brief = filter_var($this->getContext()->brief, FILTER_SANITIZE_FULL_SPECIAL_CHARS);

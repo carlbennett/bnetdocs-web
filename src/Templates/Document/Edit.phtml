@@ -1,6 +1,7 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document;
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Models\Document\Edit as EditModel;
 use \CarlBennett\MVC\Libraries\Common;
 use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Edit Document';
@@ -13,11 +14,12 @@ $document_url = ($this->getContext()->document ? $this->getContext()->document->
 $error = $this->getContext()->error;
 switch ($error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to edit documents.'; break;
-  case 'NOT_FOUND': $message = 'Cannot find document by that id.'; break;
-  case 'EMPTY_TITLE': $message = 'The title of the document is required.'; break;
-  case 'EMPTY_CONTENT': $message = 'The content of the document is required.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case EditModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to edit documents.'; break;
+  case EditModel::ERROR_EMPTY_CONTENT: $message = 'The content of the document is required.'; break;
+  case EditModel::ERROR_EMPTY_TITLE: $message = 'The title of the document is required.'; break;
+  case EditModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case EditModel::ERROR_NOT_FOUND: $message = 'Cannot find document by that id.'; break;
+  case EditModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to edit documents.'; break;
   default: $message = $error;
 }
 $form_brief = filter_var($this->getContext()->brief, FILTER_SANITIZE_FULL_SPECIAL_CHARS);

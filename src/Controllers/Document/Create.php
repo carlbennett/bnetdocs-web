@@ -5,16 +5,13 @@ namespace BNETDocs\Controllers\Document;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\Document\Create as CreateModel;
 
 class Create extends \BNETDocs\Controllers\Base
 {
-  public const EMPTY_CONTENT = 'EMPTY_CONTENT';
-  public const EMPTY_TITLE = 'EMPTY_TITLE';
-  public const INTERNAL_ERROR = 'INTERNAL_ERROR';
-
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Document\Create();
+    $this->model = new CreateModel();
   }
 
   public function invoke(?array $args): bool
@@ -25,7 +22,7 @@ class Create extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = 'ACL_NOT_SET';
+      $this->model->error = $this->model->active_user ? CreateModel::ERROR_ACL_NOT_SET : CreateModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -55,11 +52,16 @@ class Create extends \BNETDocs\Controllers\Base
     $this->model->markdown = $markdown;
     $this->model->content = $content;
 
-    if (empty($title)) {
-      $this->model->error = self::EMPTY_TITLE;
-    } else if (empty($content)) {
-      $this->model->error = self::EMPTY_CONTENT;
+    if (empty($title))
+    {
+      $this->model->error = CreateModel::ERROR_EMPTY_TITLE;
     }
+    else if (empty($content))
+    {
+      $this->model->error = CreateModel::ERROR_EMPTY_CONTENT;
+    }
+
+    if ($this->model->error) return;
 
     $document = new \BNETDocs\Libraries\Document(null);
     $document->setBrief($brief);
@@ -71,7 +73,7 @@ class Create extends \BNETDocs\Controllers\Base
 
     if (!$document->commit())
     {
-      $this->model->error = self::INTERNAL_ERROR;
+      $this->model->error = CreateModel::ERROR_INTERNAL;
       return;
     }
     $this->model->error = false;

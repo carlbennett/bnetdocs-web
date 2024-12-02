@@ -5,12 +5,13 @@ use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\Document\Edit as EditModel;
 
 class Edit extends \BNETDocs\Controllers\Base
 {
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Document\Edit();
+    $this->model = new EditModel();
   }
 
   public function invoke(?array $args): bool
@@ -21,7 +22,7 @@ class Edit extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = 'ACL_NOT_SET';
+      $this->model->error = $this->model->active_user ? EditModel::ERROR_ACL_NOT_SET : EditModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -33,7 +34,7 @@ class Edit extends \BNETDocs\Controllers\Base
     if (!$this->model->document)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
-      $this->model->error = 'NOT_FOUND';
+      $this->model->error = EditModel::ERROR_NOT_FOUND;
       return true;
     }
 
@@ -71,11 +72,11 @@ class Edit extends \BNETDocs\Controllers\Base
 
     if (empty($title))
     {
-      $this->model->error = 'EMPTY_TITLE';
+      $this->model->error = EditModel::ERROR_EMPTY_TITLE;
     }
     else if (empty($content))
     {
-      $this->model->error = 'EMPTY_CONTENT';
+      $this->model->error = EditModel::ERROR_EMPTY_CONTENT;
     }
 
     if ($this->model->error) return;
@@ -87,7 +88,7 @@ class Edit extends \BNETDocs\Controllers\Base
     $this->model->document->setPublished($publish);
     $this->model->document->incrementEdited();
 
-    $this->model->error = $this->model->document->commit() ? false : 'INTERNAL_ERROR';
+    $this->model->error = $this->model->document->commit() ? false : EditModel::ERROR_INTERNAL;
     if ($this->model->error !== false) return;
 
     $event = Logger::initEvent(

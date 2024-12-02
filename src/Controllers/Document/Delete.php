@@ -22,7 +22,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = DeleteModel::ERROR_ACCESS_DENIED;
+      $this->model->error = $this->model->active_user ? DeleteModel::ERROR_ACL_NOT_SET : DeleteModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -43,7 +43,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
     if (Router::requestMethod() == Router::METHOD_POST)
     {
-      $this->model->error = $this->model->document->deallocate() ? DeleteModel::ERROR_SUCCESS : DeleteModel::ERROR_INTERNAL;
+      $this->model->error = $this->model->document->deallocate() ? false : DeleteModel::ERROR_INTERNAL;
 
       $event = Logger::initEvent(
         \BNETDocs\Libraries\EventLog\EventTypes::DOCUMENT_DELETED,

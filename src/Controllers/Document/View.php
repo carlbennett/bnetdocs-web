@@ -26,7 +26,7 @@ class View extends \BNETDocs\Controllers\Base
     $this->model->document_id = array_shift($args);
 
     try { $this->model->document = new \BNETDocs\Libraries\Document($this->model->document_id); }
-    catch (\UnexpectedValueException) { $this->model->document = null; }
+    catch (\BNETDocs\Exceptions\DocumentNotFoundException) { $this->model->document = null; }
 
     if ($this->model->document && !$this->model->document->isPublished()
       && !($this->model->active_user && $this->model->active_user->isStaff()))
