@@ -4,10 +4,10 @@ namespace BNETDocs\Models\Server;
 
 class Delete extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
-  public const ERROR_ACCESS_DENIED = 'ACCESS_DENIED';
+  public const ERROR_ACL_NOT_SET = 'ACL_NOT_SET';
   public const ERROR_INTERNAL = 'INTERNAL_ERROR';
-  public const ERROR_INVALID_ID = 'INVALID_ID';
-  public const ERROR_SUCCESS = 'SUCCESS';
+  public const ERROR_NOT_FOUND = 'NOT_FOUND';
+  public const ERROR_NOT_LOGGED_IN = 'NOT_LOGGED_IN';
 
   public ?\BNETDocs\Libraries\Server\Server $server = null;
 

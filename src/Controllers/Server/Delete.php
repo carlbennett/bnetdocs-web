@@ -23,7 +23,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_SERVER_DELETE)))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = DeleteModel::ERROR_ACCESS_DENIED;
+      $this->model->error = $this->model->active_user ? DeleteModel::ERROR_ACL_NOT_SET : DeleteModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -31,7 +31,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!is_numeric($id))
     {
       $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
-      $this->model->error = DeleteModel::ERROR_INVALID_ID;
+      $this->model->error = DeleteModel::ERROR_NOT_FOUND;
       return true;
     }
     $id = (int) $id;
@@ -42,7 +42,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!$this->model->server)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
-      $this->model->error = DeleteModel::ERROR_INVALID_ID;
+      $this->model->error = DeleteModel::ERROR_NOT_FOUND;
       return true;
     }
 
@@ -53,8 +53,8 @@ class Delete extends \BNETDocs\Controllers\Base
 
   protected function handlePost(): void
   {
-    $this->model->error = $this->model->server->deallocate() ? DeleteModel::ERROR_SUCCESS : DeleteModel::ERROR_INTERNAL;
-    if ($this->model->error === DeleteModel::ERROR_SUCCESS)
+    $this->model->error = $this->model->server->deallocate() ? false : DeleteModel::ERROR_INTERNAL;
+    if ($this->model->error === false)
     {
       $event = Logger::initEvent(
         \BNETDocs\Libraries\EventLog\EventTypes::SERVER_DELETED,
