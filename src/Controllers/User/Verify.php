@@ -4,6 +4,7 @@ namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\User\Verify as VerifyModel;
 
 class Verify extends \BNETDocs\Controllers\Base
 {
@@ -12,7 +13,7 @@ class Verify extends \BNETDocs\Controllers\Base
    */
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\User\Verify();
+    $this->model = new VerifyModel();
   }
 
   /**
@@ -36,7 +37,7 @@ class Verify extends \BNETDocs\Controllers\Base
     $user_token = $this->model->user ? $this->model->user->getVerifierToken() : null;
     if (!$this->model->user || $user_token !== $this->model->token)
     {
-      $this->model->error = 'INVALID_TOKEN';
+      $this->model->error = VerifyModel::ERROR_INVALID_TOKEN;
       $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
       return true;
     }
@@ -44,10 +45,9 @@ class Verify extends \BNETDocs\Controllers\Base
     try
     {
       $this->model->user->setVerified(true, true);
-      $this->model->user->commit();
-      $this->model->error = false;
+      $this->model->error = $this->model->user->commit() ? false : VerifyModel::ERROR_INTERNAL;
     }
-    catch (\Throwable) { $this->model->error = 'INTERNAL_ERROR'; }
+    catch (\Throwable) { $this->model->error = VerifyModel::ERROR_INTERNAL; }
 
     if (!$this->model->error)
     {

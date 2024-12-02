@@ -26,7 +26,7 @@ class Login extends \BNETDocs\Controllers\Base
     }
 
     $this->model->_responseCode = HttpCode::HTTP_OK;
-    $this->model->error = LoginModel::ERROR_NONE;
+    $this->model->error = null;
 
     $q = Router::query();
     $this->model->email = $q['email'] ?? null;
@@ -41,10 +41,10 @@ class Login extends \BNETDocs\Controllers\Base
     else if (Common::$config->bnetdocs->user_login_disabled)
       $this->model->error = LoginModel::ERROR_SYSTEM_DISABLED;
 
-    if ($this->model->error !== LoginModel::ERROR_NONE) return true;
+    if ($this->model->error) return true;
 
     try { $this->model->user = new User(User::findIdByEmail($this->model->email)); }
-    catch (\UnexpectedValueException) { $this->model->user = null; }
+    catch (\BNETDocs\Exceptions\UserNotFoundException) { $this->model->user = null; }
 
     if (!$this->model->user)
       $this->model->error = LoginModel::ERROR_USER_NOT_FOUND;
@@ -55,7 +55,7 @@ class Login extends \BNETDocs\Controllers\Base
     else if (!$this->model->user->isVerified())
       $this->model->error = LoginModel::ERROR_USER_NOT_VERIFIED;
 
-    if ($this->model->error !== LoginModel::ERROR_NONE) return true;
+    if ($this->model->error) return true;
 
     // Upgrade old password (we checked it matches earlier above)
     if (substr($this->model->user->getPasswordHash(), 0, 1) !== '$')
@@ -70,7 +70,7 @@ class Login extends \BNETDocs\Controllers\Base
     }
 
     \BNETDocs\Libraries\User\Authentication::login($this->model->user);
-    $this->model->error = LoginModel::ERROR_SUCCESS;
+    $this->model->error = false;
 
     $event = Logger::initEvent(
       \BNETDocs\Libraries\EventLog\EventTypes::USER_LOGIN,

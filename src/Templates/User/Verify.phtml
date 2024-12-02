@@ -1,6 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\User;
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Models\User\Verify as VerifyModel;
 use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Verify Account';
 $description = 'This form allows an individual to verify their account with a token.';
@@ -8,8 +8,8 @@ $this->opengraph->attach( new Pair( 'url', '/user/verify' ));
 $error = $this->getContext()->error;
 switch ($error)
 {
-  case 'INVALID_TOKEN': $message = 'The token is expired or invalid and therefore cannot be used.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case VerifyModel::ERROR_INVALID_TOKEN: $message = 'The token is expired or invalid and therefore cannot be used.'; break;
+  case VerifyModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
   default: $message = $error;
 }
 $token = filter_var($this->getContext()->token, FILTER_SANITIZE_FULL_SPECIAL_CHARS);

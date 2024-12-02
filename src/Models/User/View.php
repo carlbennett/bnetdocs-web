@@ -4,20 +4,20 @@ namespace BNETDocs\Models\User;
 
 class View extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
-  public $comments;
-  public $contributions;
-  public $documents;
-  public $news_posts;
-  public $packets;
-  public $servers;
-  public $sum_comments;
-  public $sum_documents;
-  public $sum_news_posts;
-  public $sum_packets;
-  public $sum_servers;
-  public $user;
-  public $user_id;
-  public $user_profile;
+  public ?array $comments = null;
+  public int $contributions = 0;
+  public ?array $documents = null;
+  public ?array $news_posts = null;
+  public ?array $packets = null;
+  public ?array $servers = null;
+  public int $sum_comments = 0;
+  public int $sum_documents = 0;
+  public int $sum_news_posts = 0;
+  public int $sum_packets = 0;
+  public int $sum_servers = 0;
+  public ?\BNETDocs\Libraries\User\User $user = null;
+  public ?int $user_id = null;
+  public ?\BNETDocs\Libraries\User\Profile $user_profile = null;
 
   public function jsonSerialize(): mixed
   {
