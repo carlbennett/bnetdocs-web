@@ -3,7 +3,7 @@
 namespace BNETDocs\Interfaces;
 
 /**
- * This interface is implemented for managing the lifecycle of a database object.
+ * Manages the lifecycle of a database object.
  */
 interface DatabaseObject
 {
