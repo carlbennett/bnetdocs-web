@@ -3,8 +3,8 @@
 namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\Community\Credits;
 use \BNETDocs\Libraries\Core\HttpCode;
-use \BNETDocs\Libraries\Credits;
 use \BNETDocs\Libraries\Document;
 use \BNETDocs\Libraries\Packet\Packet;
 use \BNETDocs\Libraries\Server\Server;
