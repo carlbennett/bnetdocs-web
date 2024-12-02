@@ -1,6 +1,6 @@
 <?php
 
-namespace BNETDocs\Libraries;
+namespace BNETDocs\Libraries\Community;
 
 use \BNETDocs\Libraries\Db\MariaDb;
 
