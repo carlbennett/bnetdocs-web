@@ -2,9 +2,8 @@
 
 namespace BNETDocs\Models\Document;
 
-class View extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
+class View extends \BNETDocs\Models\Core\AccessControl implements \JsonSerializable
 {
-    public bool $acl_allowed = false;
     public ?array $comments = null;
     public ?\BNETDocs\Libraries\Document $document = null;
     public ?int $document_id = null;
@@ -12,7 +11,6 @@ class View extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
     public function jsonSerialize(): mixed
     {
         return \array_merge(parent::jsonSerialize(), [
-            'acl_allowed' => $this->acl_allowed,
             'comments' => $this->comments,
             'document' => $this->document,
             'document_id' => $this->document_id,

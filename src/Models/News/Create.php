@@ -2,14 +2,13 @@
 
 namespace BNETDocs\Models\News;
 
-class Create extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
+class Create extends \BNETDocs\Models\Core\AccessControl implements \JsonSerializable
 {
   public const ACL_NOT_SET = 'ACL_NOT_SET';
   public const EMPTY_CONTENT = 'EMPTY_CONTENT';
   public const EMPTY_TITLE = 'EMPTY_TITLE';
   public const INTERNAL_ERROR = 'INTERNAL_ERROR';
 
-  public bool $acl_allowed = false;
   public ?int $category_id = null;
   public string $content = '';
   public mixed $error = 'INTERNAL_ERROR';
@@ -22,7 +21,6 @@ class Create extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
   public function jsonSerialize(): mixed
   {
     return \array_merge(parent::jsonSerialize(), [
-      'acl_allowed' => $this->acl_allowed,
       'category' => $this->category_id,
       'content' => $this->content,
       'error' => $this->error,

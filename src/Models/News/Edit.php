@@ -2,9 +2,8 @@
 
 namespace BNETDocs\Models\News;
 
-class Edit extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
+class Edit extends \BNETDocs\Models\Core\AccessControl implements \JsonSerializable
 {
-    public bool $acl_allowed = false;
     public ?int $category = null;
     public ?array $comments = null;
     public ?string $content = null;
@@ -19,7 +18,6 @@ class Edit extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
     public function jsonSerialize(): mixed
     {
         return \array_merge(parent::jsonSerialize(), [
-            'acl_allowed' => $this->acl_allowed,
             'category' => $this->category,
             'comments' => $this->comments,
             'content' => $this->content,
