@@ -113,7 +113,7 @@ switch ($this->getContext()->website_error[1] ?? null)
 $avatar = ($this->getContext()->user ? $this->getContext()->user->getAvatarURI(512) : null);
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
-<? if ($this->getContext()->_responseCode == 401) { ?>
+<? if ($this->getContext()->_responseCode == \BNETDocs\Libraries\Core\HttpCode::HTTP_FORBIDDEN) { ?>
   <h1 class="text-danger"><?=$title?></h1>
   <div class="alert alert-danger">
     <p class="mb-0">You are not authorized to access this page.</p>
