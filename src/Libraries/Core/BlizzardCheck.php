@@ -26,7 +26,7 @@ class BlizzardCheck
   private static function check_blizzard_cidrs(): int
   {
     $IP    = getenv('REMOTE_ADDR');
-    $CIDRs = file_get_contents(getcwd() . '/Static/a/Blizzard-CIDRs.txt');
+    $CIDRs = file_get_contents(__DIR__ . '/../../Static/a/Blizzard-CIDRs.txt');
     $CIDRs = preg_replace("/^#.*?\n/sm", '', $CIDRs);
     $CIDRs = Common::stripLinesWith($CIDRs, "\n");
     $CIDRs = explode("\n", $CIDRs);
