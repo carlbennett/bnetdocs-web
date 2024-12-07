@@ -47,7 +47,7 @@ class VersionInfo
   private static function assetVersion(?array $version): string
   {
     return (
-      !\CarlBennett\MVC\Libraries\Common::$config->bnetdocs->asset_versioning ? '' :
+      !\BNETDocs\Libraries\Core\Config::get('bnetdocs.asset_versioning') ? '' :
       (!is_null($version) ? $version[1] : date('YmdHis'))
     );
   }

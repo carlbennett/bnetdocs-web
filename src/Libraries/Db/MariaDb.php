@@ -2,6 +2,7 @@
 
 namespace BNETDocs\Libraries\Db;
 
+use \BNETDocs\Libraries\Core\Config;
 use \PDO;
 
 class MariaDb extends PDO
@@ -10,15 +11,12 @@ class MariaDb extends PDO
 
   public function __construct(string $driver = 'mysql')
   {
-    $config = \CarlBennett\MVC\Libraries\Common::$config->$driver;
-    if (!$config) throw new \LogicException('Database driver config is invalid');
-
-    $character_set = $config->character_set ?? null;
-    $database_name = $config->database ?? null;
-    $hostname = $config->servers[0]->hostname ?? null;
-    $password = $config->password ?? null;
-    $port = $config->servers[0]->port ?? null;
-    $username = $config->username ?? null;
+    $character_set = Config::get(\sprintf('%s.character_set', $driver), null, Config::SKIP_DB) ?? null;
+    $database_name = Config::get(\sprintf('%s.database', $driver), null, Config::SKIP_DB) ?? null;
+    $hostname = Config::get(\sprintf('%s.hostname', $driver), null, Config::SKIP_DB) ?? null;
+    $password = Config::get(\sprintf('%s.password', $driver), null, Config::SKIP_DB) ?? null;
+    $port = Config::get(\sprintf('%s.port', $driver), null, Config::SKIP_DB) ?? 3306;
+    $username = Config::get(\sprintf('%s.username', $driver), null, Config::SKIP_DB) ?? null;
 
     $dsn = \sprintf('%s:host=%s;port=%d;dbname=%s',
       $driver, $hostname, $port, $database_name

@@ -57,7 +57,7 @@ class Legacy extends \BNETDocs\Controllers\Base
     }
 
     if (is_null($this->model->url)) {
-      $this->model->url = Common::$config->bnetdocs->navigation->front_page;
+      $this->model->url = \BNETDocs\Libraries\Core\Config::get('bnetdocs.navigation.front_page');
       $this->model->is_legacy = false;
       $code = HttpCode::HTTP_FOUND;
     } else {
@@ -65,7 +65,7 @@ class Legacy extends \BNETDocs\Controllers\Base
       $code = HttpCode::HTTP_MOVED_PERMANENTLY;
     }
 
-    $this->model->url = Common::relativeUrlToAbsolute($this->model->url);
+    $this->model->url = \BNETDocs\Libraries\Core\UrlFormatter::format($this->model->url);
 
     $this->model->_responseCode = $code;
     $this->model->_responseHeaders['Location'] = $this->model->url;

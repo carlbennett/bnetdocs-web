@@ -2,6 +2,7 @@
 
 namespace BNETDocs\Controllers\Community;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \DateTimeZone;
 
@@ -25,9 +26,8 @@ class Legal extends \BNETDocs\Controllers\Base
      */
     public function invoke(?array $args): bool
     {
-        $privacy_contact = &\CarlBennett\MVC\Libraries\Common::$config->bnetdocs->privacy->contact;
-        $this->model->email_domain = $privacy_contact->email_domain;
-        $this->model->email_mailbox = $privacy_contact->email_mailbox;
+        $this->model->email_domain = Config::get('bnetdocs.privacy.contact.email_domain');
+        $this->model->email_mailbox = Config::get('bnetdocs.privacy.contact.email_mailbox');
 
         $this->model->license = \file_get_contents(self::LICENSE_FILE);
         $this->model->license_version = \BNETDocs\Libraries\Core\VersionInfo::$version['bnetdocs'][3] ?? null;

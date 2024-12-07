@@ -2,11 +2,13 @@
 
 namespace BNETDocs\Libraries\User;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
+use \BNETDocs\Libraries\Core\StringProcessor;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\Discord\EmbedAuthor as DiscordEmbedAuthor;
 use \BNETDocs\Libraries\User\Profile as UserProfile;
-use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;
 use \OutOfBoundsException;
@@ -15,6 +17,7 @@ use \UnexpectedValueException;
 
 class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
 {
+  public const DEFAULT_BCRYPT_COST = 10;
   public const DEFAULT_OPTION = self::OPTION_ACL_COMMENT_CREATE;
   public const DEFAULT_TZ = null; // null means no timezone preference/automatic.
 
@@ -258,7 +261,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     else if (substr($this->password_hash, 0, 1) == '$')
     {
       // new style bcrypt password
-      $cost = Common::$config->bnetdocs->user_password_bcrypt_cost;
+      $cost = Config::get('bnetdocs.user_password_bcrypt_cost') ?? self::DEFAULT_BCRYPT_COST;
       $match = password_verify($password, $this->password_hash);
       $rehash = password_needs_rehash(
         $this->password_hash, PASSWORD_BCRYPT, array('cost' => $cost)
@@ -269,10 +272,9 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     else
     {
       // old style peppered and salted sha256 password
-      $pepper = Common::$config->bnetdocs->user_password_pepper;
       $salt = $this->password_salt;
-
       if (is_null($salt)) return false;
+      $pepper = Config::get('bnetdocs.user_password_pepper') ?? '';
 
       $hash = strtoupper(hash('sha256', $password.$salt.$pepper));
       return strtoupper($this->password_hash) === $hash;
@@ -287,7 +289,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public static function createPassword(string $password): string
   {
-    $cost = Common::$config->bnetdocs->user_password_bcrypt_cost;
+    $cost = Config::get('bnetdocs.user_password_bcrypt_cost') ?? self::DEFAULT_BCRYPT_COST;
     return password_hash($password, PASSWORD_BCRYPT, array('cost' => $cost));
   }
 
@@ -417,7 +419,7 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
    */
   public function getAvatarURI(?int $size): string
   {
-    return Common::relativeUrlToAbsolute(
+    return UrlFormatter::format(
       (new \BNETDocs\Libraries\User\Gravatar($this->getEmail()))->getUrl($size, 'identicon')
     );
   }
@@ -562,16 +564,14 @@ class User implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   /**
    * Retrieves the unique URL for this user.
    *
-   * @return string The URL.
-   * @throws UnexpectedValueException when this user's id property is null.
+   * @return string|null The URL, or null if the id is null.
    */
-  public function getURI(): string
+  public function getURI(): ?string
   {
     $id = $this->getId();
-    if (is_null($id)) throw new UnexpectedValueException('user id is null');
-
-    return Common::relativeUrlToAbsolute(sprintf(
-      '/user/%s/%s', $id, Common::sanitizeForUrl($this->getName(), true)
+    if (is_null($id)) return null;
+    return UrlFormatter::format(sprintf(
+      '/user/%s/%s', $id, StringProcessor::sanitizeForUrl($this->getName(), true)
     ));
   }
 

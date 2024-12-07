@@ -6,7 +6,6 @@ use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\News\Category as NewsCategory;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;
 use \OutOfBoundsException;
@@ -299,10 +298,12 @@ class Post implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     return $this->title;
   }
 
-  public function getURI(): string
+  public function getURI(): ?string
   {
-    return Common::relativeUrlToAbsolute(sprintf(
-      '/news/%d/%s', $this->getId(), Common::sanitizeForUrl($this->getTitle(), true)
+    $id = $this->getId();
+    if (is_null($id)) return null;
+    return \BNETDocs\Libraries\Core\UrlFormatter::format(sprintf(
+      '/news/%d/%s', $this->getId(), \BNETDocs\Libraries\Core\StringProcessor::sanitizeForUrl($this->getTitle(), true)
     ));
   }
 

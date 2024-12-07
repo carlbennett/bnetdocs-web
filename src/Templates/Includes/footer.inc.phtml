@@ -1,11 +1,12 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates;
-use \BNETDocs\Libraries\Core\VersionInfo;
-use \CarlBennett\MVC\Libraries\Common; ?>
+use \BNETDocs\Libraries\Core\Config;
+use \BNETDocs\Libraries\Core\UrlFormatter;
+use \BNETDocs\Libraries\Core\VersionInfo;?>
 </main>
 <footer class="footer mt-auto py-3">
   <div class="container text-center">
-    <p class="small text-muted"><?=(VersionInfo::get()['bnetdocs'] ? sprintf('<a href="https://github.com/BNETDocs/bnetdocs-web/tree/%s" rel="external" title="Contribute to the BNETDocs source code!">BNETDocs %s</a>', VersionInfo::get()['bnetdocs'][1], VersionInfo::get()['bnetdocs'][0]) : '(Development)')?> &copy; 2003-2024 BNETDocs | <a href="<?=Common::relativeUrlToAbsolute('/legal')?>" title="BNETDocs Legal Page">Legal</a> | <a href="<?=Common::relativeUrlToAbsolute('/privacy')?>" title="BNETDocs Privacy Policy">Privacy Policy</a></p>
+    <p class="small text-muted"><?=(VersionInfo::get()['bnetdocs'] ? sprintf('<a href="https://github.com/BNETDocs/bnetdocs-web/tree/%s" rel="external" title="Contribute to the BNETDocs source code!">BNETDocs %s</a>', VersionInfo::get()['bnetdocs'][1], VersionInfo::get()['bnetdocs'][0]) : '(Development)')?> &copy; 2003-2024 BNETDocs | <a href="<?=UrlFormatter::format('/legal')?>" title="BNETDocs Legal Page">Legal</a> | <a href="<?=UrlFormatter::format('/privacy')?>" title="BNETDocs Privacy Policy">Privacy Policy</a></p>
     <p class="small text-muted">
 BNETDocs is a documentation and discussion website for Blizzard Entertainment's
 Battle.net&trade; and in-game protocols. You hereby acknowledge that BNETDocs
@@ -18,15 +19,15 @@ and/or other countries.
     </p>
   </div>
 </footer>
-<?php if (Common::$config->analytics->cloudflare) { ?>
-<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":<?=json_encode(Common::$config->analytics->cloudflare)?>}'></script><!-- End Cloudflare Web Analytics -->
+<?php if (Config::get('analytics.cloudflare')) { ?>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":<?=json_encode(Config::get('analytics.cloudflare'))?>}'></script><!-- End Cloudflare Web Analytics -->
 <?php } ?>
-<script src="<?=Common::relativeUrlToAbsolute('/a/jquery-3.7.0.slim.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/popper-1.16.0.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/bootstrap-4.4.1.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/datatables.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/highlight/highlight.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('jquery-3.7.0.slim.min.js')?>" type="text/javascript" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('popper-1.16.0.min.js')?>" type="text/javascript" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('bootstrap-4.4.1.min.js')?>" type="text/javascript" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('datatables.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('highlight/highlight.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
 <script defer type="text/javascript">$(document).ready(function(){hljs.highlightAll()});</script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/moment-2.29.4.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('moment-2.29.4.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
 <?=(isset($_footer_script) && !empty($_footer_script) ? $_footer_script : '')?>
 </body></html>

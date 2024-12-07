@@ -2,6 +2,7 @@
 
 namespace BNETDocs\Controllers\Community;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\HttpCode;
 
 class Discord extends \BNETDocs\Controllers\Base
@@ -22,11 +23,9 @@ class Discord extends \BNETDocs\Controllers\Base
      */
     public function invoke(?array $args): bool
     {
-        $config = &\CarlBennett\MVC\Libraries\Common::$config->discord;
-
-        $this->model->discord_server_id = $config->server_id;
-        $this->model->discord_url = \sprintf('https://discord.gg/%s', $config->invite_code);
-        $this->model->enabled = $config->enabled;
+        $this->model->discord_server_id = Config::get('discord.server_id') ?? null;
+        $this->model->discord_url = \sprintf('https://discord.gg/%s', Config::get('discord.invite_code') ?? '');
+        $this->model->enabled = Config::get('discord.enabled') ?? false;
 
         $this->model->_responseCode = ($this->model->enabled ? HttpCode::HTTP_OK : HttpCode::HTTP_SERVICE_UNAVAILABLE);
         return true;

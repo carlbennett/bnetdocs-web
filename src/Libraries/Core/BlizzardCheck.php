@@ -4,8 +4,6 @@ namespace BNETDocs\Libraries\Core;
 
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\User\Authentication;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\IP;
 
 /**
  * Provides a set of methods to identify clients originating from Blizzard.
@@ -28,7 +26,7 @@ class BlizzardCheck
     $IP    = getenv('REMOTE_ADDR');
     $CIDRs = file_get_contents(__DIR__ . '/../../Static/a/Blizzard-CIDRs.txt');
     $CIDRs = preg_replace("/^#.*?\n/sm", '', $CIDRs);
-    $CIDRs = Common::stripLinesWith($CIDRs, "\n");
+    $CIDRs = StringProcessor::stripLinesWith($CIDRs, "\n");
     $CIDRs = explode("\n", $CIDRs);
     return (
       IP::checkCIDRArray($IP, $CIDRs) ? self::STATUS_BLIZZARD : self::STATUS_NOT_BLIZZARD
@@ -60,7 +58,7 @@ class BlizzardCheck
 
     $method = \getenv('REQUEST_METHOD');
     $referer = \getenv('HTTP_REFERER');
-    $url = Common::relativeUrlToAbsolute(\getenv('REQUEST_URI'));
+    $url = UrlFormatter::format(\getenv('REQUEST_URI'));
     $user_agent = \getenv('HTTP_USER_AGENT');
 
     $event = Logger::initEvent(

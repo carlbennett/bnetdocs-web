@@ -1,12 +1,12 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates;
 use \BNETDocs\Libraries\Core\BlizzardCheck;
-use \BNETDocs\Libraries\Core\VersionInfo;
+use \BNETDocs\Libraries\Core\Config;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\Document;
 use \BNETDocs\Libraries\Packet\Packet;
 use \BNETDocs\Libraries\User\Authentication;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \LogicException;
 if (!isset($title))
 {
@@ -24,12 +24,11 @@ function _header_active(string $url, bool $sr)
   if ($sr) return ' <span class="sr-only">(current)</span>'; else return ' active';
 }
 $_header_user = Authentication::$user;
-$_unique_asset = '?v=' . VersionInfo::get()['asset'];
 $_header_nav = [
   ['label' => 'Welcome', 'url' => '/welcome'],
   ['label' => 'Community', 'dropdown' => [
-    ['label' => 'Discord', 'url' => '/discord', 'visible' => (Common::$config->discord->enabled)],
-    ['label' => '-', 'visible' => (Common::$config->discord->enabled)],
+    ['label' => 'Discord', 'url' => '/discord', 'visible' => (Config::get('discord.enabled') ?? false)],
+    ['label' => '-', 'visible' => (Config::get('discord.enabled') ?? false)],
     ['label' => 'Contributors', 'url' => '/credits'],
     ['label' => 'Support Us', 'url' => '/donate'],
     ['label' => 'Server List', 'url' => '/servers'],
@@ -67,7 +66,7 @@ $_header_nav = [
     ['label' => 'Php Info', 'url' => '/phpinfo', 'acl' => User::OPTION_ACL_PHPINFO],
   ]],
 ];
-function _header_nav_html($nav, $unique_asset)
+function _header_nav_html($nav)
 {
   function _line(string $format) { call_user_func_array('printf', func_get_args()); echo PHP_EOL; }
 
@@ -76,7 +75,7 @@ function _header_nav_html($nav, $unique_asset)
 
   // Brand
   _line('<a class="navbar-brand" style="color:#00ccad;" href="%s"><img class="float-left mr-2" src="%s" style="height:32px;" /> %s</a>',
-    Common::$config->bnetdocs->navigation->front_page, '/a/VSZX0bJ.png' . $unique_asset ?? '', 'BNETDocs'
+    Config::get('bnetdocs.navigation.front_page'), UrlFormatter::assetify('VSZX0bJ.png'), 'BNETDocs'
   );
 
   // Collapsible Hamburger Menu (Start)
@@ -145,11 +144,11 @@ function _header_nav_html($nav, $unique_asset)
       }
       else if (!$dropdown)
       {
-        if (isset($item['url'])) printf('<li class="nav-item"><a class="nav-link%s" href="%s">%s</a></li>' . PHP_EOL, $class, Common::relativeUrlToAbsolute($item['url']), filter_var($item['label'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        if (isset($item['url'])) printf('<li class="nav-item"><a class="nav-link%s" href="%s">%s</a></li>' . PHP_EOL, $class, UrlFormatter::format($item['url']), filter_var($item['label'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
       }
       else if ($dropdown)
       {
-        if (isset($item['url'])) printf('<a class="dropdown-item%s" href="%s">%s</a>' . PHP_EOL, $class, Common::relativeUrlToAbsolute($item['url']), filter_var($item['label'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        if (isset($item['url'])) printf('<a class="dropdown-item%s" href="%s">%s</a>' . PHP_EOL, $class, UrlFormatter::format($item['url']), filter_var($item['label'], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
       }
 
       if (isset($item['dropdown']))
@@ -171,16 +170,16 @@ function _header_nav_html($nav, $unique_asset)
   // Account
   if (!Authentication::$user)
   {
-    _line('<a class="btn btn-sm btn-outline-secondary my-2 my-sm-0" tabindex="-1" href="%s">Log in</a>', Common::relativeUrlToAbsolute('/user/login'));
-    if (!Common::$config->bnetdocs->user_register_disabled)
+    _line('<a class="btn btn-sm btn-outline-secondary my-2 my-sm-0" tabindex="-1" href="%s">Log in</a>', UrlFormatter::format('/user/login'));
+    if (!Config::get('bnetdocs.user_register_disabled'))
     {
-      _line('<a class="btn btn-sm btn-outline-success my-2 my-sm-0 ml-2" tabindex="-2" href="%s">Register</a>', Common::relativeUrlToAbsolute('/user/register'));
+      _line('<a class="btn btn-sm btn-outline-success my-2 my-sm-0 ml-2" tabindex="-2" href="%s">Register</a>', UrlFormatter::format('/user/register'));
     }
   }
   else
   {
     _line('<span class="nav-item navbar-text mx-3"><a href="%s">%s</a></span>', Authentication::$user->getURI(), filter_var(Authentication::$user->getName(), FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-     _line('<a class="btn btn-sm btn-outline-danger my-2 my-sm-0" tabindex="-1" href="%s">Log out</a>', Common::relativeUrlToAbsolute('/user/logout'));
+     _line('<a class="btn btn-sm btn-outline-danger my-2 my-sm-0" tabindex="-1" href="%s">Log out</a>', UrlFormatter::format('/user/logout'));
   }
 
   // Collapsible Hamburger Menu (End)
@@ -189,20 +188,13 @@ function _header_nav_html($nav, $unique_asset)
   _line('</nav>');
   return ob_get_clean();
 }
-/*$_campaign_battleforthenet = (
-  !empty( Common::$config->bnetdocs->campaigns->battleforthenet ) ?
-  '<script type="text/javascript" src="' .
-  Common::relativeUrlToAbsolute(
-    Common::$config->bnetdocs->campaigns->battleforthenet
-  ) . '" async><![CDATA[]]></script>' . PHP_EOL : ''
-);
-$_campaign_vultr = (
-  !empty( Common::$config->bnetdocs->campaigns->vultr ) ?
-  '<a href="' . Common::relativeUrlToAbsolute(
-    Common::$config->bnetdocs->campaigns->vultr
-  ) . '"><img id="vultr-campaign" src="' . Common::relativeUrlToAbsolute(
-    '/a/vultr_logo_ondark.svg' . $_unique_asset ?? ''
-  ) . '"/></a>'  : ''
+/*$_campaign_vultr = (
+  !empty( Config::get('bnetdocs.campaigns.vultr') ) ?
+  '<a href="' . UrlFormatter::format(
+    Config::get('bnetdocs.campaigns.vultr')
+  ) . '"><img id="vultr-campaign" src="'
+  . UrlFormatter::assetify('vultr_logo_ondark.svg')
+  . '"/></a>' : ''
 );*/
 ?><!DOCTYPE html>
 <html lang="en-US" class="h-100">
@@ -212,14 +204,14 @@ $_campaign_vultr = (
 <?  if (isset($url) && is_string($url) && !empty($url)) { ?>
     <link rel="canonical" href="<?=$url?>"/>
 <?  } ?>
-    <link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/bootstrap-4.4.1-slate.min.css' . $_unique_asset ?? '')?>" integrity="sha384-tfnMnZ6k273p3mDqSKikc9aXSvumltGq76Tbo+VMydpXeD5EDZwbQWo7nbZz+wc9" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/datatables.min.css' . $_unique_asset ?? '')?>" type="text/css" media="all"/>
-    <link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/highlight/styles/vs2015.min.css' . $_unique_asset ?? '')?>" type="text/css" media="all"/>
-    <link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/footer.css' . $_unique_asset ?? '')?>" type="text/css" media="all"/>
-    <link rel="icon" href="<?=Common::relativeUrlToAbsolute('/a/VSZX0bJ.png' . $_unique_asset ?? '')?>" type="image/png" sizes="156x174"/>
-    <script type="text/javascript" src="<?=Common::relativeUrlToAbsolute('/a/BNETDocs.js' . $_unique_asset ?? '')?>" async><![CDATA[]]></script>
-    <link rel="alternate" href="<?=Common::relativeUrlToAbsolute('/news.rss')?>" type="application/rss+xml" title="BNETDocs News"/>
-    <link rel="license" href="<?=Common::relativeUrlToAbsolute('/legal')?>"/>
+    <link rel="stylesheet" href="<?=UrlFormatter::assetify('bootstrap-4.4.1-slate.min.css')?>" integrity="sha384-tfnMnZ6k273p3mDqSKikc9aXSvumltGq76Tbo+VMydpXeD5EDZwbQWo7nbZz+wc9" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="<?=UrlFormatter::assetify('datatables.min.css')?>" type="text/css" media="all"/>
+    <link rel="stylesheet" href="<?=UrlFormatter::assetify('highlight/styles/vs2015.min.css')?>" type="text/css" media="all"/>
+    <link rel="stylesheet" href="<?=UrlFormatter::assetify('footer.css')?>" type="text/css" media="all"/>
+    <link rel="icon" href="<?=UrlFormatter::assetify('VSZX0bJ.png')?>" type="image/png" sizes="156x174"/>
+    <script type="text/javascript" src="<?=UrlFormatter::assetify('BNETDocs.js')?>" async><![CDATA[]]></script>
+    <link rel="alternate" href="<?=UrlFormatter::format('/news.rss')?>" type="application/rss+xml" title="BNETDocs News"/>
+    <link rel="license" href="<?=UrlFormatter::format('/legal')?>"/>
     <meta name="keywords" content="battle.net,starcraft,warcraft,diablo,blizzard,logon sequences,packets,information,protocols,reference,programming,coding"/>
 <?  if (!empty($description)) { $_description = filter_var($description, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
     <meta name="description" content="<?=$_description?>"/>
@@ -241,16 +233,16 @@ $_campaign_vultr = (
       $ogval = $og->getValue();
       if ($ogkey == "image") $ogimage = true;
       if ($ogkey == "type") $ogtype = true;
-      if ($ogkey == "url" || $ogkey == "image") $ogval = Common::relativeUrlToAbsolute($ogval); ?>
+      if ($ogkey == "url" || $ogkey == "image") $ogval = UrlFormatter::format($ogval); ?>
     <meta property="og:<?=($ogkey ?? '')?>" content="<?=($ogval ?? '')?>"/>
 <?  } if (!$ogimage) { ?>
-    <meta property="og:image" content="<?=Common::relativeUrlToAbsolute('/a/eNoi70A.png')?>"/>
+    <meta property="og:image" content="<?=UrlFormatter::assetify('eNoi70A.png')?>"/>
 <?  } if (!$ogtype) { ?>
     <meta property="og:type" content="website"/>
 <?  } ?>
   </head>
   <body class="d-flex flex-column h-100">
 
-<?=_header_nav_html($_header_nav, $_unique_asset)?>
+<?=_header_nav_html($_header_nav)?>
 <main class="mb-3">
-<?=(BlizzardCheck::is_blizzard() && !empty(Common::$config->bnetdocs->blizzard_greeting_html) ? sprintf('<div class="container mb-3">%s</div>', Common::$config->bnetdocs->blizzard_greeting_html) : '')?>
+<?=(BlizzardCheck::is_blizzard() && !empty(Config::get('bnetdocs.blizzard_greeting_html')) ? sprintf('<div class="container mb-3">%s</div>', Config::get('bnetdocs.blizzard_greeting_html')) : '')?>

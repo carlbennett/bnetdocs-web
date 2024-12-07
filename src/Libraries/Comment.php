@@ -6,7 +6,6 @@ use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;
 use \StdClass;
@@ -323,7 +322,7 @@ class Comment implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
       case self::PARENT_TYPE_USER: $pts = 'user'; break;
       default: throw new UnexpectedValueException(sprintf('Parent type (%d) unknown', $pt));
     }
-    return Common::relativeUrlToAbsolute(sprintf('/%s/%d', $pts, $this->getParentId()));
+    return \BNETDocs\Libraries\Core\UrlFormatter::format(sprintf('/%s/%d', $pts, $this->getParentId()));
   }
 
   public function getUser(): ?User

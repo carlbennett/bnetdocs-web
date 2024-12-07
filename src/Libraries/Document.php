@@ -5,7 +5,6 @@ namespace BNETDocs\Libraries;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;
 use \OutOfBoundsException;
@@ -318,7 +317,9 @@ class Document implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return $id;
-    return Common::relativeUrlToAbsolute(sprintf('/document/%d/%s', $id, Common::sanitizeForUrl($this->getTitle(), true)));
+    return \BNETDocs\Libraries\Core\UrlFormatter::format(sprintf(
+      '/document/%d/%s', $id, \BNETDocs\Libraries\Core\StringProcessor::sanitizeForUrl($this->getTitle(), true)
+    ));
   }
 
   public function getUser(): ?User

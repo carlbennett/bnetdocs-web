@@ -6,7 +6,6 @@ use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\Server\Type as ServerType;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;
 use \OutOfBoundsException;
@@ -264,11 +263,14 @@ class Server implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
     return $this->type_id;
   }
 
-  public function getURI(): string
+  public function getURI(): ?string
   {
-    $value = empty($value) ? $this->getAddress() . ':' . $this->getPort() : $this->getLabel();
-    return Common::relativeUrlToAbsolute(sprintf(
-      '/server/%d/%s', $this->getId(), Common::sanitizeForUrl($value, true)
+    $id = $this->getId();
+    if (is_null($id)) return null;
+    $label = $this->getLabel();
+    $value = !empty($label) ? $label : sprintf('%s:%d', $this->getAddress(), $this->getPort());
+    return \BNETDocs\Libraries\Core\UrlFormatter::format(sprintf(
+      '/server/%d/%s', $this->getId(), \BNETDocs\Libraries\Core\StringProcessor::sanitizeForUrl($value, true)
     ));
   }
 

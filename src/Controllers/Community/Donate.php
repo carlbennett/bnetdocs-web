@@ -20,7 +20,7 @@ class Donate extends \BNETDocs\Controllers\Base
      */
     public function invoke(?array $args): bool
     {
-        $this->model->donations = \CarlBennett\MVC\Libraries\Common::$config->bnetdocs->donations;
+        $this->model->donations = \BNETDocs\Libraries\Core\Config::get('bnetdocs.donations');
         $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_OK;
         return true;
     }

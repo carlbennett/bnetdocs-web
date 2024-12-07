@@ -6,7 +6,6 @@ use \BNETDocs\Interfaces\DatabaseObject;
 use \BNETDocs\Libraries\Core\DateTimeImmutable;
 use \BNETDocs\Libraries\Db\MariaDb;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeZone;
 use \InvalidArgumentException;
 use \PDO;
@@ -26,12 +25,12 @@ class Authentication
   /**
    * @var string $key The unique identifying token, shared between server and client.
    */
-  private static $key;
+  private static string $key = '';
 
   /**
-   * @var User $user The account which has been authenticated by the client, or null for not authenticated.
+   * @var User|null $user The account which has been authenticated by the client, or null for not authenticated.
    */
-  public static $user;
+  public static ?User $user = null;
 
   /**
    * __construct()
@@ -107,7 +106,7 @@ class Authentication
     return hash('sha256', sprintf('%d%s%d%s%s%s%s%s',
       mt_rand(), getenv('REMOTE_ADDR'), $user->getId(), $user->getEmail(),
       $user->getUsername(), $user->getPasswordHash(), $user->getPasswordSalt(),
-      Common::$config->bnetdocs->user_password_pepper
+      \BNETDocs\Libraries\Core\Config::get('bnetdocs.user_password_pepper') ?? ''
     ));
   }
 

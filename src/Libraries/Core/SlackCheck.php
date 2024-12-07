@@ -2,9 +2,9 @@
 
 namespace BNETDocs\Libraries\Core;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\User\Authentication;
-use \CarlBennett\MVC\Libraries\Common;
 
 /**
  * Provides a set of methods to identify clients originating from Slack.
@@ -31,12 +31,13 @@ class SlackCheck
   {
     $slack_fingerprint = [
       'ACCEPT' => '*/*',
-      'USER_AGENT' => Common::$config->slack->user_agent,
+      'USER_AGENT' => Config::get('slack.user_agent') ?? '',
       'RANGE' => 'bytes=0-32768',
     ];
 
     $request_fingerprint = self::get_header_list();
-    foreach (Common::$config->slack->ignored_headers as $name)
+    $ignored_headers = Config::get('slack.ignored_headers') ?? [];
+    foreach ($ignored_headers as $name)
     {
       if (isset($request_fingerprint[$name]))
       {
@@ -106,7 +107,7 @@ class SlackCheck
 
     $method = \getenv('REQUEST_METHOD');
     $referer = \getenv('HTTP_REFERER');
-    $url = Common::relativeUrlToAbsolute(\getenv('REQUEST_URI'));
+    $url = UrlFormatter::format(\getenv('REQUEST_URI'));
     $user_agent = \getenv('HTTP_USER_AGENT');
 
     $event = Logger::initEvent(

@@ -8,7 +8,6 @@ use \BNETDocs\Libraries\Packet\Application as ApplicationLayer;
 use \BNETDocs\Libraries\Packet\Transport as TransportLayer;
 use \BNETDocs\Libraries\Product;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \DateTimeInterface;
 use \DateTimeZone;
 use \InvalidArgumentException;
@@ -471,7 +470,9 @@ class Packet implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $id = $this->getId();
     if (is_null($id)) return null;
-    return Common::relativeUrlToAbsolute(sprintf('/packet/%d/%s', $id, Common::sanitizeForUrl($this->getName(), true)));
+    return \BNETDocs\Libraries\Core\UrlFormatter::format(sprintf(
+      '/packet/%d/%s', $id, \BNETDocs\Libraries\Core\StringProcessor::sanitizeForUrl($this->getName(), true)
+    ));
   }
 
   public function getUsedBy(): array
