@@ -35,7 +35,6 @@
         }
     },
     "require": {
-        "carlbennett/php-mvc": "dev-main",
         "erusev/parsedown": "^1.7",
         "ext-curl": "*",
         "ext-gmp": "*",
