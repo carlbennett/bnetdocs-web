@@ -11,7 +11,7 @@ class StatusJson extends \BNETDocs\Views\Base\Json
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    echo json_encode($model->status, self::jsonFlags());
+    echo \json_encode($model, self::jsonFlags());
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }
