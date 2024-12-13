@@ -13,9 +13,7 @@ abstract class Json implements \BNETDocs\Interfaces\View
    */
   public static function jsonFlags(): int
   {
-    return \JSON_PRESERVE_ZERO_FRACTION
-      | \JSON_THROW_ON_ERROR
-      | (\php_sapi_name() == 'cli' || \CarlBennett\MVC\Libraries\Common::isBrowser(\getenv('HTTP_USER_AGENT')) ? \JSON_PRETTY_PRINT : 0);
+    return \JSON_PRESERVE_ZERO_FRACTION | \JSON_THROW_ON_ERROR | self::prettyPrint();
   }
 
   /**
@@ -26,5 +24,16 @@ abstract class Json implements \BNETDocs\Interfaces\View
   public static function mimeType(): string
   {
     return \sprintf('%s;charset=utf-8', self::MIMETYPE_JSON);
+  }
+
+  /**
+   * Automatically passes the JSON_PRETTY_PRINT flag when using php-cli or when client is a browser.
+   *
+   * @return integer The JSON_PRETTY_PRINT flag or zero.
+   */
+  private static function prettyPrint(): int
+  {
+    return (\php_sapi_name() == 'cli'
+      || \BNETDocs\Libraries\Core\StringProcessor::isBrowser() ? \JSON_PRETTY_PRINT : 0);
   }
 }
