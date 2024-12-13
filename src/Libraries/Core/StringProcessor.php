@@ -4,6 +4,20 @@ namespace BNETDocs\Libraries\Core;
 
 class StringProcessor
 {
+    /**
+     * Checks whether the current User Agent is a GUI web browser known by a common string, e.g. Firefox.
+     *
+     * @param string $user_agent User Agent to check, or null to check HTTP_USER_AGENT environment variable.
+     * @return boolean Whether the client is using a GUI web browser or not.
+    */
+    public static function isBrowser(?string $user_agent = null): bool
+    {
+        return (1 === \preg_match(
+            '#(?:AppleWebKit|Chrome|Edge|Firefox|Mozilla|MSIE|Opera|Safari|Trident|WebKit)#i',
+            $user_agent ?? \getenv('HTTP_USER_AGENT') ?? ''
+        ));
+    }
+
     public static function sanitizeForUrl(array|string $haystack, bool $lowercase = true): array|string
     {
         $result = \preg_replace('/[^\da-z]+/im', '-', $haystack);
