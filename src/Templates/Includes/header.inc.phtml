@@ -1,21 +1,33 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates;
-use \BNETDocs\Libraries\Core\BlizzardCheck;
 use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\UrlFormatter;
-use \BNETDocs\Libraries\Document;
-use \BNETDocs\Libraries\Packet\Packet;
 use \BNETDocs\Libraries\User\Authentication;
 use \BNETDocs\Libraries\User\User;
-use \LogicException;
-if (!isset($title))
+$_title = !isset($title) ? '' : filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$_title_suffix = !isset($title_suffix) ? ' &ndash; BNETDocs' : filter_var($title_suffix, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+if (!isset($_header_meta_properties)) $_header_meta_properties = [];
+if (!isset($_header_meta_properties['og:locale'])) $_header_meta_properties['og:locale'] = 'en_US';
+if (!isset($_header_meta_properties['og:site_name'])) $_header_meta_properties['og:site_name'] = 'BNETDocs';
+if (!isset($_header_meta_properties['twitter:card'])) $_header_meta_properties['twitter:card'] = 'summary';
+if (!isset($_header_meta_properties['twitter:site'])) $_header_meta_properties['twitter:site'] = '@BNETDocs';
+if (!isset($_header_meta_properties['og:type'])) $_header_meta_properties['og:type'] = 'website';
+if (!isset($_header_meta_properties['og:image'])) $_header_meta_properties['og:image'] = UrlFormatter::assetify('eNoi70A.png');
+if (isset($description) && is_string($description) && !empty($description))
 {
-  throw new LogicException('template variable not set before include of header template: $title');
+  $_header_meta_properties['og:description'] = $description;
+  $_header_meta_properties['twitter:description'] = $description;
 }
-if (!isset($title_suffix)) /* this should be allowed to be empty, however */
+if (isset($title) && is_string($title) && !empty($title))
 {
-  $title_suffix = ' &ndash; BNETDocs';
+  $_header_meta_properties['og:title'] = $title;
+  $_header_meta_properties['twitter:title'] = $title;
 }
+if (isset($url) && is_string($url) && !empty($url))
+{
+  $_header_meta_properties['og:url'] = $url;
+}
+ksort($_header_meta_properties);
 function _header_active(string $url, bool $sr)
 {
   $current_url = parse_url(getenv('REQUEST_URI'), PHP_URL_PATH);
@@ -23,7 +35,6 @@ function _header_active(string $url, bool $sr)
   if (!$match) return '';
   if ($sr) return ' <span class="sr-only">(current)</span>'; else return ' active';
 }
-$_header_user = Authentication::$user;
 $_header_nav = [
   ['label' => 'Welcome', 'url' => '/welcome'],
   ['label' => 'Community', 'dropdown' => [
@@ -107,7 +118,7 @@ function _header_nav_html($nav)
       {
         _line('<div class="dropdown-divider"></div>');
         _line('<div class="dropdown-header">Recently Edited Documents</div>');
-        $recent_documents = Document::getDocumentsByLastEdited(10);
+        $recent_documents = \BNETDocs\Libraries\Document::getDocumentsByLastEdited(10);
         $acl_doc_modify = (Authentication::$user && (Authentication::$user->getOptions() & User::OPTION_ACL_DOCUMENT_MODIFY));
         foreach ($recent_documents as $doc)
         {
@@ -133,7 +144,7 @@ function _header_nav_html($nav)
       {
         _line('<div class="dropdown-divider"></div>');
         _line('<div class="dropdown-header">Recently Edited Packets</div>');
-        $recent_packets = Packet::getPacketsByLastEdited(10);
+        $recent_packets = \BNETDocs\Libraries\Packet\Packet::getPacketsByLastEdited(10);
         $acl_pkt_modify = (Authentication::$user && (Authentication::$user->getOptions() & User::OPTION_ACL_PACKET_MODIFY));
         foreach ($recent_packets as $pkt)
         {
@@ -202,47 +213,33 @@ function _header_nav_html($nav)
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 <?  if (isset($url) && is_string($url) && !empty($url)) { ?>
-    <link rel="canonical" href="<?=$url?>"/>
+    <link rel="canonical" href="<?=UrlFormatter::format($url)?>"/>
 <?  } ?>
     <link rel="stylesheet" href="<?=UrlFormatter::assetify('bootstrap-4.4.1-slate.min.css')?>" integrity="sha384-tfnMnZ6k273p3mDqSKikc9aXSvumltGq76Tbo+VMydpXeD5EDZwbQWo7nbZz+wc9" crossorigin="anonymous"/>
     <link rel="stylesheet" href="<?=UrlFormatter::assetify('datatables.min.css')?>" type="text/css" media="all"/>
     <link rel="stylesheet" href="<?=UrlFormatter::assetify('highlight/styles/vs2015.min.css')?>" type="text/css" media="all"/>
     <link rel="stylesheet" href="<?=UrlFormatter::assetify('footer.css')?>" type="text/css" media="all"/>
     <link rel="icon" href="<?=UrlFormatter::assetify('VSZX0bJ.png')?>" type="image/png" sizes="156x174"/>
-    <script type="text/javascript" src="<?=UrlFormatter::assetify('BNETDocs.js')?>" async><![CDATA[]]></script>
+    <script type="text/javascript" src="<?=UrlFormatter::assetify('BNETDocs.js')?>" async></script>
     <link rel="alternate" href="<?=UrlFormatter::format('/news.rss')?>" type="application/rss+xml" title="BNETDocs News"/>
     <link rel="license" href="<?=UrlFormatter::format('/legal')?>"/>
     <meta name="keywords" content="battle.net,starcraft,warcraft,diablo,blizzard,logon sequences,packets,information,protocols,reference,programming,coding"/>
-<?  if (!empty($description)) { $_description = filter_var($description, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
-    <meta name="description" content="<?=$_description?>"/>
-    <meta property="og:description" content="<?=$_description?>"/>
-    <meta property="twitter:description" content="<?=$_description?>"/>
-<?  } ?>
-    <meta property="og:site_name" content="BNETDocs"/>
-    <meta property="og:locale" content="en_US"/>
-    <meta property="twitter:card" content="summary"/>
-    <meta property="twitter:site" content="@BNETDocs"/>
-<?  if (!empty($title)) { $_title = filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
-    <title><?=$_title?> &ndash; BNETDocs</title>
-    <meta property="og:title" content="<?=$_title?>"/>
-    <meta property="twitter:title" content="<?=$_title?>"/>
-<?  } ?>
-<?  $ogimage = false; $ogtype = false;
-    foreach ($this->opengraph as $og) {
-      $ogkey = $og->getKey();
-      $ogval = $og->getValue();
-      if ($ogkey == "image") $ogimage = true;
-      if ($ogkey == "type") $ogtype = true;
-      if ($ogkey == "url" || $ogkey == "image") $ogval = UrlFormatter::format($ogval); ?>
-    <meta property="og:<?=($ogkey ?? '')?>" content="<?=($ogval ?? '')?>"/>
-<?  } if (!$ogimage) { ?>
-    <meta property="og:image" content="<?=UrlFormatter::assetify('eNoi70A.png')?>"/>
-<?  } if (!$ogtype) { ?>
-    <meta property="og:type" content="website"/>
+    <title><?=$_title . $_title_suffix?></title>
+<?  if (isset($description) && is_string($description) && !empty($description)) { ?>
+    <meta name="description" content="<?=filter_var($description, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?>"/>
+<?  }
+    foreach ($_header_meta_properties as $meta_property => $meta_content)
+    {
+      if (($meta_property == 'og:url' || $meta_property == 'og:image') && is_string($meta_content))
+      {
+        $meta_content = UrlFormatter::format($meta_content);
+      }
+      $meta_content = filter_var($meta_content, FILTER_SANITIZE_FULL_SPECIAL_CHARS); ?>
+    <meta property="<?=($meta_property ?? '')?>" content="<?=($meta_content ?? '')?>"/>
 <?  } ?>
   </head>
   <body class="d-flex flex-column h-100">
 
 <?=_header_nav_html($_header_nav)?>
 <main class="mb-3">
-<?=(BlizzardCheck::is_blizzard() && !empty(Config::get('bnetdocs.blizzard_greeting_html')) ? sprintf('<div class="container mb-3">%s</div>', Config::get('bnetdocs.blizzard_greeting_html')) : '')?>
+<?=(\BNETDocs\Libraries\Core\BlizzardCheck::is_blizzard() && !empty(Config::get('bnetdocs.blizzard_greeting_html')) ? sprintf('<div class="container mb-3">%s</div>', Config::get('bnetdocs.blizzard_greeting_html')) : '')?>

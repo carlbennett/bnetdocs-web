@@ -1,16 +1,15 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Community;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 $title = 'Donate';
 $description = 'Donate to BNETDocs to show your support for this project!';
-$this->opengraph->attach(new Pair('url', '/donate'));
-$this->opengraph->attach(new Pair('type', 'article'));
-$btc_address = $this->getContext()->donations->btc_address;
-$email_address = $this->getContext()->donations->email_address;
-$paypal_url = $this->getContext()->donations->paypal_url;
-$user_id = $this->getContext()->donations->user_id;
-$user = (!empty($user_id) ? new \BNETDocs\Libraries\User\User($user_id) : null);
+$url = '/donate';
+$_header_meta_properties = ['og:type' => 'article'];
+$btc_address = $this->getContext()->donations_btc_address;
+$email_address = $this->getContext()->donations_email_address;
+$paypal_url = $this->getContext()->donations_paypal_url;
+$user_id = $this->getContext()->donations_user_id;
+$user = $this->getContext()->donations_user;
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h1>Support Us</h1>
@@ -37,6 +36,6 @@ require('./Includes/header.inc.phtml'); ?>
     <li>A donation is not acceptable as payment for goods, products, or merchant items.</li>
     <li>In absolutely no scenario will a donation be used to willfully violate Blizzard Entertainment's Terms of Service or Battle.net's Terms of Service.</li>
   </ol>
-  <p>Please see our <a href="<?=Common::relativeUrlToAbsolute('/legal')?>">Legal</a> and <a href="<?=Common::relativeUrlToAbsolute('/privacy')?>">Privacy Policy</a> pages for more info.</p>
+  <p>Please see our <a href="<?=UrlFormatter::format('/legal')?>">Legal</a> and <a href="<?=UrlFormatter::format('/privacy')?>">Privacy Policy</a> pages for more info.</p>
 </div>
 <? require('./Includes/footer.inc.phtml'); ?>

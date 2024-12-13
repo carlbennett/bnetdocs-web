@@ -1,11 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document;
 use \BNETDocs\Models\Document\Create as CreateModel;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Create Document';
 $description = 'This page enables a user to create documents on the site.';
-$this->opengraph->attach(new Pair('url', '/document/create'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/document/create';
 $document_id = null;
 $document_url = null;
 $error = $this->getContext()->error;

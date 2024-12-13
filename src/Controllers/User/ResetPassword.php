@@ -1,13 +1,13 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Controllers\User;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Core\Template;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\User\User;
 use \BNETDocs\Models\User\ResetPassword as ResetPasswordModel;
-use \CarlBennett\MVC\Libraries\Common;
 use \PHPMailer\PHPMailer\PHPMailer;
 use \StdClass;
 use \UnexpectedValueException;
@@ -88,7 +88,7 @@ class ResetPassword extends \BNETDocs\Controllers\Base
     if ($this->model->pw1 !== $this->model->pw2)
       return ResetPasswordModel::E_PASSWORD_MISMATCH;
 
-    $req = &Common::$config->bnetdocs->user_register_requirements;
+    $req = Config::get('bnetdocs.user_register_requirements') ?? [];
     $pwlen = strlen($this->model->pw1);
 
     if (is_numeric($req->password_length_max) && $pwlen > $req->password_length_max)
@@ -113,7 +113,6 @@ class ResetPassword extends \BNETDocs\Controllers\Base
   protected function sendEmail(): mixed
   {
     $mail = new PHPMailer(true); // true enables exceptions
-    $mail_config = Common::$config->email;
 
     $state = new StdClass();
     $state->email = $this->model->user->getEmail();
@@ -127,24 +126,26 @@ class ResetPassword extends \BNETDocs\Controllers\Base
       $mail->Timeout = 10; // default is 300 per RFC2821 $ 4.5.3.2
       $mail->SMTPDebug = 0;
       $mail->isSMTP();
-      $mail->Host       = $mail_config->smtp_host;
-      $mail->SMTPAuth   = !empty($mail_config->smtp_user);
-      $mail->Username   = $mail_config->smtp_user;
-      $mail->Password   = $mail_config->smtp_password;
-      $mail->SMTPSecure = $mail_config->smtp_tls ? 'tls' : '';
-      $mail->Port       = $mail_config->smtp_port;
+      $mail->Host       = Config::get('email.smtp_host') ?? 'localhost';
+      $mail->Username   = Config::get('email.smtp_user') ?? '';
+      $mail->Password   = Config::get('email.smtp_password') ?? '';
+      $mail->SMTPAuth   = !empty($mail->Username);
+      $mail->SMTPSecure = (Config::get('email.smtp_tls') ?? false) ? 'tls' : '';
+      $mail->Port       = Config::get('email.smtp_port') ?? 25;
 
       //Recipients
-      if (isset($mail_config->recipient_from[0]))
+      $recipient_from = Config::get('email.recipient_from') ?? [];
+      if (isset($recipient_from[0]))
       {
-        $mail->setFrom($mail_config->recipient_from[0], $mail_config->recipient_from[1]);
+        $mail->setFrom($recipient_from[0], $recipient_from[1] ?? '');
       }
 
       $mail->addAddress($this->model->user->getEmail(), $this->model->user->getName());
 
-      if (isset($mail_config->recipient_reply_to[0]))
+      $recipient_reply_to = Config::get('email.recipient_reply_to') ?? [];
+      if (isset($recipient_reply_to[0]))
       {
-        $mail->addReplyTo($mail_config->recipient_reply_to[0], $mail_config->recipient_reply_to[1]);
+        $mail->addReplyTo($recipient_reply_to[0], $recipient_reply_to[1] ?? '');
       }
 
       // Content

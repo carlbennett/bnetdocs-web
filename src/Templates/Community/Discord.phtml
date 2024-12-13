@@ -1,11 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Community;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
-$title       = 'Discord';
+$title = 'Discord';
 $description = 'Join our Discord and have a chat with us!';
-$this->opengraph->attach(new Pair('url', '/discord'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/discord';
+$_header_meta_properties = ['og:type' => 'article'];
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h2><?=$title?></h2>
@@ -22,7 +20,7 @@ require('./Includes/header.inc.phtml'); ?>
       <sup>(from <a href="https://en.wikipedia.org/wiki/Discord_(software)">Wikipedia</a>)</sup>
       <h4>How to Join</h4>
       <p>BNETDocs maintains a publicly-accessible community Discord server. Simply click the button below to be invited.</p>
-      <p class="text-center"><a class="btn btn-info" href="<?=Common::relativeUrlToAbsolute($this->getContext()->discord_url)?>">Join our Discord</a></p>
+      <p class="text-center"><a class="btn btn-info" href="<?=\BNETDocs\Libraries\Core\UrlFormatter::format($this->getContext()->discord_url)?>">Join our Discord</a></p>
     </div>
     <div class="col-md-4">
       <h4>Who's Online</h4>

@@ -2,9 +2,9 @@
 
 namespace BNETDocs\Controllers\Core;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Models\Core\Status as StatusModel;
-use \CarlBennett\MVC\Libraries\Common;
 
 class Status extends \BNETDocs\Controllers\Base
 {
@@ -42,15 +42,16 @@ class Status extends \BNETDocs\Controllers\Base
     $ua = substr(getenv('HTTP_USER_AGENT') ?? '', 0, self::MAX_USER_AGENT);
     $utc = new \DateTimeZone('Etc/UTC');
 
+    $geoip_enabled = Config::get('geoip.enabled');
     $model->status = [
       'healthcheck' => [
         'database' => (!is_null(\BNETDocs\Libraries\Db\MariaDb::instance())),
-        'geoip' => Common::$config->geoip->enabled && file_exists(Common::$config->geoip->database_file),
+        'geoip' => $geoip_enabled && file_exists(Config::get('geoip.database_file')),
       ],
       'remote_address' => $remote_address,
-      'remote_geoinfo' => Common::$config->geoip->enabled ? \BNETDocs\Libraries\Core\GeoIP::getRecord($remote_address) : null,
+      'remote_geoinfo' => $geoip_enabled ? \BNETDocs\Libraries\Core\GeoIP::getRecord($remote_address) : null,
       'remote_is_blizzard' => \BNETDocs\Libraries\Core\BlizzardCheck::is_blizzard(),
-      'remote_is_browser' => Common::isBrowser($ua),
+      'remote_is_browser' => \BNETDocs\Libraries\Core\StringProcessor::isBrowser($ua),
       'remote_is_slack' => \BNETDocs\Libraries\Core\SlackCheck::is_slack(),
       'remote_user_agent' => $ua,
       'timestamp' => new \BNETDocs\Libraries\Core\DateTimeImmutable('now', $utc),

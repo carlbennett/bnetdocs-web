@@ -2,12 +2,9 @@
 namespace BNETDocs\Templates\Packet;
 use \BNETDocs\Libraries\Packet\Packet;
 use \BNETDocs\Models\Packet\Form as FormModel;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Create Packet';
 $description = 'Create a new Packet on the site.';
-$this->opengraph->attach(new Pair('url', '/packet/edit'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/packet/edit';
 $active_user = $this->getContext()->active_user;
 $comments = null;
 $error = $this->getContext()->error;
@@ -47,7 +44,7 @@ else if ($error === false)
   {
     printf('<a class="btn btn-success" href="%s">View Packet</a>%s', $packet->getURI(), PHP_EOL);
   }
-  printf('<a class="btn btn-info ml-2" href="%s">All Packets</a>%s', Common::relativeUrlToAbsolute('/packet/index'), PHP_EOL);
+  printf('<a class="btn btn-info ml-2" href="%s">All Packets</a>%s', \BNETDocs\Libraries\Core\UrlFormatter::format('/packet/index'), PHP_EOL);
   printf('</div>%s', PHP_EOL);
 }
 else

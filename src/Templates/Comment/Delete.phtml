@@ -1,11 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Comment;
 use \BNETDocs\Models\Comment\Delete as DeleteModel;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete Comment';
 $description = 'This page confirms if the user wishes to delete a comment.';
-$this->opengraph->attach(new Pair('url', '/comment/delete'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/comment/delete';
+$_header_meta_properties = ['og:type' => 'article'];
 switch ($this->getContext()->error)
 {
   case DeleteModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete comments.'; break;

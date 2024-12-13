@@ -1,11 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document;
 use \BNETDocs\Models\Document\Delete as DeleteModel;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete Document';
 $description = 'This form allows an individual to delete a document.';
-$this->opengraph->attach(new Pair('url', '/document/delete'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/document/delete';
 $error = $this->getContext()->error;
 $id = $this->getContext()->id;
 $doc_title = $this->getContext()->title;

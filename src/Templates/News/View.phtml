@@ -1,17 +1,16 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $comments = $this->getContext()->comments;
 $object = $this->getContext()->news_post;
 $object_id = $this->getContext()->news_post_id;
 $active_user = $this->getContext()->active_user;
 $title = ($object ? $object->getTitle() : 'News Post Not Found');
 $description = filter_var(($object ? $object->getContent(true) : 'The requested news post does not exist or could not be found.'), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-$this->opengraph->attach(new Pair('type', 'article'));
-$url = Common::relativeUrlToAbsolute('/news/' . urlencode($object_id));
+$_header_meta_properties = ['og:type' => 'article'];
+$url = '/news/' . rawurlencode($object_id);
 
 if ($object)
 {
@@ -25,20 +24,18 @@ if ($object)
   $user_name = $user ? $user->getName() : null;
   $user_url = $user ? $user->getURI() : null;
 
-  $this->opengraph->attach(new Pair('image', '/a/news_categories/' . $object->getCategory()->getFilename()));
-  $this->opengraph->attach(new Pair('article:published_time', $created_dt->format('c')));
+  $_header_meta_properties['og:image'] = '/a/news_categories/' . $object->getCategory()->getFilename();
+  $_header_meta_properties['og:article:published_time'] = $created_dt->format('c');
   if (!is_null($object->getEditedDateTime())) {
-    $this->opengraph->attach(new Pair('article:modified_time', $edited_dt->format('c')));
+    $_header_meta_properties['og:article:modified_time'] = $edited_dt->format('c');
   }
-  if (!empty($user_name)) $this->opengraph->attach(new Pair('article:author:username', $user_name));
-  $this->opengraph->attach(new Pair('article:section', $object->getCategory()->getLabel()));
+  if (!empty($user_name)) $_header_meta_properties['og:article:author:username'] = $user_name;
+  $_header_meta_properties['og:article:section'] = $object->getCategory()->getLabel();
 
 }
 
-$this->opengraph->attach(new Pair('url', $url));
-
-$edit_url       = Common::relativeUrlToAbsolute('/news/edit?id=' . urlencode($object_id));
-$delete_url     = Common::relativeUrlToAbsolute('/news/delete?id=' . urlencode($object_id));
+$edit_url       = UrlFormatter::format('/news/edit?id=' . urlencode($object_id));
+$delete_url     = UrlFormatter::format('/news/delete?id=' . urlencode($object_id));
 $edit_visible   = ($active_user && $active_user->getOption(User::OPTION_ACL_NEWS_MODIFY));
 $delete_visible = ($active_user && $active_user->getOption(User::OPTION_ACL_NEWS_DELETE));
 
@@ -61,7 +58,7 @@ require('./Includes/header.inc.phtml'); ?>
 <?  if (!($object->getOptionsBitmask() & \BNETDocs\Libraries\News\Post::OPTION_PUBLISHED)) { ?>
     <section class="red"><p><strong>Warning:</strong> This news post is not yet published. You can view this because you are allowed to create, modify, or delete news posts.</p></section>
 <?  } ?>
-    <div style="background-color:rgba(0,0,0,0.45);" class="font-weight-bold float-left mb-2 mr-2 p-2 rounded small shadow text-center"><img alt="<?=$object->getCategory()->getLabel()?>" title="<?=$object->getCategory()->getLabel()?>" src="<?=Common::relativeUrlToAbsolute('/a/news_categories/' . $object->getCategory()->getFilename())?>"/><br/><?=$object->getCategory()->getLabel()?></div><?=$object->getContent(true)?>
+    <div style="background-color:rgba(0,0,0,0.45);" class="font-weight-bold float-left mb-2 mr-2 p-2 rounded small shadow text-center"><img alt="<?=$object->getCategory()->getLabel()?>" title="<?=$object->getCategory()->getLabel()?>" src="<?=UrlFormatter::format('/a/news_categories/' . $object->getCategory()->getFilename())?>"/><br/><?=$object->getCategory()->getLabel()?></div><?=$object->getContent(true)?>
   </div></div>
   <div class="row"><div class="col">
     <div class="card"><div class="card-body">

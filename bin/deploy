@@ -4,7 +4,7 @@
 PROJECT_NAME="bnetdocs-web"
 VERSION="$(git symbolic-ref HEAD | sed -e 's/^refs\/heads\/*//g')"
 SOURCE_DIRECTORY="$(git rev-parse --show-toplevel)"
-TARGET_DIRECTORY="/opt/carlbennett/nginx-www/www.bnetdocs.org"
+TARGET_DIRECTORY="/var/www/github-deploy.bnetdocs.org"
 TARGET_FILE="${SOURCE_DIRECTORY}/etc/deploy-targets.csv"
 TARGET_ENV=""
 SKIP_COMPOSER=0

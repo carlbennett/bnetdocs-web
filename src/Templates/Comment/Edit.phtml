@@ -1,12 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Comment;
 use \BNETDocs\Models\Comment\Edit as EditModel;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Edit Comment';
 $description = 'This page enables a user to alter a comment.';
-$this->opengraph->attach(new Pair('url', '/comment/edit'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/comment/edit';
+$_header_meta_properties = ['og:type' => 'article'];
 switch ($this->getContext()->error)
 {
   case EditModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to edit this comment.'; break;
@@ -35,7 +33,7 @@ require('./Includes/header.inc.phtml'); ?>
 
   <h2>Edit Comment</h2>
   <p>Use the form below to edit the comment, when you are finished you must save.</p>
-  <form method="POST" action="<?=Common::relativeUrlToAbsolute('/comment/edit?id=' . $c_id)?>">
+  <form method="POST" action="<?=\BNETDocs\Libraries\Core\UrlFormatter::format('/comment/edit?id=' . $c_id)?>">
     <table class="table table-striped"><tbody>
       <tr><td>
         <a href="<?=$c_user_url?>"><img class="avatar" src="<?=$c_user_avatar?>"/> <?=$c_user_name?></a><br/>

@@ -2,15 +2,15 @@
 
 namespace BNETDocs\Templates\News;
 
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 
 echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <atom:link href="<?=Common::relativeUrlToAbsolute("/news.rss")?>" rel="self" type="application/rss+xml" />
+    <atom:link href="<?=UrlFormatter::format('/news.rss')?>" rel="self" type="application/rss+xml" />
     <title>BNETDocs News</title>
-    <link><?=Common::relativeUrlToAbsolute('/news')?></link>
+    <link><?=UrlFormatter::format('/news')?></link>
     <description>The community that maintains Battle.net&#8482; protocol documentation for the purpose of educating the public of how enterprise protocols work.</description>
     <language>en-us</language>
     <docs>http://www.tutorialspoint.com/rss</docs>
@@ -22,7 +22,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
       <category><?=htmlentities($news_post->getCategory()->getLabel(), ENT_XML1, 'UTF-8')?></category>
       <description><?=htmlentities(html_entity_decode($news_post->getContent(true), ENT_HTML5, 'UTF-8'), ENT_XML1, 'UTF-8')?></description>
       <pubDate><?=htmlentities($news_post->getPublishedDateTime()->format("r"), ENT_XML1, 'UTF-8')?></pubDate>
-      <guid><?=htmlentities(Common::relativeUrlToAbsolute("/news/" . $news_post->getId()), ENT_XML1, 'UTF-8')?></guid>
+      <guid><?=htmlentities(UrlFormatter::format('/news/' . $news_post->getId()), ENT_XML1, 'UTF-8')?></guid>
     </item>
 <?php } ?>
   </channel>

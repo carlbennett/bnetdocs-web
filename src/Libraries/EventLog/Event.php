@@ -187,7 +187,7 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
       $where_clause = empty($filter) ? '' : \sprintf(
         ' WHERE `event_type_id` IN (%s)', \implode(',', $filter)
       );
-      $q = MariaDb::instance()->prepare(sprintf(
+      $q = MariaDb::instance()->prepare(\sprintf(
         'SELECT COUNT(*) AS `count` FROM `event_log`%s;', $where_clause
       ));
       if (!$q || !$q->execute() || $q->rowCount() != 1) return null;
@@ -228,6 +228,12 @@ class Event implements \BNETDocs\Interfaces\DatabaseObject, \JsonSerializable
   {
     $type = new \BNETDocs\Libraries\EventLog\EventType($this->getTypeId());
     return (string) $type;
+  }
+
+  public function getURI(): ?string
+  {
+    $id = $this->getId();
+    return \is_null($id) ? null : \BNETDocs\Libraries\Core\UrlFormatter::format(\sprintf('/eventlog/view?id=%d', $id));
   }
 
   public function getUser(): ?User

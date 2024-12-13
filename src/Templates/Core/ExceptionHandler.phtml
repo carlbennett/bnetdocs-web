@@ -1,20 +1,20 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Core;
-use \BNETDocs\Libraries\Core\VersionInfo;
-use \CarlBennett\MVC\Libraries\Common;
-$_unique_asset = '?v=' . VersionInfo::get()['asset']; ?>
+use \BNETDocs\Libraries\Core\Config;
+use \BNETDocs\Libraries\Core\UrlFormatter;
+use \BNETDocs\Libraries\Core\VersionInfo; ?>
 <!DOCTYPE html>
 <html lang="en-US" class="h-100">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <title>Internal Error &ndash; BNETDocs</title>
-<link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/bootstrap-4.4.1-slate.min.css' . $_unique_asset ?? '')?>" integrity="sha384-tfnMnZ6k273p3mDqSKikc9aXSvumltGq76Tbo+VMydpXeD5EDZwbQWo7nbZz+wc9" crossorigin="anonymous" />
-<link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/datatables.min.css' . $_unique_asset ?? '')?>" type="text/css" media="all" />
-<link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/highlight/styles/vs2015.min.css' . $_unique_asset ?? '')?>" type="text/css" media="all" />
-<link rel="stylesheet" href="<?=Common::relativeUrlToAbsolute('/a/footer.css' . $_unique_asset ?? '')?>" type="text/css" media="all" />
-<link rel="icon" href="<?=Common::relativeUrlToAbsolute('/a/VSZX0bJ.png' . $_unique_asset ?? '')?>" type="image/png" sizes="156x174" />
-<script type="text/javascript" src="<?=Common::relativeUrlToAbsolute('/a/BNETDocs.js' . $_unique_asset ?? '')?>" async><![CDATA[]]></script>
+<link rel="stylesheet" href="<?=UrlFormatter::assetify('bootstrap-4.4.1-slate.min.css')?>" integrity="sha384-tfnMnZ6k273p3mDqSKikc9aXSvumltGq76Tbo+VMydpXeD5EDZwbQWo7nbZz+wc9" crossorigin="anonymous" />
+<link rel="stylesheet" href="<?=UrlFormatter::assetify('datatables.min.css')?>" type="text/css" media="all" />
+<link rel="stylesheet" href="<?=UrlFormatter::assetify('highlight/styles/vs2015.min.css')?>" type="text/css" media="all" />
+<link rel="stylesheet" href="<?=UrlFormatter::assetify('footer.css')?>" type="text/css" media="all" />
+<link rel="icon" href="<?=UrlFormatter::assetify('VSZX0bJ.png')?>" type="image/png" sizes="156x174" />
+<script type="text/javascript" src="<?=UrlFormatter::assetify('BNETDocs.js')?>" async></script>
 <link rel="alternate" href="/news.rss" type="application/rss+xml" title="BNETDocs News" />
 <link rel="license" href="/legal" />
 <meta name="keywords" content="battle.net,starcraft,warcraft,diablo,blizzard,logon sequences,packets,information,protocols,reference,programming,coding" />
@@ -32,7 +32,7 @@ $_unique_asset = '?v=' . VersionInfo::get()['asset']; ?>
 </head>
 <body class="d-flex flex-column h-100">
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
-<a class="navbar-brand" style="color:#00ccad;" href="/welcome"><img class="float-left mr-2" src="<?=Common::relativeUrlToAbsolute('/a/VSZX0bJ.png' . $_unique_asset ?? '')?>" style="height:32px;" /> BNETDocs</a>
+<a class="navbar-brand" style="color:#00ccad;" href="/welcome"><img class="float-left mr-2" src="<?=UrlFormatter::assetify('VSZX0bJ.png')?>" style="height:32px;" /> BNETDocs</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="navbar-nav mr-auto">
@@ -95,14 +95,14 @@ and/or other countries.
 </p>
 </div>
 </footer>
-<?php if (Common::$config->analytics->cloudflare) { ?>
-<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":<?=json_encode(Common::$config->analytics->cloudflare)?>}'></script><!-- End Cloudflare Web Analytics -->
+<?php if (Config::get('analytics.cloudflare')) { ?>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":<?=json_encode(Config::get('analytics.cloudflare'))?>}'></script><!-- End Cloudflare Web Analytics -->
 <?php } ?>
-<script src="<?=Common::relativeUrlToAbsolute('/a/jquery-3.7.0.slim.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/popper-1.16.0.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/bootstrap-4.4.1.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/datatables.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/highlight/highlight.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('jquery-3.7.0.slim.min.js')?>" type="text/javascript" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="<?=UrlFormatter::assetify('popper-1.16.0.min.js')?>" type="text/javascript" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="<?=UrlFormatter::assetify('bootstrap-4.4.1.min.js')?>" type="text/javascript" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="<?=UrlFormatter::assetify('datatables.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"></script>
+<script src="<?=UrlFormatter::assetify('highlight/highlight.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"></script>
 <script defer type="text/javascript">$(document).ready(function(){hljs.highlightAll()});</script>
-<script src="<?=Common::relativeUrlToAbsolute('/a/moment-2.29.4.min.js' . ($_unique_asset ?? ''))?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('moment-2.29.4.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"></script>
 </body></html>

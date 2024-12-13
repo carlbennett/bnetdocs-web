@@ -1,11 +1,8 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Create News Post';
 $description = 'This page enables a user to create news posts on the site.';
-$this->opengraph->attach(new Pair('url', '/news/create'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/news/create';
 $error = $this->getContext()->error;
 switch ($error)
 {

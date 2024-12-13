@@ -2,11 +2,11 @@
 
 namespace BNETDocs\Libraries\EventLog;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Discord\Embed as DiscordEmbed;
 use \BNETDocs\Libraries\Discord\Webhook as DiscordWebhook;
 use \BNETDocs\Libraries\EventLog\Event;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 
 class Logger
 {
@@ -23,7 +23,7 @@ class Logger
     $u = !\is_null($url) ? $url : \sprintf('/eventlog/view?id=%d', $event->getId());
     if (!empty($u))
     {
-      $u = Common::relativeUrlToAbsolute($u);
+      $u = \BNETDocs\Libraries\Core\UrlFormatter::format($u);
       $embed->setUrl($u);
     }
 
@@ -54,13 +54,12 @@ class Logger
 
   public static function logToDiscord(Event $event, DiscordEmbed $embed): void
   {
-    $c = &Common::$config->discord->forward_event_log;
-    if (!$c->enabled) return;
-    if (\in_array($event->getTypeId(), $c->ignore_event_types)) return;
+    if (!Config::get('discord.forward_event_log.enabled')) return;
+    if (\in_array($event->getTypeId(), Config::get('discord.forward_event_log.ignore_event_types'))) return;
 
-    $webhook = new DiscordWebhook($c->webhook);
+    $webhook = new DiscordWebhook(Config::get('discord.forward_event_log.webhook'));
 
-    if ($c->exclude_meta_data)
+    if (Config::get('discord.forward_event_log.exclude_meta_data'))
     {
       $embed->removeAllFields();
     }

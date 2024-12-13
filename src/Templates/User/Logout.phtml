@@ -2,7 +2,7 @@
 namespace BNETDocs\Templates\User;
 $title = 'Logout';
 $description = 'Log out of the BNETDocs website';
-$this->opengraph->attach(new \CarlBennett\MVC\Libraries\Pair('url', '/user/logout'));
+$url = '/user/logout';
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (!$this->getContext()->active_user) { ?>

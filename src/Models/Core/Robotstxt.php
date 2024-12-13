@@ -4,7 +4,7 @@ namespace BNETDocs\Models\Core;
 
 class Robotstxt extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
-    public ?\stdClass $rules = null;
+    public ?array $rules = null;
 
     public function jsonSerialize(): mixed
     {

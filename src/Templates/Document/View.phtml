@@ -1,9 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document;
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\Core\StringProcessor;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $active_user = $this->getContext()->active_user;
 $comments = $this->getContext()->comments;
 $object = $this->getContext()->document;
@@ -18,8 +18,8 @@ else
   $title = 'Document Not Found';
   $description = 'The requested document does not exist or could not be found.';
 }
-$this->opengraph->attach(new Pair('type', 'article'));
-$url = Common::relativeUrlToAbsolute('/document/' . rawurlencode($object_id));
+$_header_meta_properties = ['og:type' => 'article'];
+$url = UrlFormatter::format('/document/' . rawurlencode($object_id));
 if ($object)
 {
   $url = $object->getURI();
@@ -34,12 +34,11 @@ if ($object)
   $description = filter_var($brief, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   if (empty($description))
   {
-    $description = rtrim(Common::stripUpTo(Common::stripUpTo(trim(filter_var($content, FILTER_SANITIZE_FULL_SPECIAL_CHARS)), "\n", 300), '. ', 300), '.');
+    $description = rtrim(StringProcessor::stripUpTo(StringProcessor::stripUpTo(trim(filter_var($content, FILTER_SANITIZE_FULL_SPECIAL_CHARS)), "\n", 300), '. ', 300), '.');
   }
 }
-$this->opengraph->attach(new Pair('url', $url));
-$edit_url = Common::relativeUrlToAbsolute('/document/edit?id=' . rawurlencode($object_id));
-$delete_url = Common::relativeUrlToAbsolute('/document/delete?id=' . rawurlencode($object_id));
+$edit_url = UrlFormatter::format('/document/edit?id=' . rawurlencode($object_id));
+$delete_url = UrlFormatter::format('/document/delete?id=' . rawurlencode($object_id));
 $edit_visible = ($active_user && $active_user->getOption(User::OPTION_ACL_DOCUMENT_MODIFY));
 $delete_visible = ($active_user && $active_user->getOption(User::OPTION_ACL_DOCUMENT_DELETE));
 require_once('./Includes/MarkdownBootstrapFix.inc.php');
@@ -56,8 +55,8 @@ require('./Includes/header.inc.phtml'); ?>
 <? } ?>
 
   <h1 class="display-4"><a href="<?=$url?>"><?=filter_var($title, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></a></h1>
-<?=(!empty($brief) ? sprintf('  <div class="alert alert-secondary"><span class="float-left font-weight-bold mr-1">Brief:</span> %s</div>', \BNETDocs\Templates\MarkdownBootstrapFix($brief, true, true)) : '')?>
-  <?=\BNETDocs\Templates\MarkdownBootstrapFix($object->getContent(true), true)?>
+<?=(!empty($brief) ? sprintf('  <div class="alert alert-secondary"><span class="float-left font-weight-bold mr-1">Brief:</span> %s</div>', \BNETDocs\Templates\Includes\MarkdownBootstrapFix($brief, true, true)) : '')?>
+  <?=\BNETDocs\Templates\Includes\MarkdownBootstrapFix($object->getContent(true), true)?>
 
   <div class="card"><div class="card-body">
     <span class="float-right text-muted">

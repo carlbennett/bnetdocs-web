@@ -1,10 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\User;
 use \BNETDocs\Models\User\Verify as VerifyModel;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Verify Account';
 $description = 'This form allows an individual to verify their account with a token.';
-$this->opengraph->attach( new Pair( 'url', '/user/verify' ));
+$url = '/user/verify';
 $error = $this->getContext()->error;
 switch ($error)
 {

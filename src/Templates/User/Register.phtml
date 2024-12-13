@@ -1,33 +1,32 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+use \BNETDocs\Models\User\Register as RegisterModel;
 $title = 'Create Account';
 $description = 'This form allows a user to create an account on the site.';
-$this->opengraph->attach(new Pair("url", "/user/register"));
+$url = '/user/register';
 $error = $this->getContext()->error;
-$error_extra = $this->getContext()->error_extra;
+$denylist_reason = $this->getContext()->denylist_reason;
 switch ($error)
 {
   case null: $af = 'email'; $message = null; break;
-  case 'ALREADY_LOGGED_IN': $af = null; $message = 'You are already logged in, you must log out first.'; break;
-  case 'INVALID_CAPTCHA': $af = ''; $message = 'The captcha code did not successfully verify, try again.'; break;
-  case 'NONMATCHING_PASSWORD': $af = 'pw1'; $message = 'The password does not match its confirmation.'; break;
-  case 'INVALID_EMAIL': $af = 'email'; $message = 'The email address is invalid.'; break;
-  case 'EMAIL_NOT_ALLOWED': $af = 'email'; $message = 'The email address is not allowed, use a different one.'; break;
-  case 'PASSWORD_CONTAINS_EMAIL': $af = 'pw1'; $message = 'The password contains the email address, use a better password.'; break;
-  case 'PASSWORD_CONTAINS_USERNAME': $af = 'pw1'; $message = 'The password contains the username, use a better password.'; break;
-  case 'USERNAME_TOO_LONG': $af = 'username'; $message = 'The username is too long, choose a different username.'; break;
-  case 'USERNAME_TOO_SHORT': $af = 'username'; $message = 'The username is too short, choose a different username.'; break;
-  case 'PASSWORD_TOO_LONG': $af = 'pw1'; $message = 'The password is too long, shorten it.'; break;
-  case 'PASSWORD_TOO_SHORT': $af = 'pw1'; $message = 'The password is too short, use a better password.'; break;
-  case 'PASSWORD_BLACKLIST': $af = 'pw1'; $message = $error_extra; if (empty($message)) $message = 'The password is blacklisted.'; break;
-  case 'COUNTRY_DENIED': $af = null; $message = $error_extra; if (empty($message)) $message = 'Your country is blacklisted.'; break;
-  case 'REGISTER_DISABLED': $af = null; $message = 'Creating accounts is currently administratively disabled.'; break;
-  case 'EMAIL_ALREADY_USED': $af = 'email'; $message = 'The email address is already in use, use another.'; break;
-  case 'USERNAME_TAKEN': $af = 'username'; $message = 'That username is taken, try another.'; break;
-  case 'EMAIL_FAILURE': $af = 'email'; $message = 'Your account was created, but the email failed to send.'; break;
-  case 'INTERNAL_ERROR': $af = null; $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case RegisterModel::ERROR_ALREADY_LOGGED_IN: $af = null; $message = 'You are already logged in, you must log out first.'; break;
+  case RegisterModel::ERROR_INVALID_CAPTCHA: $af = ''; $message = 'The captcha code did not successfully verify, try again.'; break;
+  case RegisterModel::ERROR_NONMATCHING_PASSWORD: $af = 'pw1'; $message = 'The password does not match its confirmation.'; break;
+  case RegisterModel::ERROR_INVALID_EMAIL: $af = 'email'; $message = 'The email address is invalid.'; break;
+  case RegisterModel::ERROR_EMAIL_NOT_ALLOWED: $af = 'email'; $message = 'The email address is not allowed, use a different one.'; break;
+  case RegisterModel::ERROR_PASSWORD_CONTAINS_EMAIL: $af = 'pw1'; $message = 'The password contains the email address, use a better password.'; break;
+  case RegisterModel::ERROR_PASSWORD_CONTAINS_USERNAME: $af = 'pw1'; $message = 'The password contains the username, use a better password.'; break;
+  case RegisterModel::ERROR_USERNAME_TOO_LONG: $af = 'username'; $message = 'The username is too long, choose a different username.'; break;
+  case RegisterModel::ERROR_USERNAME_TOO_SHORT: $af = 'username'; $message = 'The username is too short, choose a different username.'; break;
+  case RegisterModel::ERROR_PASSWORD_TOO_LONG: $af = 'pw1'; $message = 'The password is too long, shorten it.'; break;
+  case RegisterModel::ERROR_PASSWORD_TOO_SHORT: $af = 'pw1'; $message = 'The password is too short, use a better password.'; break;
+  case RegisterModel::ERROR_PASSWORD_DENYLIST: $af = 'pw1'; $message = $denylist_reason; if (empty($message)) $message = 'The password is denylisted.'; break;
+  case RegisterModel::ERROR_COUNTRY_DENIED: $af = null; $message = $denylist_reason; if (empty($message)) $message = 'Your country is denylisted.'; break;
+  case RegisterModel::ERROR_REGISTER_DISABLED: $af = null; $message = 'Creating accounts is currently administratively disabled.'; break;
+  case RegisterModel::ERROR_EMAIL_ALREADY_USED: $af = 'email'; $message = 'The email address is already in use, use another.'; break;
+  case RegisterModel::ERROR_USERNAME_TAKEN: $af = 'username'; $message = 'That username is taken, try another.'; break;
+  case RegisterModel::ERROR_EMAIL_FAILURE: $af = 'email'; $message = 'Your account was created, but the email failed to send.'; break;
+  case RegisterModel::ERROR_INTERNAL: $af = null; $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
   default: $af = null; $message = $error;
 }
 $register_disabled = ($error == 'REGISTER_DISABLED');

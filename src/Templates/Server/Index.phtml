@@ -1,11 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Server;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Server List';
 $description = 'This is a list of servers that are well-known and monitored for port status.';
-$this->opengraph->attach(new Pair('url', '/servers'));
+$url = '/servers';
 
 $servers_by_type = [];
 foreach ($this->context->servers as $server) {
@@ -18,7 +17,7 @@ $can_server_modify = $this->getContext()->active_user && $this->getContext()->ac
 
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
-<?=($can_server_create ? sprintf('<a class="btn btn-success text-white float-right" href="%s">Create Server</a>', Common::relativeUrlToAbsolute('/server/create')) : '')?>
+<?=($can_server_create ? sprintf('<a class="btn btn-success text-white float-right" href="%s">Create Server</a>', UrlFormatter::format('/server/create')) : '')?>
   <h1><?=$title?></h1>
   <div class="row"><div class="col">
     <p><?=$description?></p>
@@ -28,7 +27,7 @@ require('./Includes/header.inc.phtml'); ?>
       <li><span class="text-danger">Offline</span>: The port is closed.</li>
       <li><span class="text-warning">Disabled</span>: The server is not actively checked.</li>
     </ul>
-    <p>We have a total of <strong><?=number_format(count($this->context->servers))?> servers</strong> that we monitor. <a href="<?=Common::relativeUrlToAbsolute('/servers.json')?>">Click here</a> to see this list in JSON format.</p>
+    <p>We have a total of <strong><?=number_format(count($this->context->servers))?> servers</strong> that we monitor. <a href="<?=UrlFormatter::format('/servers.json')?>">Click here</a> to see this list in JSON format.</p>
   </div></div>
   <div class="row"><div class="col">
     <table class="table table-hover table-sm table-striped" id="servers_tbl">
@@ -59,7 +58,7 @@ require('./Includes/header.inc.phtml'); ?>
           <td><?=($server->getLabel() != $server->getAddress() && !empty($server->getLabel()) ? $server_label : '&nbsp;')?></td>
           <td><code><?=$server->getAddress()?>:<?=$server->getPort()?></code></td>
           <td>
-<?=($can_server_modify ? sprintf('<a class="btn btn-sm btn-secondary" href="%s" title="Edit Server for %s">📝</a>', Common::relativeUrlToAbsolute(sprintf('/server/edit?id=%d', $server_id)), $server_label) : '')?>
+<?=($can_server_modify ? sprintf('<a class="btn btn-sm btn-secondary" href="%s" title="Edit Server for %s">📝</a>', UrlFormatter::format(sprintf('/server/edit?id=%d', $server_id)), $server_label) : '')?>
             <a class="btn btn-sm btn-primary" href="<?=$server->getURI()?>" title="View Server Details for <?=$server_label?>">🔎</a></td>
         </tr>
 <?    }} ?>

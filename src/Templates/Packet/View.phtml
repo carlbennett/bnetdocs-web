@@ -1,16 +1,17 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Packet;
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\Core\StringProcessor;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Packet Not Found';
 $description = 'The requested packet does not exist or could not be found.';
+$_header_meta_properties = ['og:type' => 'article'];
 $active_user = $this->getContext()->active_user;
 $comments = $this->getContext()->comments;
 $object = $this->getContext()->packet;
 $object_id = $this->getContext()->packet_id;
-$url = Common::relativeUrlToAbsolute('/packet/' . urlencode($object_id));
+$url = '/packet/' . rawurlencode($object_id);
 if ($object)
 {
   $application_layer = $object->getApplicationLayer();
@@ -30,7 +31,7 @@ if ($object)
   $description = filter_var($brief, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
   if (empty($description))
   {
-    $description = rtrim(Common::stripUpTo(Common::stripUpTo(trim(strip_tags($remarks)), "\n", 300), '. ', 300), '.');
+    $description = rtrim(StringProcessor::stripUpTo(StringProcessor::stripUpTo(trim(strip_tags($remarks)), "\n", 300), '. ', 300), '.');
   }
 
   if ($user)
@@ -42,11 +43,8 @@ if ($object)
   }
 }
 
-$this->opengraph->attach(new Pair('type', 'article'));
-$this->opengraph->attach(new Pair('url', $url));
-
-$edit_url = Common::relativeUrlToAbsolute('/packet/edit?id=' . urlencode($object_id));
-$delete_url = Common::relativeUrlToAbsolute('/packet/delete?id=' . urlencode($object_id));
+$edit_url = UrlFormatter::format('/packet/edit?id=' . rawurlencode($object_id));
+$delete_url = UrlFormatter::format('/packet/delete?id=' . rawurlencode($object_id));
 $edit_visible = ($active_user && $active_user->getOption(User::OPTION_ACL_PACKET_MODIFY));
 $delete_visible = ($active_user && $active_user->getOption(User::OPTION_ACL_PACKET_DELETE));
 
@@ -97,11 +95,11 @@ require('./Includes/header.inc.phtml'); ?>
     <tr><th class="text-right">Message Format:<br/><sup class="text-muted">(does not include <a rel="external" href="https://bnetdocs.org/document/16/protocol-headers">protocol header</a>)</sup></th><td>
       <pre class="border border-primary overflow-auto rounded bg-dark text-light"><code class="language-objectivec"><?=$object->getFormat()?></code></pre>
     </td></tr>
-<?=(!empty($brief) ? sprintf('<tr><th class="text-right">Brief:</th><td>%s</td></tr>', \BNETDocs\Templates\MarkdownBootstrapFix($brief, true, true)) : '')?>
+<?=(!empty($brief) ? sprintf('<tr><th class="text-right">Brief:</th><td>%s</td></tr>', \BNETDocs\Templates\Includes\MarkdownBootstrapFix($brief, true, true)) : '')?>
   </tbody></table>
 
   <h1>Remarks</h1>
-  <div class="container"><?=\BNETDocs\Templates\MarkdownBootstrapFix($remarks, true, false)?></div>
+  <div class="container"><?=\BNETDocs\Templates\Includes\MarkdownBootstrapFix($remarks, true, false)?></div>
 
   <div class="card mt-3"><div class="card-body">
     <span class="float-right text-muted">

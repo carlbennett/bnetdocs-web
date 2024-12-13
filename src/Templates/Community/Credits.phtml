@@ -1,10 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Community;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Contributors';
 $description = 'The top contributors to BNETDocs grouped by different types of content.';
-$this->opengraph->attach(new Pair('url', '/credits'));
+$url = '/credits';
 $total_users = $this->getContext()->total_users;
 $top_contributors_by_comments = $this->getContext()->top_contributors_by_comments;
 $top_contributors_by_documents = $this->getContext()->top_contributors_by_documents;

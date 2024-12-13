@@ -2,12 +2,8 @@
 
 namespace BNETDocs\Libraries\Core;
 
-use \SplObjectStorage;
-
-class Template
+class Template implements \JsonSerializable
 {
-    public SplObjectStorage $opengraph;
-
     private mixed $context;
     private string $template_directory = 'Templates';
     private string $template_extension = '.phtml';
@@ -15,7 +11,6 @@ class Template
 
     public function __construct(mixed $context, string $template_file)
     {
-        $this->opengraph = new SplObjectStorage();
         $this->setContext($context);
         $this->setTemplateFile($template_file);
     }
@@ -57,6 +52,17 @@ class Template
         {
             \chdir($cwd); // always change back to last work directory
         }
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'context' => $this->getContext(),
+            'directory_separator' => \DIRECTORY_SEPARATOR,
+            'template_directory' => $this->getTemplateDirectory(),
+            'template_extension' => $this->getTemplateExtension(),
+            'template_file' => $this->getTemplateFile(),
+        ];
     }
 
     public function render(): void

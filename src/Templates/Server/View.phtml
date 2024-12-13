@@ -1,8 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Server;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Server Not Found';
 $description = 'The requested server does not exist or could not be found.';
 $server = $this->getContext()->server;
@@ -56,8 +54,6 @@ else
     );
   }
 }
-$this->opengraph->attach(new Pair('type', 'article'));
-if (!empty($url)) $this->opengraph->attach(new Pair('url', $url));
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
 <? if (!$server) { ?>
@@ -65,7 +61,7 @@ require('./Includes/header.inc.phtml'); ?>
   <div class="alert alert-danger"><?=filter_var($description, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?></div></div>
 <? } else { ?>
   <span class="float-right">
-<?=($this->getContext()->active_user && $this->getContext()->active_user->getOption(User::OPTION_ACL_SERVER_MODIFY) ? sprintf('<a class="btn btn-sm btn-secondary" href="%s" title="Edit">📝</a>', Common::relativeUrlToAbsolute(sprintf('/server/edit?id=%d', $server_id))) : '')?>
+<?=($this->getContext()->active_user && $this->getContext()->active_user->getOption(User::OPTION_ACL_SERVER_MODIFY) ? sprintf('<a class="btn btn-sm btn-secondary" href="%s" title="Edit">📝</a>', \BNETDocs\Libraries\Core\UrlFormatter::format(sprintf('/server/edit?id=%d', $server_id))) : '')?>
     <a class="btn btn-sm btn-primary" href="<?=$url_json?>">JSON</a>
     <a class="btn btn-sm btn-primary" href="<?=$url_txt?>">TXT</a>
   </span>

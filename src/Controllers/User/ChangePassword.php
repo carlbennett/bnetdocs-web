@@ -2,15 +2,17 @@
 
 namespace BNETDocs\Controllers\User;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Libraries\User\User;
+use \BNETDocs\Models\User\ChangePassword as ChangePasswordModel;
 
 class ChangePassword extends \BNETDocs\Controllers\Base
 {
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\User\ChangePassword();
+    $this->model = new ChangePasswordModel();
   }
 
   public function invoke(?array $args): bool
@@ -33,53 +35,55 @@ class ChangePassword extends \BNETDocs\Controllers\Base
 
     if ($pw2 !== $pw3)
     {
-      $this->model->error = 'NONMATCHING_PASSWORD';
+      $this->model->error = ChangePasswordModel::ERROR_NONMATCHING_PASSWORD;
       return;
     }
 
     if (!$this->model->active_user->checkPassword($pw1))
     {
-      $this->model->error = 'PASSWORD_INCORRECT';
+      $this->model->error = ChangePasswordModel::ERROR_PASSWORD_INCORRECT;
       return;
     }
 
     $pwlen = strlen($pw2);
-    $req = &Common::$config->bnetdocs->user_register_requirements;
+    $req = Config::get('bnetdocs.user_register_requirements') ?? [];
     $email = $this->model->active_user->getEmail();
     $username = $this->model->active_user->getUsername();
 
-    if (!$req->password_allow_email && stripos($pw2, $email))
+    if (!($req['password_allow_email'] ?? false) && stripos($pw2, $email))
     {
-      $this->model->error = 'PASSWORD_CONTAINS_EMAIL';
+      $this->model->error = ChangePasswordModel::ERROR_PASSWORD_CONTAINS_EMAIL;
       return;
     }
 
-    if (!$req->password_allow_username && stripos($pw2, $username))
+    if (!($req['password_allow_username'] ?? false) && stripos($pw2, $username))
     {
-      $this->model->error = 'PASSWORD_CONTAINS_USERNAME';
+      $this->model->error = ChangePasswordModel::ERROR_PASSWORD_CONTAINS_USERNAME;
       return;
     }
 
-    if (is_numeric($req->password_length_max) && $pwlen > $req->password_length_max)
+    if (is_numeric($req['password_length_max'] ?? User::MAX_PASSWORD_HASH)
+      && $pwlen > ($req['password_length_max'] ?? User::MAX_PASSWORD_HASH))
     {
-      $this->model->error = 'PASSWORD_TOO_LONG';
+      $this->model->error = ChangePasswordModel::ERROR_PASSWORD_TOO_LONG;
       return;
     }
 
-    if (is_numeric($req->password_length_min) && $pwlen < $req->password_length_min)
+    if (is_numeric($req['password_length_min'] ?? 4)
+      && $pwlen < ($req['password_length_min'] ?? 4))
     {
-      $this->model->error = 'PASSWORD_TOO_SHORT';
+      $this->model->error = ChangePasswordModel::ERROR_PASSWORD_TOO_SHORT;
       return;
     }
 
-    $denylist = Common::$config->bnetdocs->user_password_denylist_map;
+    $denylist = Config::get('bnetdocs.user_password_denylist_map') ?? '../etc/password_denylist.json';
     $denylist = json_decode(file_get_contents('./' . $denylist));
     foreach ($denylist as $denylist_pw)
     {
       if (strtolower($denylist_pw->password) == strtolower($pw2))
       {
-        $this->model->error = 'PASSWORD_BLACKLIST';
-        $this->model->error_extra = $denylist_pw->reason;
+        $this->model->error = ChangePasswordModel::ERROR_PASSWORD_DENYLIST;
+        $this->model->denylist_reason = $denylist_pw->reason;
         return;
       }
     }
@@ -88,7 +92,7 @@ class ChangePassword extends \BNETDocs\Controllers\Base
     $old_password_salt = $this->model->active_user->getPasswordSalt();
 
     $this->model->active_user->setPassword($pw2);
-    $this->model->error = $this->model->active_user->commit() ? false : 'INTERNAL_ERROR';
+    $this->model->error = $this->model->active_user->commit() ? false : ChangePasswordModel::ERROR_INTERNAL;
 
     $event = Logger::initEvent(
       \BNETDocs\Libraries\EventLog\EventTypes::USER_PASSWORD_CHANGE,

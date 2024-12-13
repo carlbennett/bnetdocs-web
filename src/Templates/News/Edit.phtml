@@ -1,12 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
 use \BNETDocs\Libraries\Comment;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Edit News Post';
 $description = 'This page enables a user to edit a news post on the site.';
-$this->opengraph->attach(new Pair('url', '/news/edit'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/news/edit';
+$_header_meta_properties = ['og:type' => 'article'];
 $comments = $this->getContext()->comments;
 $error = $this->getContext()->error;
 switch ($error)

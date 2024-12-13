@@ -1,8 +1,8 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document; ?>
-  <form method="POST" action="?<?=($document_id ? 'id=' . filter_var($document_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '')?>">
+  <form method="POST"<?=(!isset($document_id) || empty($document_id) ? '' : ' action="?id=' . filter_var($document_id, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . '"')?>>
     <div class="form-group">
-      <label class="font-weight-bold" class="form-label" for="title">Title:</label><br/>
+      <label class="form-label font-weight-bold" for="title">Title:</label><br/>
       <input class="border border-primary form-control bg-dark text-light" type="text" name="title" id="title" tabindex="1" required autofocus="autofocus" placeholder="Enter the document title here" value="<?=$form_title?>"/>
     </div>
   <div class="form-group">

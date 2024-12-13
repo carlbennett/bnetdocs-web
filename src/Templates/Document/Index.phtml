@@ -1,12 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document;
-use \BNETDocs\Libraries\Document;
-use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+use \BNETDocs\Libraries\Core\StringProcessor;
 $title = 'All Documents';
 $description = 'The index for all of the document pages on BNETDocs';
-$this->opengraph->attach(new Pair('url', '/document/index'));
+$url = '/document/index';
 $order = $this->getContext()->order;
 $form_order_by = [
   'created-asc' => 'Created (Ascending)',
@@ -50,11 +47,11 @@ require('./Includes/header.inc.phtml'); ?>
       );
       if (!empty($doc_brief))
       {
-        $doc_brief = \BNETDocs\Templates\MarkdownBootstrapFix($doc_brief, true, true);
+        $doc_brief = \BNETDocs\Templates\Includes\MarkdownBootstrapFix($doc_brief, true, true);
       }
       else
       {
-        $doc_brief = rtrim(Common::stripUpTo(Common::stripUpTo(trim(strip_tags($doc_content)), "\n", 128), '. ', 128), '.');
+        $doc_brief = rtrim(StringProcessor::stripUpTo(StringProcessor::stripUpTo(trim(strip_tags($doc_content)), "\n", 128), '. ', 128), '.');
       }
       ob_start();
       if (!$document->isPublished()) require('./Includes/Draft.inc.phtml');

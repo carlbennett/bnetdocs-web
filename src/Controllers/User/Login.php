@@ -7,7 +7,6 @@ use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\User\User;
 use \BNETDocs\Models\User\Login as LoginModel;
-use \CarlBennett\MVC\Libraries\Common;
 
 class Login extends \BNETDocs\Controllers\Base
 {
@@ -38,7 +37,7 @@ class Login extends \BNETDocs\Controllers\Base
       $this->model->error = LoginModel::ERROR_EMPTY_EMAIL;
     else if (empty($this->model->password))
       $this->model->error = LoginModel::ERROR_EMPTY_PASSWORD;
-    else if (Common::$config->bnetdocs->user_login_disabled)
+    else if (\BNETDocs\Libraries\Core\Config::get('bnetdocs.user_login_disabled'))
       $this->model->error = LoginModel::ERROR_SYSTEM_DISABLED;
 
     if ($this->model->error) return true;

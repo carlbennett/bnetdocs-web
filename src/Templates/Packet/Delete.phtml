@@ -1,11 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Packet;
 use \BNETDocs\Models\Packet\Delete as DeleteModel;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete Packet';
 $description = 'This form allows an individual to delete a packet.';
-$this->opengraph->attach(new Pair('url', '/packet/delete'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/packet/delete';
 $error = $this->getContext()->error;
 switch ($error)
 {

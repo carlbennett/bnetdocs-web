@@ -1,12 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Packet;
-use \BNETDocs\Libraries\Packet\Packet;
-use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+use \BNETDocs\Libraries\Core\StringProcessor;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 $title = 'All Packets';
 $description = 'The index for all of the packets documented on BNETDocs';
-$this->opengraph->attach(new Pair('url', '/packet/index'));
+$url = '/packet/index';
 $order = $this->getContext()->order;
 $form_order_by = [
   'created-datetime-asc' => 'Created Timestamp (Ascending)',
@@ -75,11 +73,11 @@ require('./Includes/header.inc.phtml'); ?>
 
       if (!empty($brief))
       {
-        $brief = \BNETDocs\Templates\MarkdownBootstrapFix($brief, true, true);
+        $brief = \BNETDocs\Templates\Includes\MarkdownBootstrapFix($brief, true, true);
       }
       else
       {
-        $brief = rtrim(Common::stripUpTo(Common::stripUpTo(trim(strip_tags($remarks)), "\n", 128), '. ', 128), '.');
+        $brief = rtrim(StringProcessor::stripUpTo(StringProcessor::stripUpTo(trim(strip_tags($remarks)), "\n", 128), '. ', 128), '.');
       }
 
       ob_start();
@@ -106,12 +104,12 @@ require('./Includes/header.inc.phtml'); ?>
   </tbody></table>
   <p>These packets are also available as constants in
 <? $q = getenv('QUERY_STRING'); if (!empty($q)) { $q = '?' . $q; } ?>
-    <a href="<?=Common::relativeUrlToAbsolute('/packet/index.cpp' . $q)?>">C++</a>,
-    <a href="<?=Common::relativeUrlToAbsolute('/packet/index.go' . $q)?>">Go</a>,
-    <a href="<?=Common::relativeUrlToAbsolute('/packet/index.java' . $q)?>">Java</a>,
-    <a href="<?=Common::relativeUrlToAbsolute('/packet/index.json' . $q)?>">JSON</a>,
-    <a href="<?=Common::relativeUrlToAbsolute('/packet/index.php' . $q)?>">PHP</a>, and
-    <a href="<?=Common::relativeUrlToAbsolute('/packet/index.vb' . $q)?>">VB6</a>.
+    <a href="<?=UrlFormatter::format('/packet/index.cpp' . $q)?>">C++</a>,
+    <a href="<?=UrlFormatter::format('/packet/index.go' . $q)?>">Go</a>,
+    <a href="<?=UrlFormatter::format('/packet/index.java' . $q)?>">Java</a>,
+    <a href="<?=UrlFormatter::format('/packet/index.json' . $q)?>">JSON</a>,
+    <a href="<?=UrlFormatter::format('/packet/index.php' . $q)?>">PHP</a>, and
+    <a href="<?=UrlFormatter::format('/packet/index.vb' . $q)?>">VB6</a>.
   </p>
 </div>
 <? ob_start(); ?>

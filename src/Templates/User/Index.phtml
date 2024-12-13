@@ -1,12 +1,11 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\User;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 use \DateTime;
 $title = 'All Users';
 $description = 'All users currently registered on BNETDocs';
-$this->opengraph->attach(new Pair('url', '/user/index'));
+$url = '/user/index';
 $active_user = $this->getContext()->active_user;
 $acl_user_delete = ($active_user && $active_user->getOption(User::OPTION_ACL_USER_DELETE));
 $acl_user_modify = ($active_user && $active_user->getOption(User::OPTION_ACL_USER_MODIFY));
@@ -53,9 +52,9 @@ require('./Includes/header.inc.phtml'); ?>
         ($user->getCreatedEstimate() ?? '<em>(null)</em>'),
         ($acl_user_modify || $acl_user_delete ? (
           sprintf('<td>%s%s</td>', (
-            $acl_user_modify ? sprintf('<a class="mr-1 btn btn-sm btn-secondary" href="%s" title="Modify">📝</a>', Common::relativeUrlToAbsolute('/user/update?id=' . rawurlencode($user->getId()))) : ''
+            $acl_user_modify ? sprintf('<a class="mr-1 btn btn-sm btn-secondary" href="%s" title="Modify">📝</a>', UrlFormatter::format('/user/update?id=' . rawurlencode($user->getId()))) : ''
           ), (
-            $acl_user_delete ? sprintf('<a class="ml-1 btn btn-sm btn-danger" href="%s" title="Delete">❌</a>', Common::relativeUrlToAbsolute('/user/delete?id=' . rawurlencode($user->getId()))) : ''
+            $acl_user_delete ? sprintf('<a class="ml-1 btn btn-sm btn-danger" href="%s" title="Delete">❌</a>', UrlFormatter::format('/user/delete?id=' . rawurlencode($user->getId()))) : ''
           ))
         ) : ''),
         PHP_EOL
@@ -65,13 +64,13 @@ require('./Includes/header.inc.phtml'); ?>
   <nav aria-label="User list navigation" class="d-flex justify-content-center">
     <ul class="pagination">
   <?  if (!$no_prev) { ?>
-      <li class="page-item"><a class="page-link" href="<?=Common::relativeUrlToAbsolute('/user/index?page=' . ($page - 1) . '&limit=' . $limit . '&order=' . $order)?>">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="<?=UrlFormatter::format('/user/index?page=' . ($page - 1) . '&limit=' . $limit . '&order=' . $order)?>">Previous</a></li>
   <?  } else { ?>
       <li class="page-item disabled"><span class="page-link">Previous</span></li>
   <?  } ?>
       <li class="page-item disabled"><span class="page-link"><?=number_format($page)?> of <?=number_format($pages)?></span></li>
   <?  if (!$no_next) { ?>
-      <li class="page-item"><a class="page-link" href="<?=Common::relativeUrlToAbsolute('/user/index?page=' . ($page + 1) . '&limit=' . $limit . '&order=' . $order)?>">Next</a></li>
+      <li class="page-item"><a class="page-link" href="<?=UrlFormatter::format('/user/index?page=' . ($page + 1) . '&limit=' . $limit . '&order=' . $order)?>">Next</a></li>
   <?  } else { ?>
       <li class="page-item disabled"><span class="page-link">Next</span></li>
   <?  } ?>

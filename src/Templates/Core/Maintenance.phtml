@@ -1,9 +1,11 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Core;
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Libraries\Core\Config;
 $title = 'Maintenance';
 $description = $this->getContext()->message;
 $_header_maintenance = true;
+$discord_invite_code = Config::get('discord.enabled', false) ? Config::get('discord.invite_code') : null;
+$email_recipient_reply_to = Config::get('email.recipient_reply_to');
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <div class="alert alert-danger" role="alert">
@@ -15,17 +17,17 @@ require('./Includes/header.inc.phtml'); ?>
     <ul>
       <li>You could try <strong>refreshing</strong> the page again later.</li>
       <li>You might try loading this page from the
-        <a href="https://web.archive.org/web/*/<?=Common::relativeUrlToAbsolute(getenv('REQUEST_URI'))?>">
+        <a href="https://web.archive.org/web/*/<?=\BNETDocs\Libraries\Core\UrlFormatter::format(getenv('REQUEST_URI'))?>">
           Wayback Machine Internet Archive</a>.
       </li>
-<?php if (isset(Common::$config) && isset(Common::$config->discord) && isset(Common::$config->discord->invite_code)) { ?>
-      <li>You could use <a href="https://discord.gg/<?=Common::$config->discord->invite_code?>">Discord</a> to contact an administrator.</li>
+<?php if (!empty($discord_invite_code)) { ?>
+      <li>You could use <a href="https://discord.gg/<?=$discord_invite_code?>">Discord</a> to contact an administrator.</li>
 <?php } else { ?>
       <li>You could use social media to contact an administrator.</li>
 <?php } ?>
-<?php if (isset(Common::$config) && isset(Common::$config->email) && isset(Common::$config->email->recipient_reply_to)) { ?>
+<?php if ($email_recipient_reply_to) { ?>
       <li>You could use an
-        <a href="mailto:<?=Common::$config->email->recipient_reply_to[1]?> &lt;<?=Common::$config->email->recipient_reply_to[0]?>&gt;">email message</a>
+        <a href="mailto:<?=$email_recipient_reply_to[1]?> &lt;<?=$email_recipient_reply_to[0]?>&gt;">email message</a>
         to contact an administrator.</li>
 <?php } ?>
   </ul>

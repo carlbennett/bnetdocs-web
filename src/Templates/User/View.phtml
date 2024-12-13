@@ -1,9 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\User;
-use \BNETDocs\Libraries\Comment;
+
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+
 $active_user = $this->getContext()->active_user;
 $contributions = $this->getContext()->contributions;
 $documents = $this->getContext()->documents;
@@ -16,12 +16,13 @@ $user_profile = $this->getContext()->user_profile;
 $user_verified = $user && $user->isVerified();
 $title = ($user ? $user->getName() : 'User Not Found');
 $description = ($user ? $user->getName() . '\'s user profile on BNETDocs' : 'The requested user does not exist or could not be found.');
-$url = ($user ? $user->getURI() : Common::relativeUrlToAbsolute('/user/' . rawurlencode($user_id)));
+$url = ($user ? $user->getURI() : UrlFormatter::format('/user/' . rawurlencode($user_id)));
+$_header_meta_properties = ['og:type' => 'profile'];
 
 if ($user)
 {
-  $this->opengraph->attach(new Pair('profile:username', $user->getName()));
-  $this->opengraph->attach(new Pair('image', $user->getAvatarURI(null)));
+  $_header_meta_properties['og:profile:username'] = $user->getName();
+  $_header_meta_properties['og:image'] = $user->getAvatarURI(null);
 
   $comments = $this->getContext()->comments;
   $sum_comments = $this->getContext()->sum_comments;
@@ -60,19 +61,17 @@ if ($user_profile)
   $website = filter_var($user_profile->getWebsite(), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 }
 
-if (!empty($biography)) $description = $biography;
+if (isset($biography) && is_string($biography) && !empty($biography)) $description = $biography;
 
-$this->opengraph->attach(new Pair('type', 'profile'));
-$this->opengraph->attach(new Pair('url', $url));
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <span class="float-right">
 <?  if ($active_user && $user && $active_user->getId() == $user->getId()) { ?>
-    <a class="btn btn-sm btn-secondary" href="<?=Common::relativeUrlToAbsolute('/user/update')?>" title="Update Profile">📝 Update Profile</a>
-    <a class="btn btn-sm btn-secondary" href="<?=Common::relativeUrlToAbsolute('/user/changepassword')?>" title="Change Password">🔑 Change Password</a>
+    <a class="btn btn-sm btn-secondary" href="<?=UrlFormatter::format('/user/update')?>" title="Update Profile">📝 Update Profile</a>
+    <a class="btn btn-sm btn-secondary" href="<?=UrlFormatter::format('/user/changepassword')?>" title="Change Password">🔑 Change Password</a>
 <?  } ?>
 <?  if ($active_user && $user && $active_user->getOption(User::OPTION_ACL_USER_MODIFY)) { ?>
-    <a class="btn btn-sm btn-secondary" href="<?=Common::relativeUrlToAbsolute('/user/update?id=' . rawurlencode($user->getId()))?>" title="Edit User">📝</a>
+    <a class="btn btn-sm btn-secondary" href="<?=UrlFormatter::format('/user/update?id=' . rawurlencode($user->getId()))?>" title="Edit User">📝</a>
 <?  } ?>
   </span>
 <? if ($user) { ?>

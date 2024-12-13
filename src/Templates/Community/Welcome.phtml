@@ -1,10 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Community;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 $title = 'Welcome';
 $description = 'Welcome to the documentation and discussion for the Battle.net&trade; protocol';
-$_header_
-$this->opengraph->attach(new Pair('url', '/welcome'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/welcome';
+$_header_meta_properties = ['og:type' => 'article'];
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
   <h1>Welcome to BNETDocs!</h1>

@@ -22,12 +22,12 @@ and/or other countries.
 <?php if (Config::get('analytics.cloudflare')) { ?>
 <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":<?=json_encode(Config::get('analytics.cloudflare'))?>}'></script><!-- End Cloudflare Web Analytics -->
 <?php } ?>
-<script src="<?=UrlFormatter::assetify('jquery-3.7.0.slim.min.js')?>" type="text/javascript" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=UrlFormatter::assetify('popper-1.16.0.min.js')?>" type="text/javascript" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=UrlFormatter::assetify('bootstrap-4.4.1.min.js')?>" type="text/javascript" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"><![CDATA[]]></script>
-<script src="<?=UrlFormatter::assetify('datatables.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
-<script src="<?=UrlFormatter::assetify('highlight/highlight.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('jquery-3.7.0.slim.min.js')?>" type="text/javascript" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="<?=UrlFormatter::assetify('popper-1.16.0.min.js')?>" type="text/javascript" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="<?=UrlFormatter::assetify('bootstrap-4.4.1.min.js')?>" type="text/javascript" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="<?=UrlFormatter::assetify('datatables.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"></script>
+<script src="<?=UrlFormatter::assetify('highlight/highlight.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"></script>
 <script defer type="text/javascript">$(document).ready(function(){hljs.highlightAll()});</script>
-<script src="<?=UrlFormatter::assetify('moment-2.29.4.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"><![CDATA[]]></script>
+<script src="<?=UrlFormatter::assetify('moment-2.29.4.min.js')?>" type="text/javascript" crossorigin="anonymous" charset="utf8"></script>
 <?=(isset($_footer_script) && !empty($_footer_script) ? $_footer_script : '')?>
 </body></html>

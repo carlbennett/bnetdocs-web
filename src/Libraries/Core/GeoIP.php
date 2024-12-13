@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Libraries\Core;
 
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Libraries\Core\Config;
 
 class GeoIP
 {
@@ -68,7 +68,7 @@ class GeoIP
 
     try
     {
-      self::$reader = new \GeoIp2\Database\Reader(Common::$config->geoip->database_file);
+      self::$reader = new \GeoIp2\Database\Reader(Config::get('geoip.database_file'));
     }
     catch (\MaxMind\Db\Reader\InvalidDatabaseException $e)
     {
@@ -86,10 +86,10 @@ class GeoIP
       throw new \UnexpectedValueException('not a valid IP address');
     }
 
-    if (!Common::$config->geoip->enabled) return null;
+    if (!Config::get('geoip.enabled', false)) return null;
 
     $mmdb = self::getReader();
-    $type = Common::$config->geoip->database_type;
+    $type = Config::get('geoip.database_type');
 
     try
     {

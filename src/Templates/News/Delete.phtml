@@ -1,10 +1,8 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete News Post';
 $description = 'This form allows an individual to delete a news post.';
-$this->opengraph->attach(new Pair('url', '/news/delete'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/news/delete';
 $error = $this->getContext()->error;
 $id = $this->getContext()->id;
 $news_post_title = $this->getContext()->title;

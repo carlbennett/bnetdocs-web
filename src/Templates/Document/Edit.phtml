@@ -1,16 +1,14 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Document;
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Models\Document\Edit as EditModel;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Edit Document';
 $description = 'This form allows an individual to edit a document.';
-$this->opengraph->attach(new Pair('url', '/document/edit'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/document/edit';
 $comments = $this->getContext()->comments;
 $document_id = $this->getContext()->document_id;
-$document_url = ($this->getContext()->document ? $this->getContext()->document->getURI() : Common::relativeUrlToAbsolute('/document/' . rawurlencode($document_id)));
+$document_url = ($this->getContext()->document ? $this->getContext()->document->getURI() : UrlFormatter::format('/document/' . rawurlencode($document_id)));
 $error = $this->getContext()->error;
 switch ($error)
 {
@@ -43,7 +41,7 @@ require('./Includes/header.inc.phtml'); ?>
     <p class="mb-0">The document was successfully edited!</p>
   </div>
   <div class="text-center">
-    <a class="btn btn-primary" href="<?=Common::relativeUrlToAbsolute('/document/' . rawurlencode($document_id))?>"><img class="float-left" src="<?=Common::relativeUrlToAbsolute('/a/svg/chevron-right-white.svg' . $_unique_asset)?>"/> Return to Document</a>
+    <a class="btn btn-primary" href="<?=UrlFormatter::format('/document/' . rawurlencode($document_id))?>"><img class="float-left" src="<?=UrlFormatter::format('/a/svg/chevron-right-white.svg' . $_unique_asset)?>"/> Return to Document</a>
   </div>
 <?  }
   } else { require('./Includes/LoginRequired.inc.phtml'); } ?>

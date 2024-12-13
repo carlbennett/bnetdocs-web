@@ -25,13 +25,13 @@ class Recaptcha
       'remoteip' => ($remoteip ? $remoteip : getenv('REMOTE_ADDR')),
     ];
 
-    $r = \CarlBennett\MVC\Libraries\Common::curlRequest($this->url, $data);
+    $r = \BNETDocs\Libraries\Core\Curl::execute($this->url, $data);
 
-    if ($r->code != 200)
+    if ($r['code'] != \BNETDocs\Libraries\Core\HttpCode::HTTP_OK)
     {
       throw new RecaptchaException('Received bad HTTP status');
     }
-    else if (stripos($r->type, 'json') === false)
+    else if (stripos($r['type'], 'json') === false)
     {
       throw new RecaptchaException('Received unknown content type');
     }
@@ -40,7 +40,7 @@ class Recaptcha
       throw new RecaptchaException('Received empty response');
     }
 
-    $j = json_decode($r->data);
+    $j = json_decode($r['data']);
     $e = json_last_error();
 
     if (!$j || $e !== JSON_ERROR_NONE || !property_exists($j, 'success'))

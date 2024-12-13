@@ -1,11 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Server;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Models\Server\Delete as DeleteModel;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete Server';
 $description = 'This form allows an individual to delete a server.';
-$this->opengraph->attach(new Pair('url', '/server/delete'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/server/delete';
 $model = $this->getContext();
 switch ($model->error)
 {
@@ -28,7 +27,7 @@ else if ($model->error === false)
   echo '<h1 class="text-success">Server Deleted</h1>';
   echo '<div class="alert alert-success"><p class="mb-0">The server has been deleted!</p></div>';
   echo '<div class="form-group text-center">';
-  printf('<a class="btn btn-success" tabindex="1" href="%s">Server List</a> ', \CarlBennett\MVC\Libraries\Common::relativeUrlToAbsolute('/servers'));
+  printf('<a class="btn btn-success" tabindex="1" href="%s">Server List</a> ', UrlFormatter::format('/servers'));
   echo '</div>';
 }
 else
@@ -42,7 +41,7 @@ else
     echo '<div class="alert alert-danger"><p class="mb-0">Are you sure you wish to delete this server?</p></div>';
     if (!empty($json)) printf('<pre><code class="language-objectivec">%s</code></pre>', filter_var($json, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
     echo '<a class="btn btn-primary" tabindex="1" href="javascript:history.go(-1);">Back</a> ';
-    printf('<a class="btn btn-secondary" tabindex="2" href="%s">Server List</a> ', \CarlBennett\MVC\Libraries\Common::relativeUrlToAbsolute('/servers'));
+    printf('<a class="btn btn-secondary" tabindex="2" href="%s">Server List</a> ', UrlFormatter::format('/servers'));
     echo '<input class="btn btn-danger" type="submit" value="Delete Server" tabindex="3" autofocus/>';
     echo '</form>';
   }

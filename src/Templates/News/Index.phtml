@@ -1,11 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'News';
 $description = 'BNETDocs News';
-$this->opengraph->attach(new Pair('url', '/news'));
+$url = '/news';
 require('./Includes/header.inc.phtml');
 
 $news_posts = $this->getContext()->news_posts;
@@ -30,8 +29,8 @@ else
     $created_dt = $news_post->getCreatedDateTime();
     $edited_dt = $news_post->getEditedDateTime();
     $url = $news_post->getURI();
-    $edit_url = Common::relativeUrlToAbsolute('/news/edit?id=' . urlencode($news_post->getId()));
-    $delete_url = Common::relativeUrlToAbsolute('/news/delete?id=' . urlencode($news_post->getId()));
+    $edit_url = UrlFormatter::format('/news/edit?id=' . urlencode($news_post->getId()));
+    $delete_url = UrlFormatter::format('/news/delete?id=' . urlencode($news_post->getId()));
     $user_id = $news_post->getUserId();
     if (!isset($users_cache[$user_id])) $users_cache[$user_id] = new User($user_id);
     $avatar = $users_cache[$user_id]->getAvatarURI(22);
@@ -53,7 +52,7 @@ else
 
     echo '<div style="background-color:rgba(0,0,0,0.45);" class="font-weight-bold float-left mb-2 mr-2 p-2 rounded small shadow text-center">';
     echo '<img alt="' . $news_post->getCategory()->getLabel() . '" title="' . $news_post->getCategory()->getLabel() . '" src="'
-      . Common::relativeUrlToAbsolute('/a/news_categories/' . $news_post->getCategory()->getFilename()) . '"/><br/>'
+      . UrlFormatter::format('/a/news_categories/' . $news_post->getCategory()->getFilename()) . '"/><br/>'
       . $news_post->getCategory()->getLabel() . '</div>';
     echo $news_post->getContent(true);
 
@@ -100,17 +99,17 @@ else
     if ($page_prev)
     {
       echo '<li class="page-item"><a class="page-link" href="'
-        . Common::relativeUrlToAbsolute('/news?page=' . urlencode($page_prev)) . '">&lt;</a></li>';
+        . UrlFormatter::format('/news?page=' . urlencode($page_prev)) . '">&lt;</a></li>';
     }
     for ($i = 1; $i <= $page_count; ++$i)
     {
       echo '<li class="page-item disabled"><a class="page-link' . ($i - 1 == $page_current ? ' active': '')
-        . '" href="' . Common::relativeUrlToAbsolute('/news?page=' . urlencode($i)) . '">' . $i . '</a></li>';
+        . '" href="' . UrlFormatter::format('/news?page=' . urlencode($i)) . '">' . $i . '</a></li>';
     }
     if ($page_next)
     {
       echo '<li class="page-item"><a class="page-link" href="'
-        . Common::relativeUrlToAbsolute('/news?page=' . urlencode($page_next)) . '">&gt;</a></li>';
+        . UrlFormatter::format('/news?page=' . urlencode($page_next)) . '">&gt;</a></li>';
     }
     echo '</ul>';
     echo '</nav>';

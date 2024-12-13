@@ -1,11 +1,11 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Community;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+
+use \BNETDocs\Libraries\Core\UrlFormatter;
 
 $title = 'Privacy Policy';
-$this->opengraph->attach(new Pair('url', '/privacy'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/privacy';
+$_header_meta_properties = ['og:type' => 'article'];
 
 $data_location = $this->getContext()->data_location;
 $email_domain = $this->getContext()->email_domain;
@@ -14,7 +14,7 @@ $org = $this->getContext()->organization;
 $description = sprintf(
   'This %s describes how %s ("we", "us", or "our") collects, uses, and ' .
   'discloses personal information when you use our website, located at %s (the "Site").',
-  $title, $org, Common::relativeUrlToAbsolute('/')
+  $title, $org, UrlFormatter::format('/')
 );
 
 require('./Includes/header.inc.phtml'); ?>
@@ -102,8 +102,8 @@ require('./Includes/header.inc.phtml'); ?>
 
 <h2><a id="contact">11. Contacting Us</a></h2>
 
-<p>You may send an email message to the site owner. Please write to <?=filter_var($email_mailbox, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?><img width="13" height="13" alt="&#64;" src="<?=Common::relativeUrlToAbsolute('/a/svg/at-sign-white.svg' . $_unique_asset)?>"/><?=filter_var($email_domain, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?>, it will reach the appropriate person.</p>
-<?=(Common::$config->discord->enabled ? '<p>Alternatively, you may try reaching ' . filter_var($org, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' staff via <a href="' . Common::relativeUrlToAbsolute('/discord') . '">Discord</a>.</p>' : '')?>
+<p>You may send an email message to the site owner. Please write to <?=filter_var($email_mailbox, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?><img width="13" height="13" alt="&#64;" src="<?=UrlFormatter::assetify('svg/at-sign-white.svg')?>"/><?=filter_var($email_domain, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?>, it will reach the appropriate person.</p>
+<?=(\BNETDocs\Libraries\Core\Config::get('discord.enabled', false) ? '<p>Alternatively, you may try reaching ' . filter_var($org, FILTER_SANITIZE_FULL_SPECIAL_CHARS) . ' staff via <a href="' . UrlFormatter::format('/discord') . '">Discord</a>.</p>' : '')?>
 
 </div>
 <? require('./Includes/footer.inc.phtml'); ?>

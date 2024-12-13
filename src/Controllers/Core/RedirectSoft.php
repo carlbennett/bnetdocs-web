@@ -20,7 +20,7 @@ class RedirectSoft extends \BNETDocs\Controllers\Base
    */
   public function invoke(?array $args): bool
   {
-    $this->model->location = \CarlBennett\MVC\Libraries\Common::relativeUrlToAbsolute(\array_shift($args));
+    $this->model->location = \BNETDocs\Libraries\Core\UrlFormatter::format(\array_shift($args));
     $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_FOUND;
     $this->model->_responseHeaders['Location'] = $this->model->location;
     return true;

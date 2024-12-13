@@ -6,7 +6,6 @@
     "asset_versioning": true,
     "blizzard_greeting_html": "<div class=\"alert alert-secondary p-2\">Hey there, Blizzard! We hope you find our info useful with your work, come ask us in the Discord any questions. <a href=\"https://discord.gg/u87WVeu\">discord.gg/u87WVeu</a> 😊</div>",
     "campaigns": {
-      "battleforthenet": "",
       "vultr": ""
     },
     "donations": {
@@ -15,10 +14,10 @@
       "paypal_url": null,
       "user_id": null
     },
-    "maintenance": [
-      false,
-      "BNETDocs has to take a brief moment to do some system maintenance. We'll be back shortly."
-    ],
+    "maintenance": {
+      "enabled": false,
+      "message": "BNETDocs has to take a brief moment to do some system maintenance. We'll be back shortly."
+    },
     "navigation": {
       "front_page": "/welcome"
     },
@@ -98,15 +97,11 @@
     "enabled": true
   },
   "mysql": {
-    "character_set": "utf8",
+    "character_set": "utf8mb4",
     "database": "bnetdocs_phoenix",
+    "hostname": "localhost",
     "password": "",
-    "servers": [
-      {
-        "hostname": "localhost",
-        "port": 3306
-      }
-    ],
+    "port": 3306,
     "timeout": 3,
     "timezone": "+00:00",
     "username": "bnetdocs"

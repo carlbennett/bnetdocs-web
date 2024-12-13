@@ -1,11 +1,10 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\User;
 use \BNETDocs\Models\User\Delete as DeleteModel;
-use \CarlBennett\MVC\Libraries\Pair;
 $title = 'Delete User';
 $description = 'This page confirms if the user wishes to delete another user.';
-$this->opengraph->attach(new Pair('url', '/user/delete'));
-$this->opengraph->attach(new Pair('type', 'article'));
+$url = '/user/delete';
+$_header_meta_properties = ['og:type' => 'article'];
 switch ($this->getContext()->error)
 {
   case DeleteModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete users.'; break;
@@ -43,7 +42,7 @@ require('./Includes/header.inc.phtml'); ?>
   <div class="alert alert-success">
     <p class="mb-0"><strong>The user was successfully deleted!</strong></p>
   </div>
-  <a class="btn btn-primary" href="<?=\CarlBennett\MVC\Libraries\Common::relativeUrlToAbsolute('/user/index')?>">Back</a>
+  <a class="btn btn-primary" href="<?=\BNETDocs\Libraries\Core\UrlFormatter::format('/user/index')?>">Back</a>
 
 <? } else { ?>
 

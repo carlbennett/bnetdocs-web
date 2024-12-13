@@ -1,13 +1,11 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\EventLog;
 
-use \BNETDocs\Exceptions\UserNotFoundException;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 
 $title = 'Event Logs';
 $description = 'All triggered event logs on BNETDocs';
-$this->opengraph->attach(new Pair('url', '/eventlog/index'));
+$url = '/eventlog/index';
 
 $form_order_by = [
   'datetime-asc' => 'Timestamp (Ascending)',
@@ -59,34 +57,37 @@ require('./Includes/header.inc.phtml'); ?>
 <? foreach ($this->getContext()->events as $event) {
       $e_id = $event->getId();
       try { $e_user = $event->getUser(); }
-      catch ( UserNotFoundException $e ) { $e_user = null; }
-      if ( is_null( $e_user ) ) { $e_user = '<em>(null)</em>'; }
-      else {
+      catch (\BNETDocs\Exceptions\UserNotFoundException) { $e_user = null; }
+      if (is_null($e_user))
+      {
+        $e_user = '<em>(null)</em>';
+      }
+      else
+      {
         $e_user_url    = $e_user->getURI();
         $e_user_avatar = $e_user->getAvatarURI(22);
         $e_user        = filter_var( $e_user->getName(), FILTER_SANITIZE_FULL_SPECIAL_CHARS );
         $e_user        = '<a href="' . $e_user_url . '"><img class="mr-2 rounded" src="' . $e_user_avatar . '"/>' . $e_user . '</a>';
-      }
-?>
+      } ?>
       <tr>
-        <td class="text-right"><a href="<?=Common::relativeUrlToAbsolute('/eventlog/view?id=' . $e_id)?>"><?=$e_id?></a></td>
+        <td class="text-right"><a href="<?=UrlFormatter::format('/eventlog/view?id=' . $e_id)?>"><?=$e_id?></a></td>
         <td><?=$event->getTypeName()?></td>
         <td><time datetime="<?=$event->getDateTime()->format('c')?>"><?=$event->getDateTime()->format('l, F j, Y')?></time></td>
         <td><?=$e_user?></td>
-        <td><a class="btn btn-sm btn-primary" href="<?=Common::relativeUrlToAbsolute('/eventlog/view?id=' . $e_id)?>" title="View Event #<?=$e_id?>">🔎</a></td>
+        <td><a class="btn btn-sm btn-primary" href="<?=UrlFormatter::format('/eventlog/view?id=' . $e_id)?>" title="View Event #<?=$e_id?>">🔎</a></td>
       </tr>
 <? } ?>
   </tbody></table>
   <nav aria-label="User list navigation" class="d-flex justify-content-center">
     <ul class="pagination">
   <?  if (!$no_prev) { ?>
-      <li class="page-item"><a class="page-link" href="<?=Common::relativeUrlToAbsolute('/eventlog/index?page=' . ($page - 1) . '&limit=' . $limit . '&order=' . $order)?>">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="<?=UrlFormatter::format('/eventlog/index?page=' . ($page - 1) . '&limit=' . $limit . '&order=' . $order)?>">Previous</a></li>
   <?  } else { ?>
       <li class="page-item disabled"><span class="page-link">Previous</span></li>
   <?  } ?>
       <li class="page-item disabled"><span class="page-link"><?=number_format($page)?> of <?=number_format($pages)?></span></li>
   <?  if (!$no_next) { ?>
-      <li class="page-item"><a class="page-link" href="<?=Common::relativeUrlToAbsolute('/eventlog/index?page=' . ($page + 1) . '&limit=' . $limit . '&order=' . $order)?>">Next</a></li>
+      <li class="page-item"><a class="page-link" href="<?=UrlFormatter::format('/eventlog/index?page=' . ($page + 1) . '&limit=' . $limit . '&order=' . $order)?>">Next</a></li>
   <?  } else { ?>
       <li class="page-item disabled"><span class="page-link">Next</span></li>
   <?  } ?>

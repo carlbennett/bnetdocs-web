@@ -1,5 +1,5 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
-namespace BNETDocs\Templates;
+namespace BNETDocs\Templates\Includes;
 
 /**
  * Adds CSS classes to Markdown output

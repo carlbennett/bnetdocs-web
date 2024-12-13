@@ -3,13 +3,14 @@
 namespace BNETDocs\Controllers\User;
 
 use \BNETDocs\Exceptions\UserNotFoundException;
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\Recaptcha;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\Core\Template;
 use \BNETDocs\Libraries\EventLog\EventTypes;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
+use \BNETDocs\Models\User\Register as RegisterModel;
 use \PHPMailer\PHPMailer\PHPMailer;
 
 class Register extends \BNETDocs\Controllers\Base
@@ -19,7 +20,7 @@ class Register extends \BNETDocs\Controllers\Base
    */
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\User\Register();
+    $this->model = new RegisterModel();
   }
 
   /**
@@ -30,18 +31,15 @@ class Register extends \BNETDocs\Controllers\Base
    */
   public function invoke(?array $args): bool
   {
-    $conf = &Common::$config; // local variable for accessing config.
-
-    $this->model->error = null;
     $this->model->recaptcha = new Recaptcha(
-      $conf->recaptcha->secret,
-      $conf->recaptcha->sitekey,
-      $conf->recaptcha->url
+      Config::get('recaptcha.secret'),
+      Config::get('recaptcha.sitekey'),
+      Config::get('recaptcha.url')
     );
-    $this->model->username_max_len = $conf->bnetdocs->user_register_requirements->username_length_max;
+    $this->model->username_max_len = Config::get('bnetdocs.user_register_requirements.username_length_max') ?? User::MAX_USERNAME;
 
-    if ($conf->bnetdocs->user_register_disabled)
-      $this->model->error = 'REGISTER_DISABLED';
+    if (Config::get('bnetdocs.user_register_disabled'))
+      $this->model->error = RegisterModel::ERROR_REGISTER_DISABLED;
     else if (Router::requestMethod() == 'POST')
       $this->tryRegister();
 
@@ -49,119 +47,155 @@ class Register extends \BNETDocs\Controllers\Base
     return true;
   }
 
-  protected function tryRegister() : void
+  protected function tryRegister(): void
   {
-    $data = Router::query();
-    $this->model->email    = (isset($data['email'   ]) ? $data['email'   ] : null);
-    $this->model->username = (isset($data['username']) ? $data['username'] : null);
-    if (!is_null($this->model->active_user)) {
-      $this->model->error = 'ALREADY_LOGGED_IN';
-      return;
-    }
-    $email    = $this->model->email;
-    $username = $this->model->username;
-    $pw1      = (isset($data['pw1']) ? $data['pw1'] : null);
-    $pw2      = (isset($data['pw2']) ? $data['pw2'] : null);
-    $captcha  = (
-      isset($data['g-recaptcha-response']) ?
-      $data['g-recaptcha-response']        :
-      null
-    );
-    try {
-      if (!$this->model->recaptcha->verify($captcha, getenv('REMOTE_ADDR'))) {
-        $this->model->error = 'INVALID_CAPTCHA';
-        return;
-      }
-    } catch (\BNETDocs\Exceptions\RecaptchaException) {
-      $this->model->error = 'INVALID_CAPTCHA';
-      return;
-    }
-    if ($pw1 !== $pw2) {
-      $this->model->error = 'NONMATCHING_PASSWORD';
-      return;
-    }
-    $pwlen       = strlen($pw1);
-    $usernamelen = strlen($username);
-    $req = &Common::$config->bnetdocs->user_register_requirements;
-    $email_denylist = &Common::$config->email->recipient_denylist_regexp;
-    $countrycode_denylist = &$req->geoip_countrycode_denylist;
-    if ($req->email_validate_quick
-      && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $this->model->error = 'INVALID_EMAIL';
-      return;
-    }
-    if ($req->email_enable_denylist) {
-      foreach ($email_denylist as $_bad_email) {
-        if (preg_match($_bad_email, $email)) {
-          $this->model->error = 'EMAIL_NOT_ALLOWED';
-          return;
-        }
-      }
-    }
-    if (!$req->password_allow_email && stripos($pw1, $email)) {
-      $this->model->error = 'PASSWORD_CONTAINS_EMAIL';
-      return;
-    }
-    if (!$req->password_allow_username && stripos($pw1, $username)) {
-      $this->model->error = 'PASSWORD_CONTAINS_USERNAME';
-      return;
-    }
-    if (is_numeric($req->username_length_max)
-      && $usernamelen > $req->username_length_max) {
-      $this->model->error = 'USERNAME_TOO_LONG';
-      return;
-    }
-    if (is_numeric($req->username_length_min)
-      && $usernamelen < $req->username_length_min) {
-      $this->model->error = 'USERNAME_TOO_SHORT';
-      return;
-    }
-    if (is_numeric($req->password_length_max)
-      && $pwlen > $req->password_length_max) {
-      $this->model->error = 'PASSWORD_TOO_LONG';
-      return;
-    }
-    if (is_numeric($req->password_length_min)
-      && $pwlen < $req->password_length_min) {
-      $this->model->error = 'PASSWORD_TOO_SHORT';
-      return;
-    }
-    $denylist = Common::$config->bnetdocs->user_password_denylist_map;
-    $denylist = json_decode(file_get_contents('./' . $denylist));
-    if ($denylist) {
-      foreach ($denylist as $denylist_pw) {
-        if (strtolower($denylist_pw->password) == strtolower($pw1)) {
-          $this->model->error = 'PASSWORD_BLACKLIST';
-          $this->model->error_extra = $denylist_pw->reason;
-          return;
-        }
-      }
-    }
-    $their_country = \BNETDocs\Libraries\Core\GeoIP::getCountryISOCode(getenv('REMOTE_ADDR'));
-    if ($their_country) {
-      foreach ($countrycode_denylist as $bad_country => $reason) {
-        if (strtoupper($their_country) == strtoupper($bad_country)) {
-          $this->model->error = 'COUNTRY_DENIED';
-          $this->model->error_extra = $reason;
-          return;
-        }
-      }
-    }
-    if (Common::$config->bnetdocs->user_register_disabled) {
-      $this->model->error = 'REGISTER_DISABLED';
+    if (Config::get('bnetdocs.user_register_disabled'))
+    {
+      $this->model->error = RegisterModel::ERROR_REGISTER_DISABLED;
       return;
     }
 
-    try {
-      if (User::findIdByEmail($email)) {
-        $this->model->error = 'EMAIL_ALREADY_USED';
+    $q = Router::query();
+    $this->model->email = $q['email'] ?? null;
+    $this->model->username = $q['username'] ?? null;
+
+    if (!is_null($this->model->active_user))
+    {
+      $this->model->error = RegisterModel::ERROR_ALREADY_LOGGED_IN;
+      return;
+    }
+
+    $email = $this->model->email;
+    $username = $this->model->username;
+    $pw1 = $q['pw1'] ?? null;
+    $pw2 = $q['pw2'] ?? null;
+
+    $captcha = $q['g-recaptcha-response'] ?? null;
+    try
+    {
+      if (!$this->model->recaptcha->verify($captcha, getenv('REMOTE_ADDR')))
+      {
+        $this->model->error = RegisterModel::ERROR_INVALID_CAPTCHA;
+        return;
+      }
+    }
+    catch (\BNETDocs\Exceptions\RecaptchaException)
+    {
+      $this->model->error = RegisterModel::ERROR_INVALID_CAPTCHA;
+      return;
+    }
+
+    if ($pw1 !== $pw2)
+    {
+      $this->model->error = RegisterModel::ERROR_NONMATCHING_PASSWORD;
+      return;
+    }
+
+    $pwlen = strlen($pw1);
+    $usernamelen = strlen($username);
+    $req = Config::get('bnetdocs.user_register_requirements') ?? [];
+    $email_denylist = Config::get('email.recipient_denylist_regexp') ?? [];
+    $countrycode_denylist = $req['geoip_countrycode_denylist'] ?? null;
+
+    if (($req['email_validate_quick'] ?? null) && !filter_var($email, FILTER_VALIDATE_EMAIL))
+    {
+      $this->model->error = RegisterModel::ERROR_INVALID_EMAIL;
+      return;
+    }
+
+    if ($req['email_enable_denylist'] ?? null)
+    {
+      foreach ($email_denylist as $_bad_email)
+      {
+        if (preg_match($_bad_email, $email))
+        {
+          $this->model->error = RegisterModel::ERROR_EMAIL_NOT_ALLOWED;
+          return;
+        }
+      }
+    }
+
+    if (!($req['password_allow_email'] ?? null) && stripos($pw1, $email))
+    {
+      $this->model->error = RegisterModel::ERROR_PASSWORD_CONTAINS_EMAIL;
+      return;
+    }
+
+    if (!($req['password_allow_username'] ?? null) && stripos($pw1, $username))
+    {
+      $this->model->error = RegisterModel::ERROR_PASSWORD_CONTAINS_USERNAME;
+      return;
+    }
+
+    if (is_numeric($req['username_length_max'] ?? User::MAX_USERNAME)
+      && $usernamelen > ($req['username_length_max'] ?? User::MAX_USERNAME))
+    {
+      $this->model->error = RegisterModel::ERROR_USERNAME_TOO_LONG;
+      return;
+    }
+
+    if (is_numeric($req['username_length_min'] ?? 3) && $usernamelen < ($req['username_length_min'] ?? 3))
+    {
+      $this->model->error = RegisterModel::ERROR_USERNAME_TOO_SHORT;
+      return;
+    }
+
+    if (is_numeric($req['password_length_max'] ?? User::MAX_PASSWORD_HASH)
+      && $pwlen > ($req['password_length_max'] ?? User::MAX_PASSWORD_HASH))
+    {
+      $this->model->error = RegisterModel::ERROR_PASSWORD_TOO_LONG;
+      return;
+    }
+
+    if (is_numeric($req['password_length_min'] ?? 4) && $pwlen < ($req['password_length_min'] ?? 4))
+    {
+      $this->model->error = RegisterModel::ERROR_PASSWORD_TOO_SHORT;
+      return;
+    }
+
+    $denylist = Config::get('bnetdocs.user_password_denylist_map') ?? '../etc/password_denylist.json';
+    $denylist = json_decode(file_get_contents('./' . $denylist));
+    if ($denylist)
+    {
+      foreach ($denylist as $denylist_pw)
+      {
+        if (strtolower($denylist_pw->password) == strtolower($pw1))
+        {
+          $this->model->error = RegisterModel::ERROR_PASSWORD_DENYLIST;
+          $this->model->denylist_reason = $denylist_pw->reason;
+          return;
+        }
+      }
+    }
+
+    $their_country = \BNETDocs\Libraries\Core\GeoIP::getCountryISOCode(getenv('REMOTE_ADDR'));
+    if ($their_country)
+    {
+      foreach ($countrycode_denylist as $bad_country => $reason)
+      {
+        if (strtoupper($their_country) == strtoupper($bad_country))
+        {
+          $this->model->error = RegisterModel::ERROR_COUNTRY_DENIED;
+          $this->model->denylist_reason = $reason;
+          return;
+        }
+      }
+    }
+
+    try
+    {
+      if (User::findIdByEmail($email))
+      {
+        $this->model->error = RegisterModel::ERROR_EMAIL_ALREADY_USED;
         return;
       }
     } catch (UserNotFoundException) {}
 
-    try {
-      if (User::findIdByUsername($username)) {
-        $this->model->error = 'USERNAME_TAKEN';
+    try
+    {
+      if (User::findIdByUsername($username))
+      {
+        $this->model->error = RegisterModel::ERROR_USERNAME_TAKEN;
         return;
       }
     } catch (UserNotFoundException) {}
@@ -171,7 +205,7 @@ class Register extends \BNETDocs\Controllers\Base
     $user->setPassword($pw1);
     $user->setUsername($username);
     $user->setVerified(false, true);
-    $this->model->error = $user->commit() ? false : 'INTERNAL_ERROR';
+    $this->model->error = $user->commit() ? false : RegisterModel::ERROR_INTERNAL;
     $user_id = $user->getId();
 
     if (!is_null($user_id))
@@ -182,7 +216,7 @@ class Register extends \BNETDocs\Controllers\Base
         getenv('REMOTE_ADDR'),
         [
           'error'           => $this->model->error,
-          'error_extra'     => $this->model->error_extra,
+          'denylist_reason' => $this->model->denylist_reason,
           'requirements'    => $req,
           'email'           => $email,
           'username'        => $username,
@@ -198,7 +232,6 @@ class Register extends \BNETDocs\Controllers\Base
       }
 
       $mail = new PHPMailer(true); // true enables exceptions
-      $mail_config = &Common::$config->email;
 
       $state = new \StdClass();
       $state->mail = &$mail;
@@ -206,33 +239,32 @@ class Register extends \BNETDocs\Controllers\Base
       $state->token = $user->getVerifierToken();
       $state->user_id = $user_id;
 
-      try {
+      try
+      {
         //Server settings
         $mail->Timeout = 10; // default is 300 per RFC2821 $ 4.5.3.2
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
-        $mail->Host       = $mail_config->smtp_host;
-        $mail->SMTPAuth   = !empty($mail_config->smtp_user);
-        $mail->Username   = $mail_config->smtp_user;
-        $mail->Password   = $mail_config->smtp_password;
-        $mail->SMTPSecure = $mail_config->smtp_tls ? 'tls' : '';
-        $mail->Port       = $mail_config->smtp_port;
+        $mail->Host       = Config::get('email.smtp_host') ?? 'localhost';
+        $mail->Username   = Config::get('email.smtp_user') ?? '';
+        $mail->Password   = Config::get('email.smtp_password') ?? '';
+        $mail->SMTPAuth   = !empty($mail->Username);
+        $mail->SMTPSecure = (Config::get('email.smtp_tls') ?? false) ? 'tls' : '';
+        $mail->Port       = Config::get('email.smtp_port') ?? 25;
 
         //Recipients
-        if (isset($mail_config->recipient_from[0])) {
-          $mail->setFrom(
-            $mail_config->recipient_from[0],
-            $mail_config->recipient_from[1]
-          );
+        $recipient_from = Config::get('email.recipient_from') ?? [];
+        if (isset($recipient_from[0]))
+        {
+          $mail->setFrom($recipient_from[0], $recipient_from[1] ?? '');
         }
 
         $mail->addAddress($email, $username);
 
-        if (isset($mail_config->recipient_reply_to[0])) {
-          $mail->addReplyTo(
-            $mail_config->recipient_reply_to[0],
-            $mail_config->recipient_reply_to[1]
-          );
+        $recipient_reply_to = Config::get('email.recipient_reply_to') ?? [];
+        if (isset($recipient_reply_to[0]))
+        {
+          $mail->addReplyTo($recipient_reply_to[0], $recipient_reply_to[1] ?? '');
         }
 
         // Content
@@ -273,7 +305,7 @@ class Register extends \BNETDocs\Controllers\Base
       }
       catch (\Throwable $e)
       {
-        $this->model->error = 'EMAIL_FAILURE';
+        $this->model->error = RegisterModel::ERROR_EMAIL_FAILURE;
       }
     }
   }

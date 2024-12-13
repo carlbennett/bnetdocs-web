@@ -20,7 +20,7 @@ class Robotstxt extends \BNETDocs\Controllers\Base
    */
   public function invoke(?array $args): bool
   {
-    $this->model->rules = \CarlBennett\MVC\Libraries\Common::$config->bnetdocs->robotstxt;
+    $this->model->rules = \BNETDocs\Libraries\Core\Config::get('bnetdocs.robotstxt');
     $this->model->_responseCode = \BNETDocs\Libraries\Core\HttpCode::HTTP_OK;
     return true;
   }

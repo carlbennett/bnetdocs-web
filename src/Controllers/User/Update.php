@@ -2,10 +2,10 @@
 
 namespace BNETDocs\Controllers\User;
 
+use \BNETDocs\Libraries\Core\Config;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
 use \BNETDocs\Libraries\User\User;
-use \CarlBennett\MVC\Libraries\Common;
 use \Throwable;
 use \UnexpectedValueException;
 
@@ -49,11 +49,11 @@ class Update extends \BNETDocs\Controllers\Base
 
     private function fillModel(): void
     {
-        $req = &Common::$config->bnetdocs->user_register_requirements;
+        $req = Config::get('bnetdocs.user_register_requirements') ?? [];
 
         $this->model->username = $this->model->user->getUsername();
         $this->model->username_error = [null, null];
-        $this->model->username_max_len = $req->username_length_max;
+        $this->model->username_max_len = $req['username_length_max'] ?? User::MAX_USERNAME;
 
         $this->model->email_1 = $this->model->user->getEmail();
         $this->model->email_2 = '';
@@ -128,7 +128,7 @@ class Update extends \BNETDocs\Controllers\Base
         if (empty($this->model->username)) $this->model->username = null;
         if (empty($this->model->website)) $this->model->website = null;
 
-        $req = &Common::$config->bnetdocs->user_register_requirements;
+        $req = Config::get('bnetdocs.user_register_requirements') ?? [];
 
         // username change request
         if ($this->model->username !== $this->model->user->getUsername())
@@ -139,12 +139,14 @@ class Update extends \BNETDocs\Controllers\Base
                 // username is empty
                 $this->model->username_error = ['danger', 'EMPTY'];
             }
-            else if (\is_numeric($req->username_length_max) && $username_len > $req->username_length_max)
+            else if (\is_numeric($req['username_length_max'] ?? User::MAX_USERNAME)
+                && $username_len > ($req['username_length_max'] ?? User::MAX_USERNAME))
             {
                 // username too long
                 $this->model->username_error = ['danger', 'USERNAME_LONG'];
             }
-            else if (\is_numeric($req->username_length_min) && $username_len < $req->username_length_min)
+            else if (\is_numeric($req['username_length_min'] ?? 3)
+                && $username_len < $req['username_length_min'] ?? 3)
             {
                 // username too short
                 $this->model->username_error = ['danger', 'USERNAME_SHORT'];
@@ -171,9 +173,9 @@ class Update extends \BNETDocs\Controllers\Base
         {
             // email denylist check
             $email_not_allowed = false;
-            if ($req->email_enable_denylist)
+            if ($req['email_enable_denylist'] ?? null)
             {
-                $email_denylist = &Common::$config->email->recipient_denylist_regexp;
+                $email_denylist = Config::get('email.recipient_denylist_regexp') ?? [];
                 foreach ($email_denylist as $_bad_email)
                 {
                     if (\preg_match($_bad_email, $this->model->email_1))
@@ -194,7 +196,7 @@ class Update extends \BNETDocs\Controllers\Base
                 // email is empty
                 $this->model->email_error = ['danger', 'EMPTY'];
             }
-            else if ($req->email_validate_quick && !\filter_var($this->model->email_2, FILTER_VALIDATE_EMAIL))
+            else if (($req['email_validate_quick'] ?? null) && !\filter_var($this->model->email_2, FILTER_VALIDATE_EMAIL))
             {
                 // email is invalid; it doesn't meet RFC 822 requirements
                 $this->model->email_error = ['danger', 'INVALID'];

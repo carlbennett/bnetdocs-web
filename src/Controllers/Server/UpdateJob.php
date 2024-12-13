@@ -31,13 +31,12 @@ class UpdateJob extends \BNETDocs\Controllers\Base
       return true;
     }
 
-    $c = &\CarlBennett\MVC\Libraries\Common::$config;
     $q = Router::query();
     $server_id = isset($q['id']) ? (int) $q['id'] : null;
     $job_token = isset($q['job_token']) ? $q['job_token'] : null;
     $status = isset($q['status']) ? (int) $q['status'] : null;
 
-    if ($job_token !== $c->bnetdocs->server_update_job_token)
+    if ($job_token !== \BNETDocs\Libraries\Core\Config::get('bnetdocs.server_update_job_token'))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       return true;

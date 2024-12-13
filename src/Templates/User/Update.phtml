@@ -1,10 +1,9 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\User;
-use \CarlBennett\MVC\Libraries\Common;
-use \CarlBennett\MVC\Libraries\Pair;
+use \BNETDocs\Libraries\Core\UrlFormatter;
 $title = 'Update Profile';
 $description = 'This page updates your account and public profile information.';
-$this->opengraph->attach(new Pair('url', '/user/update'));
+$url = '/user/update';
 switch ($this->getContext()->username_error[1] ?? null)
 {
   case null: case '': $username_error = ''; break;
@@ -118,17 +117,17 @@ require('./Includes/header.inc.phtml'); ?>
   <div class="alert alert-danger">
     <p class="mb-0">You are not authorized to access this page.</p>
   </div>
-  <a class="btn btn-success" href="<?=Common::relativeUrlToAbsolute('/user/login')?>">Log in</a>
+  <a class="btn btn-success" href="<?=UrlFormatter::format('/user/login')?>">Log in</a>
 <? } else { ?>
   <h1><?=$title?></h1>
   <p><?=$description?></p>
 
 <? if ($this->getContext()->user->getId() !== $this->getContext()->active_user->getId()) { ?>
-  <div class="alert alert-danger"><p class="mb-0">You are changing the details for a different account than yours. Click <a href="<?=Common::relativeUrlToAbsolute('/user/update')?>">here</a> to change your account details.</p></div>
+  <div class="alert alert-danger"><p class="mb-0">You are changing the details for a different account than yours. Click <a href="<?=UrlFormatter::format('/user/update')?>">here</a> to change your account details.</p></div>
 <? } ?>
 
   <!-- This here notice below is for GDPR purposes -->
-  <div class="alert alert-info"><p class="mb-0">Our <a href="<?=Common::relativeUrlToAbsolute('/privacy')?>">privacy policy</a> page clarifies your data rights. You agree to giving (or not giving) the info contained herein on this page.</p></div>
+  <div class="alert alert-info"><p class="mb-0">Our <a href="<?=UrlFormatter::format('/privacy')?>">privacy policy</a> page clarifies your data rights. You agree to giving (or not giving) the info contained herein on this page.</p></div>
 
   <form method="POST">
     <h2>Account</h2>
@@ -157,7 +156,7 @@ require('./Includes/header.inc.phtml'); ?>
       <input class="border border-primary form-control bg-dark text-light" tabindex="4" autocomplete="email" type="email" name="email_2" id="email_2" placeholder="Confirm the new email address here if changing it" value="<?=filter_var($this->getContext()->email_2, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?>"/>
     </div></div>
     <div class="row"><div class="col form-group">
-      <a class="btn btn-sm btn-secondary" href="<?=Common::relativeUrlToAbsolute('/user/changepassword')?>" tabindex="5">🔑 Change Password</a>
+      <a class="btn btn-sm btn-secondary" href="<?=UrlFormatter::format('/user/changepassword')?>" tabindex="5">🔑 Change Password</a>
     </div></div>
     <div class="row"><div class="col">
       <h2>Gravatar</h2>
