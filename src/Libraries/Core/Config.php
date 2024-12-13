@@ -19,7 +19,7 @@ class Config
    */
   private function __construct()
   {
-    throw new \LogicException('This class cannot be constructed');
+    throw new \LogicException('This class should not be constructed');
   }
 
   /**
@@ -44,14 +44,18 @@ class Config
 
     if (($skip & self::SKIP_DB) === 0)
     {
-      $db = MariaDb::instance();
-
-      $p = $db->prepare('SELECT `json_value` FROM `config` WHERE `key_name` = ? LIMIT 1;');
-      if (!$p || !$p->execute([$key]) || $p->rowCount() === 0) return $default;
-
-      $r = \json_decode($p->fetchObject()->json_value, true);
-      $p->closeCursor();
-      if (!\is_null($r)) return $r;
+      try
+      {
+        $db = MariaDb::instance();
+        $p = $db->prepare('SELECT `json_value` FROM `config` WHERE `key_name` = ? LIMIT 1;');
+        if (!$p || !$p->execute([$key]) || $p->rowCount() === 0) return $default;
+        $r = \json_decode($p->fetchObject()->json_value, true);
+        if (!\is_null($r)) return $r;
+      }
+      finally
+      {
+        if ($p) $p->closeCursor();
+      }
     }
 
     return $default;
