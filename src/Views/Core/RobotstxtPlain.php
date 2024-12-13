@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Views\Core;
 
-class Robotstxt extends \BNETDocs\Views\Base\Plain
+class RobotstxtPlain extends \BNETDocs\Views\Base\Plain
 {
   public static function invoke(\BNETDocs\Interfaces\Model $model): void
   {
