@@ -6,12 +6,13 @@ use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\News\Edit as EditModel;
 
 class Edit extends \BNETDocs\Controllers\Base
 {
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\News\Edit();
+    $this->model = new EditModel();
   }
 
   public function invoke(?array $args): bool
@@ -22,7 +23,7 @@ class Edit extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = 'ACL_NOT_SET';
+      $this->model->error = $this->model->active_user ? EditModel::ERROR_ACL_NOT_SET : EditModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -35,7 +36,7 @@ class Edit extends \BNETDocs\Controllers\Base
     if (!$this->model->news_post)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
-      $this->model->error = 'NOT_FOUND';
+      $this->model->error = EditModel::ERROR_NOT_FOUND;
       return true;
     }
 
@@ -77,7 +78,8 @@ class Edit extends \BNETDocs\Controllers\Base
     $this->model->content = $content;
     $this->model->rss_exempt = (bool) $rss_exempt;
 
-    $this->model->error = empty($title) ? 'EMPTY_TITLE' : (empty($content) ? 'EMPTY_CONTENT' : null);
+    $this->model->error = empty($title) ? EditModel::ERROR_EMPTY_TITLE
+      : (empty($content) ? EditModel::ERROR_EMPTY_CONTENT : null);
     if ($this->model->error) return;
 
     $this->model->news_post->setCategoryId($this->model->category);
@@ -88,7 +90,7 @@ class Edit extends \BNETDocs\Controllers\Base
     $this->model->news_post->setPublished($publish);
     $this->model->news_post->incrementEdited();
 
-    $this->model->error = $this->model->news_post->commit() ? false : 'INTERNAL_ERROR';
+    $this->model->error = $this->model->news_post->commit() ? false : EditModel::ERROR_INTERNAL;
 
     $event = Logger::initEvent(
       \BNETDocs\Libraries\EventLog\EventTypes::NEWS_EDITED,

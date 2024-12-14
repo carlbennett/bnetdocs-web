@@ -1,5 +1,6 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
+use \BNETDocs\Models\News\Delete as DeleteModel;
 $title = 'Delete News Post';
 $description = 'This form allows an individual to delete a news post.';
 $url = '/news/delete';
@@ -8,10 +9,10 @@ $id = $this->getContext()->id;
 $news_post_title = $this->getContext()->title;
 switch ($error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to delete news posts.'; break;
-  case 'NOT_FOUND': $message = 'Cannot find news post by that id.'; break;
-  case 'NOT_LOGGED_IN': $message = 'You must be logged in to delete news posts.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case DeleteModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete news posts.'; break;
+  case DeleteModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Try again later.'; break;
+  case DeleteModel::ERROR_NOT_FOUND: $message = 'Cannot find news post by that id.'; break;
+  case DeleteModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to delete news posts.'; break;
   default: $message = $error;
 }
 require('./Includes/header.inc.phtml'); ?>

@@ -1,6 +1,7 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
 use \BNETDocs\Libraries\Comment;
+use \BNETDocs\Models\News\Edit as EditModel;
 $title = 'Edit News Post';
 $description = 'This page enables a user to edit a news post on the site.';
 $url = '/news/edit';
@@ -9,11 +10,12 @@ $comments = $this->getContext()->comments;
 $error = $this->getContext()->error;
 switch ($error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to edit news posts.'; break;
-  case 'NOT_FOUND': $message = 'Cannot find news post by that id.'; break;
-  case 'EMPTY_TITLE': $message = 'The title of the news post is required.'; break;
-  case 'EMPTY_CONTENT': $message = 'The content of the news post is required.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case EditModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to edit news posts.'; break;
+  case EditModel::ERROR_EMPTY_CONTENT: $message = 'The content of the news post is required.'; break;
+  case EditModel::ERROR_EMPTY_TITLE: $message = 'The title of the news post is required.'; break;
+  case EditModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Try again later.'; break;
+  case EditModel::ERROR_NOT_FOUND: $message = 'Cannot find news post by that id.'; break;
+  case EditModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to edit news posts.'; break;
   default: $message = $error;
 }
 $form_category = $this->getContext()->category;

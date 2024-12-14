@@ -1,15 +1,17 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\News;
+use \BNETDocs\Models\News\Create as CreateModel;
 $title = 'Create News Post';
 $description = 'This page enables a user to create news posts on the site.';
 $url = '/news/create';
 $error = $this->getContext()->error;
 switch ($error)
 {
-  case 'ACL_NOT_SET': $message = 'You do not have the privilege to create news posts.'; break;
-  case 'EMPTY_TITLE': $message = 'The title of the news post is required.'; break;
-  case 'EMPTY_CONTENT': $message = 'The content of the news post is required.'; break;
-  case 'INTERNAL_ERROR': $message = 'An internal error occurred while processing your request. Our staff have been notified of the issue. Try again later.'; break;
+  case CreateModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to create news posts.'; break;
+  case CreateModel::ERROR_EMPTY_TITLE: $message = 'The title of the news post is required.'; break;
+  case CreateModel::ERROR_EMPTY_CONTENT: $message = 'The content of the news post is required.'; break;
+  case CreateModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to create news posts.'; break;
+  case CreateModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Try again later.'; break;
   default: $message = $error;
 }
 $form_content = filter_var($this->getContext()->content, FILTER_SANITIZE_FULL_SPECIAL_CHARS);

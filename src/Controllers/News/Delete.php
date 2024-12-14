@@ -5,12 +5,13 @@ namespace BNETDocs\Controllers\News;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
+use \BNETDocs\Models\News\Delete as DeleteModel;
 
 class Delete extends \BNETDocs\Controllers\Base
 {
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\News\Delete();
+    $this->model = new DeleteModel();
   }
 
   public function invoke(?array $args): bool
@@ -21,7 +22,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_UNAUTHORIZED;
-      $this->model->error = 'ACL_NOT_SET';
+      $this->model->error = $this->model->active_user ? DeleteModel::ERROR_ACL_NOT_SET : DeleteModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -34,7 +35,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!$this->model->news_post)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
-      $this->model->error = 'NOT_FOUND';
+      $this->model->error = DeleteModel::ERROR_NOT_FOUND;
       return true;
     }
 
@@ -47,7 +48,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
   protected function tryDelete(): void
   {
-    $this->model->error = $this->model->news_post->deallocate() ? false : 'INTERNAL_ERROR';
+    $this->model->error = $this->model->news_post->deallocate() ? false : DeleteModel::ERROR_INTERNAL;
     if ($this->model->error !== false) return;
 
     $event = Logger::initEvent(

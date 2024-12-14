@@ -28,7 +28,7 @@ class Create extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = CreateModel::ACL_NOT_SET;
+      $this->model->error = $this->model->active_user ? CreateModel::ERROR_ACL_NOT_SET : CreateModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -68,11 +68,11 @@ class Create extends \BNETDocs\Controllers\Base
 
     if (empty($this->model->title))
     {
-      $this->model->error = CreateModel::EMPTY_TITLE;
+      $this->model->error = CreateModel::ERROR_EMPTY_TITLE;
     }
     else if (empty($this->model->content))
     {
-      $this->model->error = CreateModel::EMPTY_CONTENT;
+      $this->model->error = CreateModel::ERROR_EMPTY_CONTENT;
     }
     else
     {
@@ -86,7 +86,7 @@ class Create extends \BNETDocs\Controllers\Base
       $this->model->news_post->setTitle($this->model->title);
       $this->model->news_post->setUserId($this->model->active_user->getId());
 
-      $this->model->error = $this->model->news_post->commit() ? false : CreateModel::INTERNAL_ERROR;
+      $this->model->error = $this->model->news_post->commit() ? false : CreateModel::ERROR_INTERNAL;
     }
 
     if ($this->model->error !== false) return;
