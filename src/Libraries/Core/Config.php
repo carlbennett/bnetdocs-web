@@ -100,6 +100,7 @@ class Config
    * Reads the JSON configuration file from disk into application memory.
    *
    * @return boolean Whether the operation was successful.
+   * @throws UnexpectedValueException when the JSON configuration file is unavailable.
    */
   public static function loadJson(): bool
   {
@@ -107,20 +108,15 @@ class Config
 
     if (!\file_exists(self::JSON_CONFIG_PATH) || !\is_readable(self::JSON_CONFIG_PATH))
     {
-      return false;
+      throw new \UnexpectedValueException('Cannot retrieve application JSON configuration');
     }
 
     $buffer = \file_get_contents(self::JSON_CONFIG_PATH);
-    if ($buffer === false)
+    if ($buffer === false || empty($buffer))
     {
-      throw new \UnexpectedValueException('Cannot retrieve application JSON configuration');
+      throw new \UnexpectedValueException('Application JSON configuration is empty');
     }
-    self::$json_config = \json_decode($buffer, true, self::JSON_FLAGS);
-    $json_errno = \json_last_error();
-    if ($json_errno != \JSON_ERROR_NONE)
-    {
-      throw new \JsonException(\json_last_error_msg(), $json_errno);
-    }
+    self::$json_config = \json_decode($buffer, true, 512, self::JSON_FLAGS);
 
     return true;
   }
