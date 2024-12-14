@@ -17,7 +17,7 @@ switch ($error)
 }
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
-<? if ($error === DeleteModel::ERROR_ACL_NOT_SET) { ?>
+<? if ($error === DeleteModel::ERROR_ACL_NOT_SET || $error === DeleteModel::ERROR_NOT_LOGGED_IN) { ?>
 <? require('./Includes/LoginRequired.inc.phtml'); ?>
 <? } else if (\is_null($error)) { ?>
   <h1 class="text-danger">Delete Document</h1>
