@@ -12,7 +12,7 @@ class ActiveUser extends \BNETDocs\Models\Core\Errorable implements \JsonSeriali
   public ?\BNETDocs\Libraries\User\User $active_user = null;
 
   /**
-   * When constructed, sets the $active_user to that of the Authentication::$user value.
+   * Sets the $active_user to that of the Authentication::$user value.
    * Child classes that override __construct() must call parent::__construct().
    */
   public function __construct()
