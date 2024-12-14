@@ -110,9 +110,17 @@ class Config
       return false;
     }
 
-    self::$json_config = \json_decode(
-      \file_get_contents(self::JSON_CONFIG_PATH), true, self::JSON_FLAGS
-    );
+    $buffer = \file_get_contents(self::JSON_CONFIG_PATH);
+    if ($buffer === false)
+    {
+      throw new \UnexpectedValueException('Cannot retrieve application JSON configuration');
+    }
+    self::$json_config = \json_decode($buffer, true, self::JSON_FLAGS);
+    $json_errno = \json_last_error();
+    if ($json_errno != \JSON_ERROR_NONE)
+    {
+      throw new \JsonException(\json_last_error_msg(), $json_errno);
+    }
 
     return true;
   }
