@@ -94,7 +94,7 @@ class VersionInfo
     $identifier = shell_exec('git describe --always --tags');
     $hash = shell_exec('git rev-parse HEAD');
     $timestamp = shell_exec('git log -n 1 --pretty=\'%aI\' HEAD');
-    $license = shell_exec('git log -n 1 --pretty=\'%h %aI\' ../LICENSE.txt');
+    $license = shell_exec('git log -n 1 --pretty=\'%h %aI\' ../../LICENSE.txt');
 
     if (!empty($identifier)) $values[0] = trim($identifier);
     if (!empty($hash)) $values[1] = trim($hash);

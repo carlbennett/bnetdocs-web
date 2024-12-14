@@ -8,7 +8,7 @@ use \DateTimeZone;
 
 class Legal extends \BNETDocs\Controllers\Base
 {
-    public const LICENSE_FILE = '../LICENSE.txt';
+    public const LICENSE_FILE = __DIR__ . '/../../../LICENSE.txt';
 
     /**
      * Constructs a Controller, typically to initialize properties.
