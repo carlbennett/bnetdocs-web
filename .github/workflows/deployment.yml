@@ -58,6 +58,7 @@ jobs:
           WEB_CONFIG_JSON: ${{ secrets.WEB_CONFIG_JSON }}
         run: |
           echo "${WEB_CONFIG_JSON}" > ./etc/config.phoenix.json
+          jq -c -e . ./etc/config.phoenix.json 1>/dev/null
 
       - name: Create Version file
         run: |
