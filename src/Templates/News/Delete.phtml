@@ -17,7 +17,9 @@ switch ($error)
 }
 require('./Includes/header.inc.phtml'); ?>
 <div class="container">
-<? if (is_null($this->getContext()->error)) { ?>
+<? if (!$this->getContext()->acl_allowed) { ?>
+<? require('./Includes/LoginRequired.inc.phtml'); ?>
+<? } else if (is_null($this->getContext()->error)) { ?>
   <h1 class="text-danger">Delete News Post</h1>
   <form method="POST" action="?id=<?=filter_var($id, FILTER_SANITIZE_FULL_SPECIAL_CHARS)?>">
     <div class="form-group">
