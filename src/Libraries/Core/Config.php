@@ -99,10 +99,9 @@ class Config
   /**
    * Reads the JSON configuration file from disk into application memory.
    *
-   * @return boolean Whether the operation was successful.
    * @throws UnexpectedValueException when the JSON configuration file is unavailable.
    */
-  public static function loadJson(): bool
+  public static function loadJson(): void
   {
     self::$json_config = null;
 
@@ -117,8 +116,6 @@ class Config
       throw new \UnexpectedValueException('Application JSON configuration is empty');
     }
     self::$json_config = \json_decode($buffer, true, 512, self::JSON_FLAGS);
-
-    return true;
   }
 
   /**
