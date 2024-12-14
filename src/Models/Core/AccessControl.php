@@ -16,6 +16,6 @@ class AccessControl extends \BNETDocs\Models\ActiveUser implements \JsonSerializ
      */
     public function jsonSerialize(): mixed
     {
-        return \array_merge(parent::jsonSerialize(), ['acl_allowed' => $this->acl_allowed]);
+        return \array_merge(['acl_allowed' => $this->acl_allowed], parent::jsonSerialize());
     }
 }
