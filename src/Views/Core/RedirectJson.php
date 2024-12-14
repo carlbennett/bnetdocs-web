@@ -2,16 +2,16 @@
 
 namespace BNETDocs\Views\Core;
 
-class RedirectSoftHtml extends \BNETDocs\Views\Base\Html
+class RedirectJson extends \BNETDocs\Views\Base\Json
 {
   public static function invoke(\BNETDocs\Interfaces\Model $model): void
   {
-    if (!$model instanceof \BNETDocs\Models\Core\RedirectSoft)
+    if (!$model instanceof \BNETDocs\Models\Core\Redirect)
     {
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    (new \BNETDocs\Libraries\Core\Template($model, 'Core/RedirectSoft'))->invoke();
+    echo \json_encode($model, self::jsonFlags());
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

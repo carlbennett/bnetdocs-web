@@ -56,7 +56,7 @@ class Main
     else
     {
       Router::$routes = [
-        ['#^/\.well-known/change-password$#', 'Core\\RedirectSoft', ['Core\\RedirectSoftHtml', 'Core\\RedirectSoftJson', 'Core\\RedirectSoftPlain'], '/user/changepassword'],
+        ['#^/\.well-known/change-password$#', 'Core\\Redirect', ['Core\\RedirectHtml', 'Core\\RedirectJson', 'Core\\RedirectPlain'], '/user/changepassword'],
         ['#^/$#', 'Core\\Legacy', ['Core\\LegacyHtml']],
         ['#^/comment/create/?$#', 'Comment\\Create', ['Comment\\CreateJson']],
         ['#^/comment/delete/?$#', 'Comment\\Delete', ['Comment\\DeleteHtml']],

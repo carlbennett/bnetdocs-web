@@ -2,16 +2,16 @@
 
 namespace BNETDocs\Views\Core;
 
-class RedirectSoftPlain extends \BNETDocs\Views\Base\Plain
+class RedirectHtml extends \BNETDocs\Views\Base\Html
 {
   public static function invoke(\BNETDocs\Interfaces\Model $model): void
   {
-    if (!$model instanceof \BNETDocs\Models\Core\RedirectSoft)
+    if (!$model instanceof \BNETDocs\Models\Core\Redirect)
     {
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }
 
-    printf("Redirect: %s\r\n", $model->location);
+    (new \BNETDocs\Libraries\Core\Template($model, 'Core/Redirect'))->invoke();
     $model->_responseHeaders['Content-Type'] = self::mimeType();
   }
 }

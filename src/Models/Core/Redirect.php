@@ -2,7 +2,7 @@
 
 namespace BNETDocs\Models\Core;
 
-class RedirectSoft extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
+class Redirect extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
     public ?string $location = null;
 
