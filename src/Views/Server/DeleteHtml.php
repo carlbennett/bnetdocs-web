@@ -6,7 +6,7 @@ class DeleteHtml extends \BNETDocs\Views\Base\Html
 {
   public static function invoke(\BNETDocs\Interfaces\Model $model): void
   {
-    if (!$model instanceof \BNETDocs\Models\Server\Delete)
+    if (!$model instanceof \BNETDocs\Models\Server\Form)
     {
       throw new \BNETDocs\Exceptions\InvalidModelException($model);
     }

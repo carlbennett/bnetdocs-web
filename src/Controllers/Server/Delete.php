@@ -5,7 +5,7 @@ namespace BNETDocs\Controllers\Server;
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\Core\Router;
 use \BNETDocs\Libraries\EventLog\Logger;
-use \BNETDocs\Models\Server\Delete as DeleteModel;
+use \BNETDocs\Models\Server\Form as FormModel;
 
 class Delete extends \BNETDocs\Controllers\Base
 {
@@ -15,15 +15,17 @@ class Delete extends \BNETDocs\Controllers\Base
 
   public function __construct()
   {
-    $this->model = new DeleteModel();
+    $this->model = new FormModel();
   }
 
   public function invoke(?array $args): bool
   {
+    $this->model->server_delete = true;
+
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_SERVER_DELETE)))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = $this->model->active_user ? DeleteModel::ERROR_ACL_NOT_SET : DeleteModel::ERROR_NOT_LOGGED_IN;
+      $this->model->error = $this->model->active_user ? FormModel::ERROR_ACL_NOT_SET : FormModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -31,7 +33,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!is_numeric($id))
     {
       $this->model->_responseCode = HttpCode::HTTP_BAD_REQUEST;
-      $this->model->error = DeleteModel::ERROR_NOT_FOUND;
+      $this->model->error = FormModel::ERROR_NOT_FOUND;
       return true;
     }
     $id = (int) $id;
@@ -42,7 +44,7 @@ class Delete extends \BNETDocs\Controllers\Base
     if (!$this->model->server)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
-      $this->model->error = DeleteModel::ERROR_NOT_FOUND;
+      $this->model->error = FormModel::ERROR_NOT_FOUND;
       return true;
     }
 
@@ -53,7 +55,7 @@ class Delete extends \BNETDocs\Controllers\Base
 
   protected function handlePost(): void
   {
-    $this->model->error = $this->model->server->deallocate() ? false : DeleteModel::ERROR_INTERNAL;
+    $this->model->error = $this->model->server->deallocate() ? false : FormModel::ERROR_INTERNAL;
     if ($this->model->error === false)
     {
       $event = Logger::initEvent(

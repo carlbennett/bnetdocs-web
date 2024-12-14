@@ -2,31 +2,31 @@
 namespace BNETDocs\Templates\Server;
 use \BNETDocs\Models\Server\Form as FormModel;
 $model = $this->getContext();
-$title = sprintf('%s Server', $model->server_edit ? 'Edit' : 'Create');
-$description = sprintf('This page enables a user to %s servers on the site.', $model->server_edit ? 'edit' : 'create');
-$url = sprintf('/server/%s%s', $model->server_edit ? 'edit' : 'create', $model->server && !is_null($model->server->getId()) ? sprintf('?id=%d', $model->server->getId()) : '');
+$title = sprintf('%s Server', $model->server_edit ? 'Edit' : ($model->server_delete ? 'Delete' : 'Create'));
+$description = sprintf('This page enables a user to %s servers on the site.', $model->server_edit ? 'edit' : ($model->server_delete ? 'delete' : 'create'));
+$url = sprintf('/server/%s%s', $model->server_edit ? 'edit' : ($model->server_delete ? 'delete' : 'create'), $model->server && !is_null($model->server->getId()) ? sprintf('?id=%d', $model->server->getId()) : '');
 switch ($model->error)
 {
-  case FormModel::ERROR_ACCESS_DENIED: $message = sprintf('You do not have the privilege to %s servers.', $model->server_edit ? 'edit' : 'create'); break;
+  case FormModel::ERROR_ACL_NOT_SET: $message = sprintf('You do not have the privilege to %s servers.', $model->server_edit ? 'edit' : ($model->server_delete ? 'delete' : 'create')); break;
+  case FormModel::ERROR_NOT_LOGGED_IN: $message = sprintf('You must be logged in to %s servers.', $model->server_edit ? 'edit' : ($model->server_delete ? 'delete' : 'create')); break;
   case FormModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Try again later.'; break;
   case FormModel::ERROR_INVALID_ADDRESS: $message = 'The address of the server is invalid or contains too many characters.'; break;
   case FormModel::ERROR_INVALID_ID: $message = 'The id of the server is invalid.'; break;
   case FormModel::ERROR_INVALID_LABEL: $message = 'The label of the server is invalid or contains too many characters.'; break;
   case FormModel::ERROR_INVALID_PORT: $message = 'The port of the server is invalid.'; break;
   case FormModel::ERROR_INVALID_TYPE: $message = 'The type of the server is invalid.'; break;
-  case FormModel::ERROR_SUCCESS: $message = sprintf('The server has been %s!', $model->server_edit ? 'edited' : 'created'); break;
   default: $message = $model->error;
 }
 require('./Includes/header.inc.phtml');
 echo '<div class="container">';
 printf('<h1>%s</h1><p>%s</p>', $title, $description);
-if ($model->error === FormModel::ERROR_ACCESS_DENIED)
+if ($model->error === FormModel::ERROR_ACL_NOT_SET || $model->error === FormModel::ERROR_NOT_LOGGED_IN)
 {
   require('./Includes/LoginRequired.inc.phtml');
 }
-else if ($model->error === FormModel::ERROR_SUCCESS)
+else if ($model->error === false)
 {
-  printf('<div class="alert alert-success"><p class="mb-0">%s</p></div>', $message);
+  printf('<div class="alert alert-success"><p class="mb-0">The server has been %s!</p></div>', $model->server_edit ? 'edited' : ($model->server_delete ? 'deleted' : 'created'));
   echo '<div class="form-group text-center">';
   echo '<a class="btn btn-primary" tabindex="1" href="javascript:history.go(-1);">Back</a> ';
   printf('<a class="btn btn-secondary" tabindex="2" href="%s">Server List</a> ', \BNETDocs\Libraries\Core\UrlFormatter::format('/servers'));

@@ -9,7 +9,6 @@ class Register extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
     public const ERROR_EMAIL_ALREADY_USED = 'EMAIL_ALREADY_USED';
     public const ERROR_EMAIL_FAILURE = 'EMAIL_FAILURE';
     public const ERROR_EMAIL_NOT_ALLOWED = 'EMAIL_NOT_ALLOWED';
-    public const ERROR_INTERNAL = 'INTERNAL_ERROR';
     public const ERROR_INVALID_CAPTCHA = 'INVALID_CAPTCHA';
     public const ERROR_INVALID_EMAIL = 'INVALID_EMAIL';
     public const ERROR_NONMATCHING_PASSWORD = 'NONMATCHING_PASSWORD';

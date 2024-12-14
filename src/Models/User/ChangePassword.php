@@ -4,9 +4,7 @@ namespace BNETDocs\Models\User;
 
 class ChangePassword extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
-    public const ERROR_INTERNAL = 'INTERNAL_ERROR';
     public const ERROR_NONMATCHING_PASSWORD = 'NONMATCHING_PASSWORD';
-    public const ERROR_NOT_LOGGED_IN = 'NOT_LOGGED_IN';
     public const ERROR_PASSWORD_CONTAINS_EMAIL = 'PASSWORD_CONTAINS_EMAIL';
     public const ERROR_PASSWORD_CONTAINS_USERNAME = 'PASSWORD_CONTAINS_USERNAME';
     public const ERROR_PASSWORD_DENYLIST = 'PASSWORD_DENYLIST';

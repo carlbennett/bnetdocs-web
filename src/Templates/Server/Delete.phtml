@@ -1,24 +1,24 @@
 <?php /* vim: set colorcolumn= expandtab shiftwidth=2 softtabstop=2 tabstop=4 smarttab: */
 namespace BNETDocs\Templates\Server;
 use \BNETDocs\Libraries\Core\UrlFormatter;
-use \BNETDocs\Models\Server\Delete as DeleteModel;
+use \BNETDocs\Models\Server\Form as FormModel;
 $title = 'Delete Server';
 $description = 'This form allows an individual to delete a server.';
 $url = '/server/delete';
 $model = $this->getContext();
 switch ($model->error)
 {
-  case DeleteModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete servers.'; break;
-  case DeleteModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Try again later.'; break;
-  case DeleteModel::ERROR_NOT_FOUND: $message = 'Cannot find server by that id.'; break;
-  case DeleteModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to delete servers.'; break;
+  case FormModel::ERROR_ACL_NOT_SET: $message = 'You do not have the privilege to delete servers.'; break;
+  case FormModel::ERROR_INTERNAL: $message = 'An internal error occurred while processing your request. Try again later.'; break;
+  case FormModel::ERROR_NOT_FOUND: $message = 'Cannot find server by that id.'; break;
+  case FormModel::ERROR_NOT_LOGGED_IN: $message = 'You must be logged in to delete servers.'; break;
   default: $message = $model->error;
 }
 $id = $model->server ? $model->server->getId() : null;
 $json = $model->server ? json_encode($model->server, \BNETDocs\Views\Server\ViewJson::jsonFlags()) : null;
 require('./Includes/header.inc.phtml');
 echo '<div class="container">';
-if ($model->error === DeleteModel::ERROR_ACL_NOT_SET)
+if ($model->error === FormModel::ERROR_ACL_NOT_SET || $model->error === FormModel::ERROR_NOT_LOGGED_IN)
 {
   require('./Includes/LoginRequired.inc.phtml');
 }
@@ -35,7 +35,7 @@ else
   printf('<h1 class="text-danger">%s</h1>', $title);
   printf('<p class="text-danger">%s</p>', $description);
   if (!empty($message)) printf('<div class="alert alert-danger"><p class="mb-0">%s</p></div>', $message);
-  if ($model->error !== DeleteModel::ERROR_NOT_FOUND)
+  if ($model->error !== FormModel::ERROR_NOT_FOUND)
   {
     printf('<form method="POST" action="?id=%d">', $id);
     echo '<div class="alert alert-danger"><p class="mb-0">Are you sure you wish to delete this server?</p></div>';

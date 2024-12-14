@@ -4,6 +4,8 @@ namespace BNETDocs\Models\Packet;
 
 class View extends \BNETDocs\Models\ActiveUser implements \JsonSerializable
 {
+    public const ERROR_NOT_FOUND = 'NOT_FOUND';
+
     public ?array $comments = null;
     public ?\BNETDocs\Libraries\Packet\Packet $packet = null;
     public ?int $packet_id = null;

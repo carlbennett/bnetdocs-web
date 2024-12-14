@@ -5,10 +5,7 @@ namespace BNETDocs\Models\Packet;
 class Form extends \BNETDocs\Models\Core\HttpForm implements \JsonSerializable
 {
   // possible values for $error:
-  public const ERROR_ACL_NOT_SET = 'ERROR_ACL_NOT_SET';
-  public const ERROR_INTERNAL = 'INTERNAL';
   public const ERROR_NOT_FOUND = 'NOT_FOUND';
-  public const ERROR_NOT_LOGGED_IN = 'NOT_LOGGED_IN';
   public const ERROR_OUTOFBOUNDS_APPLICATION_LAYER_ID = 'OUTOFBOUNDS_APPLICATION_LAYER_ID';
   public const ERROR_OUTOFBOUNDS_BRIEF = 'OUTOFBOUNDS_BRIEF';
   public const ERROR_OUTOFBOUNDS_DIRECTION = 'OUTOFBOUNDS_DIRECTION';

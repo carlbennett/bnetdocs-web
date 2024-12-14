@@ -56,7 +56,7 @@ class ResetPassword extends \BNETDocs\Controllers\Base
 
   protected function doPasswordReset(): mixed
   {
-    if (empty($this->model->email)) return ResetPasswordModel::E_EMPTY_EMAIL;
+    if (empty($this->model->email)) return ResetPasswordModel::ERROR_EMPTY_EMAIL;
 
     try
     {
@@ -65,10 +65,10 @@ class ResetPassword extends \BNETDocs\Controllers\Base
     }
     catch (UnexpectedValueException)
     {
-      return ResetPasswordModel::E_BAD_EMAIL;
+      return ResetPasswordModel::ERROR_BAD_EMAIL;
     }
 
-    if (!$this->model->user) return ResetPasswordModel::E_USER_NOT_FOUND;
+    if (!$this->model->user) return ResetPasswordModel::ERROR_USER_NOT_FOUND;
 
     if (empty($this->model->token))
     {
@@ -79,35 +79,35 @@ class ResetPassword extends \BNETDocs\Controllers\Base
         )
       );
 
-      return $this->model->user->commit() ? self::sendEmail() : ResetPasswordModel::E_INTERNAL_ERROR;
+      return $this->model->user->commit() ? self::sendEmail() : ResetPasswordModel::ERROR_INTERNAL;
     }
 
     if ($this->model->token !== $this->model->user->getVerifierToken())
-      return ResetPasswordModel::E_BAD_TOKEN;
+      return ResetPasswordModel::ERROR_BAD_TOKEN;
 
     if ($this->model->pw1 !== $this->model->pw2)
-      return ResetPasswordModel::E_PASSWORD_MISMATCH;
+      return ResetPasswordModel::ERROR_PASSWORD_MISMATCH;
 
     $req = Config::get('bnetdocs.user_register_requirements') ?? [];
     $pwlen = strlen($this->model->pw1);
 
     if (is_numeric($req->password_length_max) && $pwlen > $req->password_length_max)
-      return ResetPasswordModel::E_PASSWORD_TOO_LONG;
+      return ResetPasswordModel::ERROR_PASSWORD_TOO_LONG;
 
     if (is_numeric($req->password_length_min) && $pwlen < $req->password_length_min)
-      return ResetPasswordModel::E_PASSWORD_TOO_SHORT;
+      return ResetPasswordModel::ERROR_PASSWORD_TOO_SHORT;
 
     if (!$req->password_allow_email && stripos($this->model->pw1, $this->model->user->getEmail()))
-      return ResetPasswordModel::E_PASSWORD_CONTAINS_EMAIL;
+      return ResetPasswordModel::ERROR_PASSWORD_CONTAINS_EMAIL;
 
     if (!$req->password_allow_username && stripos($this->model->pw1, $this->model->user->getUsername()))
-      return ResetPasswordModel::E_PASSWORD_CONTAINS_USERNAME;
+      return ResetPasswordModel::ERROR_PASSWORD_CONTAINS_USERNAME;
 
-    if ($this->model->user->isDisabled()) return ResetPasswordModel::E_USER_DISABLED;
+    if ($this->model->user->isDisabled()) return ResetPasswordModel::ERROR_USER_DISABLED;
 
     $this->model->user->setPassword($this->model->pw1);
     $this->model->user->setVerified(true);
-    return $this->model->user->commit() ? ResetPasswordModel::E_SUCCESS : ResetPasswordModel::E_INTERNAL_ERROR;
+    return $this->model->user->commit() ? false : ResetPasswordModel::ERROR_INTERNAL;
   }
 
   protected function sendEmail(): mixed
@@ -186,9 +186,9 @@ class ResetPassword extends \BNETDocs\Controllers\Base
     }
     catch (\PHPMailer\PHPMailer\Exception)
     {
-      return ResetPasswordModel::E_INTERNAL_ERROR;
+      return ResetPasswordModel::ERROR_INTERNAL;
     }
 
-    return ResetPasswordModel::E_SUCCESS;
+    return false;
   }
 }

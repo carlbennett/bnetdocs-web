@@ -4,6 +4,7 @@ namespace BNETDocs\Controllers\EventLog;
 
 use \BNETDocs\Libraries\Core\HttpCode;
 use \BNETDocs\Libraries\EventLog\Event;
+use \BNETDocs\Models\EventLog\Index as IndexModel;
 
 class Index extends \BNETDocs\Controllers\Base
 {
@@ -13,7 +14,7 @@ class Index extends \BNETDocs\Controllers\Base
 
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\EventLog\Index();
+    $this->model = new IndexModel();
   }
 
   public function invoke(?array $args): bool
@@ -24,6 +25,7 @@ class Index extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
+      $this->model->error = $this->model->active_user ? IndexModel::ERROR_ACL_NOT_SET : IndexModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 

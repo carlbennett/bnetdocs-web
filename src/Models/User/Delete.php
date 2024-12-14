@@ -4,10 +4,7 @@ namespace BNETDocs\Models\User;
 
 class Delete extends \BNETDocs\Models\Core\HttpForm implements \JsonSerializable
 {
-    public const ERROR_ACL_NOT_SET = 'ACL_NOT_SET';
-    public const ERROR_INTERNAL_ERROR = 'INTERNAL_ERROR';
     public const ERROR_NOT_FOUND = 'NOT_FOUND';
-    public const ERROR_NOT_LOGGED_IN = 'NOT_LOGGED_IN';
 
     public bool $deleted = false;
     public ?int $target_id = null;

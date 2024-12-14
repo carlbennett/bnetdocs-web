@@ -4,6 +4,7 @@ namespace BNETDocs\Controllers\Document;
 
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Models\Document\View as ViewModel;
 
 class View extends \BNETDocs\Controllers\Base
 {
@@ -12,7 +13,7 @@ class View extends \BNETDocs\Controllers\Base
    */
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Document\View();
+    $this->model = new ViewModel();
   }
 
   /**
@@ -32,6 +33,7 @@ class View extends \BNETDocs\Controllers\Base
       && !($this->model->active_user && $this->model->active_user->isStaff()))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
+      $this->model->error = $this->model->active_user ? ViewModel::ERROR_ACL_NOT_SET : ViewModel::ERROR_NOT_LOGGED_IN;
       $this->model->document = null;
       return true;
     }

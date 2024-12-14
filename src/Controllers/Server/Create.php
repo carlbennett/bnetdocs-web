@@ -21,12 +21,10 @@ class Create extends \BNETDocs\Controllers\Base
 
   public function invoke(?array $args): bool
   {
-    $this->model->server_edit = false;
-
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_SERVER_CREATE)))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = FormModel::ERROR_ACCESS_DENIED;
+      $this->model->error = $this->model->active_user ? FormModel::ERROR_ACL_NOT_SET : FormModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 

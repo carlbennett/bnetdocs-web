@@ -4,6 +4,8 @@ namespace BNETDocs\Models\Core;
 
 class Errorable extends \BNETDocs\Models\Base implements \JsonSerializable
 {
+    public const ERROR_INTERNAL = 'INTERNAL_ERROR';
+
     /**
      * Stores error state information between Controller and downstream handlers, useful for Template rendering.
      *

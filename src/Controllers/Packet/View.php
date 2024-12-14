@@ -3,12 +3,13 @@ namespace BNETDocs\Controllers\Packet;
 
 use \BNETDocs\Libraries\Comment;
 use \BNETDocs\Libraries\Core\HttpCode;
+use BNETDocs\Models\Packet\View as ViewModel;
 
 class View extends \BNETDocs\Controllers\Base
 {
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\Packet\View();
+    $this->model = new ViewModel();
   }
 
   public function invoke(?array $args): bool
@@ -21,6 +22,7 @@ class View extends \BNETDocs\Controllers\Base
     if (!$this->model->packet)
     {
       $this->model->_responseCode = HttpCode::HTTP_NOT_FOUND;
+      $this->model->error = ViewModel::ERROR_NOT_FOUND;
       return true;
     }
 

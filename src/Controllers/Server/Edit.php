@@ -26,7 +26,7 @@ class Edit extends \BNETDocs\Controllers\Base
     if (!($this->model->active_user && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_SERVER_MODIFY)))
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
-      $this->model->error = FormModel::ERROR_ACCESS_DENIED;
+      $this->model->error = $this->model->active_user ? FormModel::ERROR_ACL_NOT_SET : FormModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
@@ -74,9 +74,9 @@ class Edit extends \BNETDocs\Controllers\Base
     $this->model->server->setDisabled((bool) ($this->model->form_fields['disabled'] ?? null));
     $this->model->server->setOnline((bool) ($this->model->form_fields['online'] ?? null));
 
-    $this->model->error = $this->model->server->commit() ? FormModel::ERROR_SUCCESS : FormModel::ERROR_INTERNAL;
+    $this->model->error = $this->model->server->commit() ? false : FormModel::ERROR_INTERNAL;
 
-    if ($this->model->error === FormModel::ERROR_SUCCESS)
+    if ($this->model->error === false)
     {
       $event = Logger::initEvent(
         \BNETDocs\Libraries\EventLog\EventTypes::SERVER_EDITED,

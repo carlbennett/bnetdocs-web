@@ -4,10 +4,7 @@ namespace BNETDocs\Models\Comment;
 
 class Delete extends \BNETDocs\Models\Core\AccessControl implements \JsonSerializable
 {
-    public const ERROR_ACL_NOT_SET = 'ACL_NOT_SET';
-    public const ERROR_INTERNAL = 'INTERNAL_ERROR';
     public const ERROR_NOT_FOUND = 'NOT_FOUND';
-    public const ERROR_NOT_LOGGED_IN = 'NOT_LOGGED_IN';
 
     public ?\BNETDocs\Libraries\Comment $comment = null;
     public ?string $content = null;

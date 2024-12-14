@@ -3,12 +3,13 @@
 namespace BNETDocs\Controllers\EventLog;
 
 use \BNETDocs\Libraries\Core\HttpCode;
+use \BNETDocs\Models\EventLog\View as ViewModel;
 
 class View extends \BNETDocs\Controllers\Base
 {
   public function __construct()
   {
-    $this->model = new \BNETDocs\Models\EventLog\View();
+    $this->model = new ViewModel();
   }
 
   public function invoke(?array $args): bool
@@ -19,6 +20,7 @@ class View extends \BNETDocs\Controllers\Base
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
+      $this->model->error = $this->model->active_user ? ViewModel::ERROR_ACL_NOT_SET : ViewModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
 
