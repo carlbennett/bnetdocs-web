@@ -19,7 +19,7 @@ else
   $description = 'The requested document does not exist or could not be found.';
 }
 $_header_meta_properties = ['og:type' => 'article'];
-$url = UrlFormatter::format('/document/' . rawurlencode($object_id));
+$url = UrlFormatter::format('/document/' . rawurlencode($object_id ?? ''));
 if ($object)
 {
   $url = $object->getURI();

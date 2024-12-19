@@ -16,7 +16,7 @@ $c_delete_visible_admin = ($active_user && $active_user->getOption(User::OPTION_
 <? } else {
       foreach ($comments as $c) {
         $c_created_dt  = $c->getCreatedDateTime();
-        $c_id          = rawurlencode($c->getId());
+        $c_id          = rawurlencode($c->getId() ?? '');
         $c_parent_url  = $c->getParentUrl();
         $c_user        = $c->getUser();
         $c_user_id     = $c->getUserId();

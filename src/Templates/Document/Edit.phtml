@@ -29,7 +29,7 @@ require('./Includes/header.inc.phtml'); ?>
 <? if ($this->getContext()->acl_allowed) { ?>
   <h1><?=$title?></h1>
   <p><?=$description?></p>
-<?  if (is_null($error) || $error == 'NOT_FOUND') {
+<?  if (is_null($error) || $error == EditModel::ERROR_NOT_FOUND) {
       require('./Document/Form.inc.phtml');
       $comment_parent_type = Comment::PARENT_TYPE_DOCUMENT; $comment_parent_id = $document_id; require('./Comment/Section.inc.phtml');
     } else if ($error !== false) { ?>

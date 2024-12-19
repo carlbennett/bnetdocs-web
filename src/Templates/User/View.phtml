@@ -16,7 +16,7 @@ $user_profile = $this->getContext()->user_profile;
 $user_verified = $user && $user->isVerified();
 $title = ($user ? $user->getName() : 'User Not Found');
 $description = ($user ? $user->getName() . '\'s user profile on BNETDocs' : 'The requested user does not exist or could not be found.');
-$url = ($user ? $user->getURI() : UrlFormatter::format('/user/' . rawurlencode($user_id)));
+$url = ($user ? $user->getURI() : UrlFormatter::format('/user/' . rawurlencode($user_id ?? '')));
 $_header_meta_properties = ['og:type' => 'profile'];
 
 if ($user)

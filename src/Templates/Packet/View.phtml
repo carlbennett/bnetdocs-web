@@ -43,8 +43,8 @@ if ($object)
   }
 }
 
-$edit_url = UrlFormatter::format('/packet/edit?id=' . rawurlencode($object_id));
-$delete_url = UrlFormatter::format('/packet/delete?id=' . rawurlencode($object_id));
+$edit_url = UrlFormatter::format('/packet/edit?id=' . rawurlencode($object_id ?? ''));
+$delete_url = UrlFormatter::format('/packet/delete?id=' . rawurlencode($object_id ?? ''));
 $edit_visible = ($active_user && $active_user->getOption(User::OPTION_ACL_PACKET_MODIFY));
 $delete_visible = ($active_user && $active_user->getOption(User::OPTION_ACL_PACKET_DELETE));
 

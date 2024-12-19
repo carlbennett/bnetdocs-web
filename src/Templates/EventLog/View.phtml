@@ -10,7 +10,7 @@ $description = 'The event log viewer on BNETDocs';
 $object_id = $this->getContext()->id;
 $object = $this->getContext()->event;
 
-$url = ($object instanceof Event) ? $object->getURI() : '/eventlog/view?id=' . rawurlencode($object_id);
+$url = ($object instanceof Event) ? $object->getURI() : '/eventlog/view?id=' . rawurlencode($object_id ?? '');
 
 $object_ip_address = ($object instanceof Event ? $object->getIPAddress() : null);
 $object_metadata = ($object instanceof Event ? $object->getMetaData() : null);
