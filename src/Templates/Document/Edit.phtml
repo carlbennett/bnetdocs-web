@@ -8,7 +8,7 @@ $description = 'This form allows an individual to edit a document.';
 $url = '/document/edit';
 $comments = $this->getContext()->comments;
 $document_id = $this->getContext()->document_id;
-$document_url = ($this->getContext()->document ? $this->getContext()->document->getURI() : UrlFormatter::format('/document/' . rawurlencode($document_id)));
+$document_url = ($this->getContext()->document ? $this->getContext()->document->getURI() : UrlFormatter::format('/document/' . rawurlencode($document_id ?? '')));
 $error = $this->getContext()->error;
 switch ($error)
 {

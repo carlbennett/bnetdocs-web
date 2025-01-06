@@ -19,14 +19,14 @@ class Edit extends \BNETDocs\Controllers\Base
     $this->model->acl_allowed = $this->model->active_user
       && $this->model->active_user->getOption(\BNETDocs\Libraries\User\User::OPTION_ACL_DOCUMENT_MODIFY);
 
+    $this->model->document_id = Router::query()['id'] ?? null;
+
     if (!$this->model->acl_allowed)
     {
       $this->model->_responseCode = HttpCode::HTTP_FORBIDDEN;
       $this->model->error = $this->model->active_user ? EditModel::ERROR_ACL_NOT_SET : EditModel::ERROR_NOT_LOGGED_IN;
       return true;
     }
-
-    $this->model->document_id = Router::query()['id'] ?? null;
 
     try { $this->model->document = new \BNETDocs\Libraries\Document($this->model->document_id); }
     catch (\UnexpectedValueException) { $this->model->document = null; }
